@@ -1,0 +1,3 @@
+#!/bin/bash
+
+test -f .git/hooks/pre-push && bash .git/hooks/pre-push || true

@@ -1,39 +1,9 @@
 {
-    "compilerOptions": {  
-      
-      /* Projects */      
-      "composite": true /* Enable constraints that allow a TypeScript project to be used with project references. */,  
-      
-      /* Language and Environment */
-      "target": "es2016" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
-      "lib": [
-        "ES2020",
-        "DOM"
-      ] /* Specify a set of bundled library declaration files that describe the target runtime environment. */,      
-      "experimentalDecorators": true /* Enable experimental support for TC39 stage 2 draft decorators. */,
-    
-      /* Modules */
-      "module": "ES2020" /* Specify what module code is generated. */,      
-      "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,  
-      
-      /* JavaScript Support */
-      "allowJs": true /* Allow JavaScript files to be a part of your program. Use the `checkJS` option to get errors from these files. */,  
-      
-      /* Emit */
-      "sourceMap": true /* Create source map files for emitted JavaScript files. */,      
-      "outDir": "." /* Specify an output folder for all emitted files. */,      
-      "downlevelIteration": true /* Emit more compliant, but verbose and less performant JavaScript for iteration. */,  
-      
-      /* Interop Constraints */      
-      "esModuleInterop": true /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables `allowSyntheticDefaultImports` for type compatibility. */,      
-      "forceConsistentCasingInFileNames": true /* Ensure that casing is correct in imports. */,
-  
-      /* Type Checking */
-      "strict": true /* Enable all strict type-checking options. */,  
-
-      /* Completeness */      
-      "skipLibCheck": true /* Skip type checking all .d.ts files. */
-    },
-    "exclude": ["showcase", "**/dist", "./built/**/*"],
-    "include": [ "src" ]
-  }
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": ".",
+    "allowJs": true
+  },
+  "include": ["src"]
+}

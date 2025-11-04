@@ -1,0 +1,10 @@
+.prettierignore
+.gitignore
+.talismanrc
+.hooks/**
+**/.env.*
+**/.env
+**/csp.*
+**/.firebaserc
+**/*.ico
+**/*.sh
