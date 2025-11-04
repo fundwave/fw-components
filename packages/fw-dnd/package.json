@@ -17,6 +17,6 @@
     "@polymer/paper-button": "^3.0.1",
     "@polymer/paper-icon-button": "^3.0.2",
     "@polymer/paper-input": "^3.2.1",
-    "lit": "^2.1.2"
+    "lit": "^3.3.1"
   }
 }

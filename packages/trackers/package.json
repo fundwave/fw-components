@@ -18,6 +18,6 @@
   },
   "devDependencies": {
     "notion-types": "^6.16.0",
-    "typescript": "^5.2.2"
+    "typescript": "^5.9.3"
   }
 }

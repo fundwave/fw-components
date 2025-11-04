@@ -13,23 +13,21 @@
     "access": "public"
   },
   "scripts": {
-    "start": "es-dev-server --app-index ../../index.html --node-resolve --watch --open",
     "build": "tsc --composite false",
     "dev": "tsc -w --composite false",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@fw-components/styles": "^2.3.3",
-    "big.js": "^6.2.1",
-    "lit": "^2.1.2",
-    "match-sorter": "^8.0.0",
-    "typescript": "^5.0.4"
+    "big.js": "^7.0.1",
+    "lit": "^3.3.1",
+    "match-sorter": "^8.1.0",
+    "typescript": "^5.9.3"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "devDependencies": {
-    "@types/big.js": "^6.1.6",
-    "es-dev-server": "^2.1.0"
+    "@types/big.js": "^6.2.2"
   },
   "gitHead": "c0e5c9903eedbe31cd57a39b88eb333b83149e3a"
 }
