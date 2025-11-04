@@ -19,11 +19,11 @@ export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
 
   const core = notionPage.block[pageId];
 
-  const collectionId = core.value.type === "collection_view_page" ? core.value.collection_id : null;
+  const collectionId = core?.value?.type === "collection_view_page" ? core.value?.collection_id : null;
 
   if (!collectionId) return;
 
-  const databaseProperties = notionPage.collection[collectionId].value.schema;
+  const databaseProperties = notionPage.collection?.[collectionId]?.value?.schema;
   if (!databaseProperties) return;
 
   const parsedEvents: IEvent[] = [];
@@ -38,6 +38,8 @@ export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
     const result: IEvent = { jsPath: "" };
 
     Object.entries(pageProperties).forEach(([property, value]) => {
+      if (!databaseProperties[property]) return;
+
       const key = databaseProperties[property].name as keyof IEvent;
 
       if (Array.isArray(value)) value = value.toString();

@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/formula-editor",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "A WYSIWYG type formula editor",
   "main": "dist/formula-editor/src/formula-editor.js",
   "exports": {
@@ -19,7 +19,7 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@fw-components/styles": "^2.3.2",
+    "@fw-components/styles": "^2.3.3",
     "big.js": "^6.2.1",
     "lit": "^2.1.2",
     "match-sorter": "^8.0.0",

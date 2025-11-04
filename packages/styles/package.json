@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/styles",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Style library for web components",
   "publishConfig": {
     "access": "public"

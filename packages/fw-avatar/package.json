@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-avatar",
-  "version": "2.3.2",
+  "version": "2.3.3",
   "description": "Avatar Web Component",
   "main": "src/fw-avatar.js",
   "type": "module",
@@ -15,7 +15,7 @@
     "test:watch": "web-test-runner  --watch"
   },
   "dependencies": {
-    "@fw-components/styles": "^2.3.2",
+    "@fw-components/styles": "^2.3.3",
     "@material/mwc-icon": "^0.27.0",
     "@material/mwc-list": "^0.25.3",
     "@material/mwc-menu": "^0.25.3",
