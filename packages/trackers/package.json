@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/trackers",
-  "version": "2.3.3",
+  "version": "2.3.4-linting.0",
   "description": "Usage trackers for web components",
   "publishConfig": {
     "access": "public"
