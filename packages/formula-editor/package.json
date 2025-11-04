@@ -21,13 +21,13 @@
     "@fw-components/styles": "^2.3.4-linting.0",
     "big.js": "^7.0.1",
     "lit": "^3.3.1",
-    "match-sorter": "^8.1.0",
-    "typescript": "^5.9.3"
+    "match-sorter": "^8.1.0"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "devDependencies": {
-    "@types/big.js": "^6.2.2"
+    "@types/big.js": "^6.2.2",
+    "typescript": "^5.9.3"
   },
   "gitHead": "c0e5c9903eedbe31cd57a39b88eb333b83149e3a"
 }

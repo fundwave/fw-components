@@ -5,4 +5,4 @@ test -f .git/hooks/pre-commit && .git/hooks/pre-commit
 [[ ! -z $(git rev-parse -q --verify MERGE_HEAD) ]] && exit 0
 
 # update same commit for lint changes
-npx lint-staged
+npx lint-staged || exit 1
