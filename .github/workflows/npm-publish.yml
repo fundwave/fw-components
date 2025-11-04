@@ -21,12 +21,12 @@ jobs:
         with:
           app_id: ${{ vars.FUNDABOT_APP_ID }}
           private_key: ${{ secrets.FUNDABOT_PRIVATE_KEY }}
-      
+
       - uses: actions/setup-node@v3
         with:
           node-version: 16
           registry-url: https://registry.npmjs.org
-      
+
       - uses: actions/checkout@v3
         with:
           # pulls all commits and tags (needed for lerna to correctly version)
@@ -40,10 +40,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Run tests
         run: npm run test
 
@@ -65,6 +65,9 @@ jobs:
           echo "Published tag $TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
 
+      - name: Push changes
+        run: git push --follow-tags --atomic --no-verify
+
       - name: Release
         if: ${{ github.ref_name == 'main'}}
         env:
@@ -73,6 +76,3 @@ jobs:
           if [ "${BRANCH}" != "main" ]; then PRERELEASE="-p"; fi
           echo "Releasing version ${TAG} on branch ${BRANCH}"
           gh release create ${TAG} --target ${BRANCH} --generate-notes ${PRERELEASE}
-
-      - name: Push changes
-        run: git push --follow-tags --atomic --no-verify
