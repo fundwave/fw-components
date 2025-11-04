@@ -1,17 +1,19 @@
-import { html, LitElement, PropertyValues } from "lit";
-import { customElement, property, state, query } from "lit/decorators.js";
-
-import "./suggestion-menu.js";
-import { Parser } from "./utils/parser.js";
-import { FormulaEditorStyles } from "./styles/editor.js";
 import { SuggestionMenu } from "./suggestion-menu.js";
+
+import { html, LitElement, PropertyValues } from "lit";
+import { customElement, property, query, state } from "lit/decorators.js";
+
 import { getFormulaTokens } from "./utils/get-formula-tokens.js";
+import { Parser } from "./utils/parser.js";
+
+import { FormulaEditorStyles } from "./styles/editor.js";
+
 @customElement("formula-editor")
 export class FormulaEditor extends LitElement {
   /**
    * Formula Parser
    */
-  private _parser: Parser;
+  private _parser!: Parser;
 
   @state()
   recommendations: string[] = [];
@@ -23,10 +25,10 @@ export class FormulaEditor extends LitElement {
    * user input event type
    */
   @state()
-  lastInputType: string;
+  lastInputType: string = "";
 
   @state()
-  _selectedRecommendation: string;
+  _selectedRecommendation: string = "";
 
   @state()
   isFocused: boolean = false;
@@ -39,39 +41,39 @@ export class FormulaEditor extends LitElement {
 
   @property()
   placeholder: string = "Type your formula...";
-  
-  @property()
+
+  @property({ type: Object })
   recommendationLabels: Map<string, number> = new Map();
 
-  @property()
-  label: string;
+  @property({ type: String })
+  label: string = "";
 
-  @property()
+  @property({ type: Object })
   variables: Map<string, number> = new Map();
 
-  @property()
-  variableType: string;
+  @property({ type: String })
+  variableType: string = "";
 
-  @property()
+  @property({ type: Number })
   minSuggestionLen: number = 2;
 
-  @property()
+  @property({ type: String })
   errorString: string = "";
 
-  @property()
-  formulaRegex: RegExp;
+  @property({ type: Object })
+  formulaRegex: RegExp = /.*/;
 
-  @property()
+  @property({ type: Boolean })
   allowedNumbers: boolean = true;
 
-  @property()
-  allowedOperators: Set<string>;
+  @property({ type: Object })
+  allowedOperators: Set<string> = new Set();
 
   @query("#fw-formula-editor")
-  editor: HTMLTextAreaElement;
+  editor!: HTMLTextAreaElement;
 
   @query("suggestion-menu")
-  suggestionMenu: SuggestionMenu;
+  suggestionMenu!: SuggestionMenu;
 
   protected updated(_changedProperties: PropertyValues): void {
     if (_changedProperties.has("formulaString")) {
@@ -105,12 +107,11 @@ export class FormulaEditor extends LitElement {
       if (!this.editor) return;
 
       this.editor.style.height = "var(--fe-height, 30px)";
-  
+
       const newHeight = this.editor.scrollHeight;
-  
+
       this.editor.style.height = `${newHeight + 5}px`;
     });
-  
   }
 
   /**
@@ -121,11 +122,10 @@ export class FormulaEditor extends LitElement {
   parseInput(recommendation: string = "") {
     this.currentCursorPosition = this.editor.selectionStart;
 
-    const { recommendations, errorString, formattedString, newCursorPosition } = 
-        this._parser.parseInput(this.formulaString, this.currentCursorPosition, recommendation);
+    const { recommendations, errorString, formattedString, newCursorPosition } = this._parser.parseInput(this.formulaString, this.currentCursorPosition, recommendation);
 
     this.recommendations = recommendations;
-    this.errorString = errorString;
+    this.errorString = errorString || "";
 
     /**
      * Don't modify the text stream manually if the text is being composed,
@@ -154,9 +154,9 @@ export class FormulaEditor extends LitElement {
           formulaString: this.formulaString,
           error: this.errorString,
           recommendations: this.recommendations,
-          formulaTokens: getFormulaTokens(this.formulaString || "",this.formulaRegex)
+          formulaTokens: getFormulaTokens(this.formulaString || "", this.formulaRegex)
         },
-        bubbles: true,
+        bubbles: true
       })
     );
   }
@@ -176,7 +176,7 @@ export class FormulaEditor extends LitElement {
   }
 
   handleKeydown(event: KeyboardEvent) {
-    if(!this.recommendations?.length) return;
+    if (!this.recommendations?.length) return;
 
     if (event.code === "Tab") {
       event.preventDefault();
@@ -198,7 +198,9 @@ export class FormulaEditor extends LitElement {
 
   render() {
     return html`
-      <style>${FormulaEditorStyles}</style>
+      <style>
+        ${FormulaEditorStyles}
+      </style>
 
       ${this.label ? html`<label for="fw-formula-editor" class="editor-label">${this.label}</label>` : ""}
 
@@ -222,7 +224,7 @@ export class FormulaEditor extends LitElement {
             .onRecommendationClick=${this.onRecommendationClick.bind(this)}
             .recommendationLabels=${this.recommendationLabels}
           ></suggestion-menu>`
-        : ''}
+        : ""}
     `;
   }
 }
