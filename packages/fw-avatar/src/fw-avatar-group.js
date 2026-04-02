@@ -49,7 +49,7 @@ export class FWAvatarGroup extends LitElement {
             
             fw-avatar.overlap{
               margin: 0 0 0 -8px;
-              --border: 1px solid var(--light-color, #fff);
+              --border: 1px solid var(--header-background-color, #fff);
               --avatar-color: var(--dark-color, #515151);
             }
 

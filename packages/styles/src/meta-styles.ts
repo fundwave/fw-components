@@ -68,7 +68,7 @@ export const IconStyles = html`
 
       iron-icon.info-icon-with-background {
         background-color: var(--primary-color, #fff);
-        --iron-icon-fill-color: var(--light-color, #fff);
+        --iron-icon-fill-color: var(--header-background-color, #fff);
         --iron-icon-height: 50px;
         --iron-icon-width: 50px;
         border-radius: 50px;
@@ -243,13 +243,13 @@ export const MenuStyles = html`
       --mdc-menu-min-width: 200px;
       --mdc-theme-primary: var(--primary-color);
       --mdc-theme-text-icon-on-background: var(--secondary-color);
-      --mdc-theme-surface: var(--light-color);
+      --mdc-theme-surface: var(--header-background-color);
     }
 
     mwc-menu .sticky{
       position: -webkit-sticky; /*Safari*/
       position: sticky;
-      background-color: var(--light-color, #fff);
+      background-color: var(--header-background-color, #fff);
       z-index: 4;
       top: 0;
     }

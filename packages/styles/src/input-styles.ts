@@ -36,7 +36,7 @@ export const SelectInputStyles = html`
     }
     sl-option[aria-selected="true"]::part(base), sl-option[selected]::part(base) {
       background-color: var(--primary-color-l1) !important;
-      color: var(--light-color) !important;
+      color: var(--header-background-color) !important;
     }
     sl-select::part(tag__base) {
       font-family: var(--theme-font);
@@ -222,7 +222,7 @@ export const PlainInputStyles = html`
         --paper-input-container-disabled : {
           color: var(--secondary-color);
           opacity: 1;
-          --disabled-text-color: var(--light-color);
+          --disabled-text-color: var(--header-background-color);
         }
       }
 

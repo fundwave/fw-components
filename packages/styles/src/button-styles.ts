@@ -85,14 +85,14 @@ export const PrimaryButtonStyles = html`
     }
     .primary-outlined:hover {
       background-color: var(--primary-color, #205081);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
     }
     .primary-colored {
       font-family: var(--theme-font);
       background-color: var(--primary-color, #205081);
       border-radius: 5px;
       font-size: var(--secondary-font-size, 16px);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
       margin: 0;
       padding: 0 var(--button-padding, 16px);
       min-width: 64px;
@@ -125,7 +125,7 @@ export const SecondaryButtonStyles = html`
 
     .secondary-outlined:hover {
       background-color: var(--secondary-color, #515151);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
     }
 
     .secondary-colored {
@@ -133,7 +133,7 @@ export const SecondaryButtonStyles = html`
       background-color: var(--secondary-color, #515151);
       border-radius: 5px;
       font-size: var(--secondary-font-size, 16px);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
       padding: 0 var(--button-padding, 16px);
       margin: 0;
       min-width: 64px;
@@ -168,7 +168,7 @@ export const AlertButtonStyles = html`
 
     .alert-outlined:hover {
       background-color: var(--error-color-l1, #db4437);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
     }
 
     .alert-colored {
@@ -176,7 +176,7 @@ export const AlertButtonStyles = html`
       background-color: var(--error-color, #d50000);
       border-radius: 5px;
       font-size: var(--secondary-font-size, 16px);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
       padding: 0 var(--button-padding, 16px);
       margin: 0;
       min-width: 64px;
@@ -233,7 +233,7 @@ export const ToggleButtonStyles = html`
 
     .selected-toggle {
       background-color: var(--secondary-color);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
     }
 
     .toggle iron-icon{
@@ -280,11 +280,11 @@ export const FabStyles = html`
       background-color: var(--secondary-color, #515151);
       --iron-icon-height: var(--h2-font-size, 26px);
       --iron-icon-width: var(--h2-font-size, 26px);
-      color: var(--light-color, #fff);
+      color: var(--header-background-color, #fff);
     }
 
     .light-colored-fab {
-      background-color: var(--light-color, #fff);
+      background-color: var(--header-background-color, #fff);
       --iron-icon-height: var(--h2-font-size, 20px);
       --iron-icon-width: var(--h2-font-size, 20px);
       color: var(--secondary-color);
@@ -327,7 +327,7 @@ export const ButtonSpinnerStyles = html`
     .colored-bt-spinner {
       width: 18px;
       height: 18px;
-      --paper-spinner-color: var(--light-color, #fff);
+      --paper-spinner-color: var(--header-background-color, #fff);
       --paper-spinner-stroke-width: 3px;
       margin-right: 8px;
     }
