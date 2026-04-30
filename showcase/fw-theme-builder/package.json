@@ -5,8 +5,7 @@
     "webpack": "webpack --config webpack.js",
     "webpack-dev": "webpack --config webpack.js",
     "start": "webpack-dev-server --config webpack.js --host 0.0.0.0 --hot",
-    "build": "webpack --config webpack.js --stats verbose",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.js --stats verbose"
   },
   "keywords": [],
   "dependencies": {

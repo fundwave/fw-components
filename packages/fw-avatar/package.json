@@ -10,7 +10,7 @@
   "scripts": {
     "start": "web-dev-server",
     "pretest": "npx playwright install && playwright install-deps",
-    "test": "web-test-runner",
+    "test": "npm run pretest && web-test-runner",
     "test:coverage": "web-test-runner  --coverage",
     "test:watch": "web-test-runner  --watch"
   },
