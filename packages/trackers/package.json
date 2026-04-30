@@ -9,7 +9,8 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc --composite false",
-    "dev": "tsc -w --composite false"
+    "dev": "tsc -w --composite false",
+    "test": "node --import tsx --test lib/__tests__/*.test.ts"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "notion-types": "7.10.0",
+    "tsx": "4.21.0",
     "typescript": "^5.2.2"
   }
 }

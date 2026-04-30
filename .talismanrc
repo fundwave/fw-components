@@ -1,11 +1,13 @@
 fileignoreconfig:
-  - filename: packages/fw-theme-builder/readme.md
-    checksum: 9da26a33b3336b36329297a4c1a8e7cd1d068b490b6ab55aea48316f39679898
-  - filename: packages/fw-theme-builder/src/fw-font-pick.ts
-    checksum: 1fe3f137fd14abfe381cf7f0a74639d8036f76fb6a1ee5627bdd60817b7e73cb
-  - filename: packages/fw-theme-builder/src/models.ts
-    checksum: 7c91a75e18f0021572f0d405a69776557ecc49c1f6e3fba055b5e4b3fbf8e927
+- filename: packages/fw-theme-builder/readme.md
+  checksum: 9da26a33b3336b36329297a4c1a8e7cd1d068b490b6ab55aea48316f39679898
+- filename: packages/fw-theme-builder/src/fw-font-pick.ts
+  checksum: 1fe3f137fd14abfe381cf7f0a74639d8036f76fb6a1ee5627bdd60817b7e73cb
+- filename: packages/fw-theme-builder/src/models.ts
+  checksum: 7c91a75e18f0021572f0d405a69776557ecc49c1f6e3fba055b5e4b3fbf8e927
+- filename: packages/trackers/lib/__tests__/notion.test.ts
+  checksum: d0c73b579f2e5a24fa796308ec3d5fa8acaa03932d5ec71619ee8213cd588da5
 scopeconfig:
-  - scope: node
+- scope: node
 threshold: medium
 version: "1.0"
