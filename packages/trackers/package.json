@@ -17,7 +17,7 @@
     "notion-utils": "^6.16.0"
   },
   "devDependencies": {
-    "notion-types": "^6.16.0",
+    "notion-types": "7.10.0",
     "typescript": "^5.2.2"
   }
 }
