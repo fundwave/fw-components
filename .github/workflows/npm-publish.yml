@@ -42,6 +42,11 @@ jobs:
           git config --global user.email "fundabot@fundwave.com"
           git config --global user.name "fundabot"
 
+      - name: Setup .npmrc
+        run: |
+          echo "ignore-scripts=true" >> ~/.npmrc
+          echo "save-exact=true" >> ~/.npmrc
+
       - name: Install dependencies
         run: npm ci
       
