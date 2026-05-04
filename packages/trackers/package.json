@@ -19,7 +19,7 @@
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "notion-utils": "7.10.0"
+    "notion-utils": "6.16.0"
   },
   "devDependencies": {
     "notion-types": "7.10.0",
