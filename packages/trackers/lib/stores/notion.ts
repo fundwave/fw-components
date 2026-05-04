@@ -23,8 +23,10 @@ export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
     .catch((err) => console.log(err));
 
   if (!notionPage) return;
-  const pageId = parsePageId(context.pageId);
 
+  const pageId = parsePageId(context.pageId);
+  if (!pageId) return;
+  
   const core = notionPage.block[pageId]?.value as Block;
 
   const collectionId = core?.value?.type === "collection_view_page" ? core.value?.collection_id : null;
