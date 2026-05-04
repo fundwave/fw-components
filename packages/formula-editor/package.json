@@ -25,6 +25,10 @@
     "match-sorter": "^8.0.0",
     "typescript": "^5.0.4"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
+  },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "devDependencies": {

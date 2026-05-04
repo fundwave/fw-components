@@ -10,6 +10,10 @@
     "dev": "tsc -w --composite false",
     "clean": "rm -rf *.js *.js.map *.d.ts"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
+  },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {

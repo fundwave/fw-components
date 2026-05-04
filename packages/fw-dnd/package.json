@@ -7,7 +7,8 @@
     "access": "public"
   },
   "repository": {
-    "url": "https://github.com/getfundwave/fw-components/tree/main/packages/fw-dnd"
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
