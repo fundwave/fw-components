@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/localize",
-  "version": "2.3.3",
+  "version": "2.3.4-notion-update.0",
   "description": "Localizer built on top of lit-localize",
   "publishConfig": {
     "access": "public"
