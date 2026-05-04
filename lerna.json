@@ -2,7 +2,6 @@
   "packages": [
     "packages/*"
   ],
-  "useWorkspaces": true,
   "version": "2.3.3",
   "command": {
     "version": {

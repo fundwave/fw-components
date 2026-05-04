@@ -16,6 +16,6 @@
     "lit": "^2.1.2"
   },
   "devDependencies": {
-    "typescript": "4.6.2"
+    "typescript": "5.7.3"
   }
 }
