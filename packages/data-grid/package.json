@@ -1,0 +1,72 @@
+{
+  "name": "@fw-components/data-grid",
+  "version": "0.1.0",
+  "description": "A high-performance, editable data grid for React with built-in virtualization, sorting, filtering, and bulk editing.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CONTRIBUTING.md"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "peerDependencies": {
+    "@tanstack/react-table": "^8.0.0",
+    "@tanstack/react-virtual": "^3.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@tanstack/react-table": "^8.20.0",
+    "@tanstack/react-virtual": "^3.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "esbuild": "0.28.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "8.5.1",
+    "typescript": "^5.4.0"
+  },
+  "keywords": [
+    "react",
+    "data-grid",
+    "table",
+    "editable",
+    "virtualized",
+    "tanstack",
+    "datagrid",
+    "spreadsheet",
+    "bulk-edit",
+    "portfolio"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components.git",
+    "directory": "packages/data-grid"
+  },
+  "homepage": "https://github.com/fundwave/fw-components/tree/main/packages/data-grid#readme",
+  "bugs": {
+    "url": "https://github.com/fundwave/fw-components/issues"
+  },
+  "author": "The Fundwave Authors",
+  "license": "MIT"
+}
