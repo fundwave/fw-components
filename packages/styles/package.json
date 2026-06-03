@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/styles",
-  "version": "2.3.4-notion-update.1",
+  "version": "2.3.4",
   "description": "Style library for web components",
   "publishConfig": {
     "access": "public"
