@@ -6,12 +6,11 @@
   "scripts": {
     "clean": "lerna clean --yes && lerna run clean",
     "preinstall": "npm run clean",
-    "postinstall": "lerna bootstrap --ci",
     "build": "lerna run build",
     "test": "lerna run test",
     "publish": "lerna publish"
   },
   "devDependencies": {
-    "lerna": "^6.6.2"
+    "lerna": "9.0.7"
   }
 }

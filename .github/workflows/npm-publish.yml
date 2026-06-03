@@ -9,6 +9,10 @@ env:
   BRANCH_TAG: ${{ github.ref_name == 'main' && 'latest' || github.ref_name }}
   BRANCH: ${{ github.ref_name }}
 
+permissions:
+  contents: write
+  id-token: write
+
 jobs:
   build_test_publish:
     runs-on: "ubuntu-22.04"
@@ -22,12 +26,12 @@ jobs:
           app_id: ${{ vars.FUNDABOT_APP_ID }}
           private_key: ${{ secrets.FUNDABOT_PRIVATE_KEY }}
       
-      - uses: actions/setup-node@v3
+      - uses: actions/setup-node@v4
         with:
-          node-version: 16
+          node-version: 22
           registry-url: https://registry.npmjs.org
       
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v6
         with:
           # pulls all commits and tags (needed for lerna to correctly version)
           fetch-depth: 0
@@ -37,6 +41,11 @@ jobs:
         run: |
           git config --global user.email "fundabot@fundwave.com"
           git config --global user.name "fundabot"
+
+      - name: Setup .npmrc
+        run: |
+          echo "ignore-scripts=true" >> ~/.npmrc
+          echo "save-exact=true" >> ~/.npmrc
 
       - name: Install dependencies
         run: npm ci
@@ -51,7 +60,6 @@ jobs:
         env:
           MAJOR_VERSION: ${{ contains(github.event.head_commit.message , '[bump major]') }}
           MINOR_VERSION: ${{ contains(github.event.head_commit.message , '[bump minor]') }}
-          NODE_AUTH_TOKEN: ${{secrets.NPMJS_TOKEN}}
         run: |
           VERSION=${{ github.ref_name == 'main' && 'patch' || 'prerelease' }}
           if [ ${{ github.ref_name }} == 'main' ]

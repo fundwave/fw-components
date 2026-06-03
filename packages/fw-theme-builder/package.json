@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-theme-builder",
-  "version": "2.3.3",
+  "version": "2.3.4-notion-update.1",
   "description": "Theme builder web component",
   "publishConfig": {
     "access": "public"
@@ -11,17 +11,21 @@
     "clean": "rm -rf ./*.js ./*.js.map ./*.d.ts"
   },
   "main": "fw-theme-builder.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
+  },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "@fw-components/localize": "^2.3.3",
-    "@fw-components/styles": "^2.3.3",
-    "@polymer/paper-dropdown-menu": "^3.2.0",
-    "@polymer/paper-item": "^3.0.1",
-    "@polymer/paper-listbox": "^3.0.1",
-    "lit": "^2.1.2"
+    "@fw-components/localize": "^2.3.4-notion-update.1",
+    "@fw-components/styles": "^2.3.4-notion-update.1",
+    "@polymer/paper-dropdown-menu": "3.2.0",
+    "@polymer/paper-item": "3.0.1",
+    "@polymer/paper-listbox": "3.0.1",
+    "lit": "3.3.3"
   },
   "devDependencies": {
-    "typescript": "4.6.2"
+    "typescript": "5.9.3"
   }
 }

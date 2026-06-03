@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/formula-editor",
-  "version": "2.3.3",
+  "version": "2.3.4-notion-update.1",
   "description": "A WYSIWYG type formula editor",
   "main": "dist/formula-editor/src/formula-editor.js",
   "exports": {
@@ -19,17 +19,21 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@fw-components/styles": "^2.3.3",
-    "big.js": "^6.2.1",
-    "lit": "^2.1.2",
-    "match-sorter": "^8.0.0",
-    "typescript": "^5.0.4"
+    "@fw-components/styles": "^2.3.4-notion-update.1",
+    "big.js": "6.2.2",
+    "lit": "3.3.3",
+    "match-sorter": "8.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "devDependencies": {
-    "@types/big.js": "^6.1.6",
-    "es-dev-server": "^2.1.0"
+    "@types/big.js": "6.2.2",
+    "es-dev-server": "2.1.0",
+    "typescript": "5.9.3"
   },
   "gitHead": "c0e5c9903eedbe31cd57a39b88eb333b83149e3a"
 }

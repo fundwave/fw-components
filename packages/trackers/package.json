@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/trackers",
-  "version": "2.3.3",
+  "version": "2.3.4-notion-update.1",
   "description": "Usage trackers for web components",
   "publishConfig": {
     "access": "public"
@@ -9,15 +9,21 @@
   "scripts": {
     "prepublishOnly": "npm run build",
     "build": "tsc --composite false",
-    "dev": "tsc -w --composite false"
+    "dev": "tsc -w --composite false",
+    "test": "node --import tsx --test lib/__tests__/*.test.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "notion-utils": "^6.16.0"
+    "notion-utils": "7.10.0"
   },
   "devDependencies": {
-    "notion-types": "^6.16.0",
-    "typescript": "^5.2.2"
+    "notion-types": "7.10.0",
+    "tsx": "4.22.4",
+    "typescript": "5.9.3"
   }
 }
