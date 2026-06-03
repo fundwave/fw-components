@@ -8,6 +8,9 @@ on:
       - showcase/**
       - .github/workflows/deploy.yml
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,6 +24,9 @@ jobs:
 
       - name: Build
         run: npm run build
+
+      - name: Test
+        run: npm run test
 
       - name: Install and Build All Showcases
         run: |

@@ -1,22 +1,23 @@
 {
   "name": "@fw-components/fw-dnd",
-  "version": "2.3.4-linting.0",
+  "version": "2.3.4",
   "description": "Drag-n-drop list",
   "main": "fw-dnd.js",
   "publishConfig": {
     "access": "public"
   },
   "repository": {
-    "url": "https://github.com/getfundwave/fw-components/tree/main/packages/fw-dnd"
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
   },
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "@fw-components/styles": "^2.3.4-linting.0",
-    "@polymer/iron-icons": "^3.0.1",
-    "@polymer/paper-button": "^3.0.1",
-    "@polymer/paper-icon-button": "^3.0.2",
-    "@polymer/paper-input": "^3.2.1",
-    "lit": "^3.3.1"
+    "@fw-components/styles": "^2.3.4",
+    "@polymer/iron-icons": "3.0.1",
+    "@polymer/paper-button": "3.0.1",
+    "@polymer/paper-icon-button": "3.0.2",
+    "@polymer/paper-input": "3.2.1",
+    "lit": "3.3.3"
   }
 }

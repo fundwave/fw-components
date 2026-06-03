@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/localize",
-  "version": "2.3.4-linting.0",
+  "version": "2.3.4",
   "description": "Localizer built on top of lit-localize",
   "publishConfig": {
     "access": "public"
@@ -15,14 +15,18 @@
     "build": "tsc --build",
     "dev": "tsc --build -w ."
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fundwave/fw-components"
+  },
   "license": "ISC",
   "dependencies": {
     "@lit/localize": "0.12.2",
-    "@lit/localize-tools": "0.8.0"
+    "@lit/localize-tools": "0.8.2"
   },
   "devDependencies": {
-    "@types/fs-extra": "^11.0.4",
-    "@types/node": "^24.10.0",
-    "typescript": "^5.9.3"
+    "@types/fs-extra": "11.0.4",
+    "@types/node": "22.19.19",
+    "typescript": "5.9.3"
   }
 }

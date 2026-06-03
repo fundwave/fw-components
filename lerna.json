@@ -1,6 +1,8 @@
 {
-  "packages": ["packages/*"],
-  "version": "2.3.4-linting.1",
+  "packages": [
+    "packages/*"
+  ],
+  "version": "2.3.4",
   "command": {
     "version": {
       "message": "chore(release): publish %s \n [skip ci]"
