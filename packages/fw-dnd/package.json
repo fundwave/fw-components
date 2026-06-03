@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-dnd",
-  "version": "2.3.4-notion-update.0",
+  "version": "2.3.4-notion-update.1",
   "description": "Drag-n-drop list",
   "main": "fw-dnd.js",
   "publishConfig": {
@@ -13,7 +13,7 @@
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "@fw-components/styles": "2.3.4-notion-update.0",
+    "@fw-components/styles": "^2.3.4-notion-update.1",
     "@polymer/iron-icons": "3.0.1",
     "@polymer/paper-button": "3.0.1",
     "@polymer/paper-icon-button": "3.0.2",
