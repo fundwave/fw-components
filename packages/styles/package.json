@@ -17,9 +17,9 @@
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "lit": "^2.1.2"
+    "lit": "3.3.3"
   },
   "devDependencies": {
-    "typescript": "5.7.3"
+    "typescript": "5.9.3"
   }
 }
