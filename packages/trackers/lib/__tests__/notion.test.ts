@@ -1,6 +1,6 @@
-import { describe, it } from "node:test";
-import assert from "node:assert";
 import { fetchEventsFromNotion } from "../stores/notion.js";
+import assert from "node:assert";
+import { describe, it } from "node:test";
 
 const FUNDWAVE_TRACKERS_URL = "https://content.fundwave.cloud/trackers/page/8535d3f62f0c441dac84cc1c56605f94";
 const FUNDWAVE_TRACKERS_PAGE_ID = "8535d3f62f0c441dac84cc1c56605f94";

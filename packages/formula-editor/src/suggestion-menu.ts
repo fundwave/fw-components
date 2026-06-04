@@ -1,4 +1,4 @@
-import { html, LitElement, PropertyValues } from "lit";
+import { html, LitElement } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 
 import { SuggestionMenuStyles } from "./styles/suggestion-menu";
@@ -56,10 +56,10 @@ export class SuggestionMenu extends LitElement {
       <style>
         ${SuggestionMenuStyles}
       </style>
-      <ul class="fw-formula-suggestion-menu" @mousedown=${(e: MouseEvent) => e.preventDefault()}>
+      <ul class="fw-formula-suggestion-menu" @mousedown=${(_e: MouseEvent) => _e.preventDefault()}>
         ${this.recommendations.map(
           (recommendation, index) =>
-            html`<li class="${this._currentFocusedIndex === index ? "selected" : ""}" @click=${(e: MouseEvent) => this.handleRecommendationSelect(index)}>
+            html`<li class="${this._currentFocusedIndex === index ? "selected" : ""}" @click=${(_e: MouseEvent) => this.handleRecommendationSelect(index)}>
               ${this.recommendationLabels.get(recommendation) ?? recommendation}
             </li>`
         )}

@@ -3,18 +3,18 @@
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
+import { RuntimeConfiguration } from "@lit/localize";
+import { _installMsgImplementation } from "@lit/localize/init/install.js";
+import { Deferred } from "@lit/localize/internal/deferred.js";
+import { LOCALE_STATUS_EVENT } from "@lit/localize/internal/locale-status-event.js";
+import type { LocaleStatusEventDetail } from "@lit/localize/internal/locale-status-event.js";
 
-import { Deferred } from '@lit/localize/internal/deferred.js';
-import { LOCALE_STATUS_EVENT } from '@lit/localize/internal/locale-status-event.js';
+import type { LocaleModule, MsgFn } from "@lit/localize/internal/types.js";
 
-import type { LocaleStatusEventDetail } from '@lit/localize/internal/locale-status-event.js';
-import type { LocaleModule, MsgFn } from '@lit/localize/internal/types.js';
+export { updateWhenLocaleChanges } from "@lit/localize";
 
-import { RuntimeConfiguration } from '@lit/localize';
-export { updateWhenLocaleChanges } from '@lit/localize';
-import { _installMsgImplementation } from '@lit/localize/init/install.js';
-export { msg } from '@lit/localize/init/install.js';
-export { str } from '@lit/localize';
+export { msg } from "@lit/localize/init/install.js";
+export { str } from "@lit/localize";
 
 /**
  * Dispatch a "lit-localize-status" event to `window` with the given detail.
@@ -23,7 +23,7 @@ function dispatchStatusEvent(detail: LocaleStatusEventDetail) {
   window.dispatchEvent(new CustomEvent(LOCALE_STATUS_EVENT, { detail }));
 }
 
-let activeLocale = '';
+let activeLocale = "";
 let loadingLocale: string | undefined;
 let sourceLocale: string | undefined;
 let validLocales: Set<string> | undefined;
@@ -41,7 +41,7 @@ loading.resolve();
 let requestId = 0;
 
 // _LIT_LOCALIZE_MSG_ is used during extraction
-type MsgImpl = ((payload: string, dictionary: Dictionary) => string) & { _LIT_LOCALIZE_MSG_: never; };
+type MsgImpl = ((payload: string, dictionary: Dictionary) => string) & { _LIT_LOCALIZE_MSG_: never };
 export const msgImpl = ((payload: string, dictionary: Dictionary) => {
   if (dictionary?.[payload]) return dictionary?.[payload];
   else return payload;
@@ -62,8 +62,7 @@ export const configureLocalization: ((config: RuntimeConfiguration) => {
 }) & {
   _LIT_LOCALIZE_CONFIGURE_LOCALIZATION_?: never;
 } = (config: RuntimeConfiguration) => {
-  _installMsgImplementation(((payload: string) =>
-    msgImpl(payload, dictionary)) as MsgFn);
+  _installMsgImplementation(((payload: string) => msgImpl(payload, dictionary)) as MsgFn);
   activeLocale = sourceLocale = config.sourceLocale;
   validLocales = new Set(config.targetLocales);
   validLocales.add(config.sourceLocale);
@@ -101,10 +100,10 @@ const setLocale: ((newLocale: string) => Promise<void>) & {
     return loading.promise;
   }
   if (!validLocales || !loadLocale) {
-    throw new Error('Internal error');
+    throw new Error("Internal error");
   }
   if (!validLocales.has(newLocale)) {
-    throw new Error('Invalid locale code');
+    throw new Error("Invalid locale code");
   }
 
   requestId++;
@@ -115,14 +114,14 @@ const setLocale: ((newLocale: string) => Promise<void>) & {
     loading = new Deferred();
   }
 
-  dispatchStatusEvent({ status: 'loading', loadingLocale: newLocale });
+  dispatchStatusEvent({ status: "loading", loadingLocale: newLocale });
 
   const localePromise: Promise<Partial<Dictionary>> =
     newLocale === sourceLocale
       ? // We could switch to the source locale synchronously, but we prefer to
-      // queue it on a microtask so that switching locales is consistently
-      // asynchronous.
-      Promise.resolve({})
+        // queue it on a microtask so that switching locales is consistently
+        // asynchronous.
+        Promise.resolve({})
       : loadLocale(newLocale);
 
   localePromise.then(
@@ -131,7 +130,7 @@ const setLocale: ((newLocale: string) => Promise<void>) & {
         activeLocale = newLocale;
         loadingLocale = undefined;
         dictionary = localeDictionary as Dictionary;
-        dispatchStatusEvent({ status: 'ready', readyLocale: newLocale });
+        dispatchStatusEvent({ status: "ready", readyLocale: newLocale });
         loading.resolve();
       }
       // Else another locale was requested in the meantime. Don't resolve or
@@ -142,9 +141,9 @@ const setLocale: ((newLocale: string) => Promise<void>) & {
     (err) => {
       if (requestId === thisRequestId) {
         dispatchStatusEvent({
-          status: 'error',
+          status: "error",
           errorLocale: newLocale,
-          errorMessage: err.toString(),
+          errorMessage: err.toString()
         });
         loading.reject(err);
       }

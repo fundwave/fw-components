@@ -72,5 +72,17 @@ export default [
         }
       ]
     }
+  },
+  {
+    files: ["**/*.test.js", "**/*.test.ts", "**/*.spec.js", "**/*.spec.ts"],
+    languageOptions: {
+      globals: {
+        ...globals.mocha
+      }
+    },
+    rules: {
+      "@typescript-eslint/no-unused-expressions": "off",
+      "require-await": "off"
+    }
   }
 ];

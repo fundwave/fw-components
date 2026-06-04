@@ -6,5 +6,6 @@
     "allowJs": true,
     "moduleResolution": "node"
   },
-  "include": ["lib"]
+  "include": ["lib"],
+  "exclude": ["./*.js"]
 }

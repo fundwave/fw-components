@@ -1,5 +1,5 @@
 import { msg } from "@fw-components/localize";
-import { html, css, LitElement } from "lit";
+import { css, html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
 @customElement("fw-color-pick")
@@ -17,7 +17,7 @@ export class FwColorPick extends LitElement {
     const colorHEX = (e.target as HTMLInputElement)?.value;
     this.value = colorHEX;
 
-    if (colorHEX == "rgba(0, 0, 0, 0)") return;
+    if (colorHEX === "rgba(0, 0, 0, 0)") return;
 
     const colorRGB = hexToRgb(colorHEX);
     const colorHSL = rgbToHsl(colorRGB.red, colorRGB.green, colorRGB.blue);
@@ -25,7 +25,7 @@ export class FwColorPick extends LitElement {
     const event = new CustomEvent("value-changed", {
       detail: { hex: colorHEX, rgb: colorRGB, hsl: colorHSL },
       bubbles: true,
-      composed: true,
+      composed: true
     });
 
     this.dispatchEvent(event);
@@ -34,11 +34,11 @@ export class FwColorPick extends LitElement {
   getColorForLabel(value: string) {
     const { red, green, blue } = hexToRgb(value ?? "#ffffff");
     const intensity = red * 0.299 + green * 0.587 + blue * 0.114;
-  
-    return intensity > 186 ? '#000000' : '#FFFFFF';
+
+    return intensity > 186 ? "#000000" : "#FFFFFF";
   }
 
-  updated(changedProperties : Map<string, unknown>) {
+  updated(changedProperties: Map<string, unknown>) {
     if (changedProperties.has("value")) this.textColor = this.getColorForLabel(this.value);
   }
 
@@ -63,13 +63,7 @@ export class FwColorPick extends LitElement {
       </style>
       <button part="color-button" class="color-button" data-label-color="${this.value}">
         ${msg((this.label || "").trim())}
-        <input
-          part="color-hidden-input"
-          class="colorpicker-hidden"
-          type="color"
-          value=${this.value}
-          @change=${this.handleChange}
-        />
+        <input part="color-hidden-input" class="colorpicker-hidden" type="color" value=${this.value} @change=${this.handleChange} />
       </button>
     `;
   }
@@ -91,19 +85,9 @@ function rgbToHsl(r: number, g: number, b: number) {
   b /= 255;
   const l = Math.max(r, g, b);
   const s = l - Math.min(r, g, b);
-  const h = s
-    ? l === r
-      ? (g - b) / s
-      : l === g
-      ? 2 + (b - r) / s
-      : 4 + (r - g) / s
-    : 0;
-  const hslArr = [
-    60 * h < 0 ? 60 * h + 360 : 60 * h,
-    100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0),
-    (100 * (2 * l - s)) / 2,
-  ];
+  const h = s ? (l === r ? (g - b) / s : l === g ? 2 + (b - r) / s : 4 + (r - g) / s) : 0;
+  const hslArr = [60 * h < 0 ? 60 * h + 360 : 60 * h, 100 * (s ? (l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s))) : 0), (100 * (2 * l - s)) / 2];
 
-  const hslObj = {h : hslArr[0], s : hslArr[1], l : hslArr[2]};
+  const hslObj = { h: hslArr[0], s: hslArr[1], l: hslArr[2] };
   return hslObj;
 }

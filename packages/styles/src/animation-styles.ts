@@ -1,12 +1,10 @@
-import { html } from 'lit';
+import { html } from "lit";
 
 export const ScaleUpHorizontalCenter = html`
   <style>
     .scale-up-hor-center {
-      -webkit-animation: scale-up-hor-center 0.4s
-        cubic-bezier(0.39, 0.575, 0.565, 1) both;
-      animation: scale-up-hor-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
-        both;
+      -webkit-animation: scale-up-hor-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      animation: scale-up-hor-center 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
     }
 
     @-webkit-keyframes scale-up-hor-center {
@@ -65,10 +63,8 @@ export const ScaleUpVerticalBottom = html`
     }
 
     .scale-up-ver-bottom {
-      -webkit-animation: scale-up-ver-bottom 0.4s
-        cubic-bezier(0.39, 0.575, 0.565, 1) both;
-      animation: scale-up-ver-bottom 0.4s cubic-bezier(0.39, 0.575, 0.565, 1)
-        both;
+      -webkit-animation: scale-up-ver-bottom 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+      animation: scale-up-ver-bottom 0.4s cubic-bezier(0.39, 0.575, 0.565, 1) both;
     }
   </style>
 `;

@@ -7,5 +7,5 @@ export const operatorPrecedence: { [key: string]: number } = {
   "/": 2,
   "*": 2,
   "+": 1,
-  "-": 1,
+  "-": 1
 };

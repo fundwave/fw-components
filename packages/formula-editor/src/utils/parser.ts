@@ -119,7 +119,7 @@ export class Parser {
        * Error checks
        * skip error check if there is one already
        */
-      if (expectation != Expectation.UNDEFINED) {
+      if (expectation !== Expectation.UNDEFINED) {
         /**
          * Unknown symbol/variable/word
          */
@@ -140,12 +140,12 @@ export class Parser {
           expectation === Expectation.VARIABLE &&
           !isNumber &&
           !isSpace &&
-          token != "(" &&
+          token !== "(" &&
           !(unaryOperators.includes(token) && (!parsedString.trim() || previousToken === "(" || this.allowedOperators.has(previousToken)))
         ) {
           parseOutput.errorString = `Please use ${this.variableType} ${this.variableType && this.allowedNumbers ? " or " : ""} ${this.allowedNumbers ? "numbers" : ""} after '${previousToken}'.`;
           expectation = Expectation.UNDEFINED;
-        } else if (expectation === Expectation.OPERATOR && !isOperator && !isSpace && token != ")") {
+        } else if (expectation === Expectation.OPERATOR && !isOperator && !isSpace && token !== ")") {
           /**
            * Multiple number/variable together without operator
            */
@@ -169,7 +169,7 @@ export class Parser {
       /**
        * Setting the expectation for the next token, if no error is there till now
        */
-      if (expectation != Expectation.UNDEFINED) {
+      if (expectation !== Expectation.UNDEFINED) {
         if (token === "(" || isOperator) {
           expectation = Expectation.VARIABLE;
         } else if (token === ")" || isNumber) {
@@ -242,7 +242,7 @@ export class Parser {
       if (token === "(") {
         operatorStack.push("(");
       } else if (token === ")") {
-        while (!operatorStack.isEmpty() && operatorStack.top() != "(") {
+        while (!operatorStack.isEmpty() && operatorStack.top() !== "(") {
           outputQueue.enqueue(operatorStack.pop()!);
         }
 
