@@ -47,7 +47,7 @@
       "npm run format:fix",
       "npm run tsc:check -- -p ./tsconfig.json"
     ],
-    "!(*.jsx|*.tsx|*.js|*.ts)": [
+    "!(*.jsx|*.tsx|*.js|*.ts|.github/**)": [
       "npm run format:fix"
     ]
   }
