@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-theme-builder",
-  "version": "2.3.5-linting.0",
+  "version": "2.4.0",
   "description": "Theme builder web component",
   "publishConfig": {
     "access": "public"
@@ -18,8 +18,8 @@
   "author": "The Fundwave Authors",
   "license": "ISC",
   "dependencies": {
-    "@fw-components/localize": "^2.3.5-linting.0",
-    "@fw-components/styles": "^2.3.5-linting.0",
+    "@fw-components/localize": "^2.4.0",
+    "@fw-components/styles": "^2.4.0",
     "@polymer/paper-dropdown-menu": "3.2.0",
     "@polymer/paper-item": "3.0.1",
     "@polymer/paper-listbox": "3.0.1",

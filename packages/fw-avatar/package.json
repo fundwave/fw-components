@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-avatar",
-  "version": "2.3.5-linting.0",
+  "version": "2.4.0",
   "description": "Avatar Web Component",
   "main": "src/fw-avatar.js",
   "type": "module",
@@ -15,7 +15,7 @@
     "test:watch": "web-test-runner  --watch"
   },
   "dependencies": {
-    "@fw-components/styles": "^2.3.5-linting.0",
+    "@fw-components/styles": "^2.4.0",
     "@material/mwc-icon": "0.27.0",
     "@material/mwc-list": "0.27.0",
     "@material/mwc-menu": "0.27.0",

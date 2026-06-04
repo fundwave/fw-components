@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/styles",
-  "version": "2.3.5-linting.0",
+  "version": "2.4.0",
   "description": "Style library for web components",
   "publishConfig": {
     "access": "public"
