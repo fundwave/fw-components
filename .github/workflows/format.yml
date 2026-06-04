@@ -39,6 +39,7 @@ jobs:
         run: |
           TARGET_BRANCH=${{ github.event.pull_request.base.ref }}
           npm ci --ignore-scripts=true
+          npm run build
           npx lint-staged --diff $(git merge-base origin/"$TARGET_BRANCH" HEAD) --allow-empty
 
       - name: Setup git
