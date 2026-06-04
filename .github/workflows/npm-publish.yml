@@ -49,10 +49,10 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Run tests
         run: npm run test
 
@@ -73,6 +73,9 @@ jobs:
           echo "Published tag $TAG"
           echo "TAG=$TAG" >> $GITHUB_ENV
 
+      - name: Push changes
+        run: git push --follow-tags --atomic --no-verify
+
       - name: Release
         if: ${{ github.ref_name == 'main'}}
         env:
@@ -81,6 +84,3 @@ jobs:
           if [ "${BRANCH}" != "main" ]; then PRERELEASE="-p"; fi
           echo "Releasing version ${TAG} on branch ${BRANCH}"
           gh release create ${TAG} --target ${BRANCH} --generate-notes ${PRERELEASE}
-
-      - name: Push changes
-        run: git push --follow-tags --atomic --no-verify

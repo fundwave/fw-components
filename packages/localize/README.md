@@ -11,6 +11,7 @@ The package provides two main components:
 2. **Runtime Library**: Functions for loading translations and switching between locales in your application.
 
 The localization workflow consists of:
+
 - Marking strings for translation in your code using `msg()`
 - Extracting these messages using the CLI tool
 - Translating the extracted messages
@@ -19,7 +20,7 @@ The localization workflow consists of:
 ```json
 // Example locales/es.json
 {
-  "Hello": "Hola",
+  "Hello": "Hola"
 }
 ```
 
@@ -53,35 +54,34 @@ Configuration is specified in a `localize.json` file:
 #### Runtime Usage
 
 ```js
-import { configureLocalization, msg } from '@fw-components/localize';
+import { configureLocalization, msg } from "@fw-components/localize";
 
 // Configure localization
 const { getLocale, setLocale } = configureLocalization({
-  sourceLocale: 'en',
-  targetLocales: ['es', 'fr', 'de'],
+  sourceLocale: "en",
+  targetLocales: ["es", "fr", "de"],
   loadLocale: (locale) => import(`./locales/${locale}.js`)
 });
 
 // Use in your components
 function renderGreeting(name) {
-  return html`
-    <h1>${msg("Hello")}</h1>
-  `;
+  return html` <h1>${msg("Hello")}</h1> `;
 }
 
 // Switch locale
-await setLocale('es');
+await setLocale("es");
 ```
 
 ### Note:
+
 Use the `msg()` function to mark text for translation:
 
 ```js
 // For static strings
-msg("Hello world")
+msg("Hello world");
 
 // For strings with expressions
-msg(`Hello ${username}`)
+msg(`Hello ${username}`);
 ```
 
 For more advanced usage and options, refer to the [lit-localize documentation](https://www.npmjs.com/package/@lit/localize).

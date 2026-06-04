@@ -1,8 +1,11 @@
-import { ExtendedRecordMap, Block as BlockValue, Collection as CollectionValue } from "notion-types";
-import { getSelectorForShadowRootJsPath } from "../utils";
-import { IEvent } from "../interfaces/index.js";
-import { parsePageId } from "notion-utils";
 import { TStoreContext } from "./index.js";
+
+import { IEvent } from "../interfaces/index.js";
+
+import { getSelectorForShadowRootJsPath } from "../utils";
+import { parsePageId } from "notion-utils";
+
+import { Block as BlockValue, Collection as CollectionValue, ExtendedRecordMap } from "notion-types";
 
 type Block = {
   value: BlockValue;
@@ -10,7 +13,7 @@ type Block = {
 
 type Collection = {
   value: CollectionValue;
-}
+};
 
 export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
   if (!context.pageId) {
@@ -26,7 +29,7 @@ export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
 
   const pageId = parsePageId(context.pageId);
   if (!pageId) return;
-  
+
   const core = notionPage.block[pageId]?.value as Block;
 
   const collectionId = core?.value?.type === "collection_view_page" ? core.value?.collection_id : null;
@@ -38,7 +41,7 @@ export async function fetchEventsFromNotion(context: TStoreContext["notion"]) {
 
   const parsedEvents: IEvent[] = [];
 
-  Object.values(notionPage.block).forEach(block => {
+  Object.values(notionPage.block).forEach((block) => {
     const blockValue = block.value as Block;
 
     if (block.role === "none") return;

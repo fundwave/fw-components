@@ -3,21 +3,19 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: BSD-3-Clause
  */
-
-import "source-map-support/register.js";
-
-import { fileURLToPath } from "url";
 import * as fs from "fs/promises";
 import * as path from "path";
-import minimist from "minimist";
-
+import { readConfigFileAndWriteSchema } from "@lit/localize-tools/lib/config.js";
 import { KnownError, unreachable } from "@lit/localize-tools/lib/error.js";
 import { LitLocalizer } from "@lit/localize-tools/lib/index.js";
-import { readConfigFileAndWriteSchema } from "@lit/localize-tools/lib/config.js";
 import { RuntimeLitLocalizer as BaseLitLocalizer } from "@lit/localize-tools/lib/modes/runtime.js";
+import minimist from "minimist";
+import "source-map-support/register.js";
+import { fileURLToPath } from "url";
+
 import type { Config } from "@lit/localize-tools/lib/types/config.js";
-import type { RuntimeOutputConfig } from "@lit/localize-tools/lib/types/modes.js";
 import { Locale } from "@lit/localize-tools/lib/types/locale";
+import type { RuntimeOutputConfig } from "@lit/localize-tools/lib/types/modes.js";
 
 const usage = `
 Usage: fw-localize [--config=lit-localize.json] COMMAND
@@ -34,8 +32,7 @@ Options:
 
 const commands = ["extract"] as const;
 type Command = (typeof commands)[number];
-const isCommand = (str: string): str is Command =>
-  commands.includes(str as Command);
+const isCommand = (str: string): str is Command => commands.includes(str as Command);
 
 interface CliOptions {
   config: Config;
@@ -75,14 +72,8 @@ export async function runAndLog(argv: string[]): Promise<number> {
 }
 
 async function version() {
-  const packageJsonPath = path.resolve(
-    path.dirname(fileURLToPath(import.meta.url)),
-    "..",
-    "package.json"
-  );
-  const packageJson = JSON.parse(
-    await fs.readFile(packageJsonPath, "utf8")
-  ) as { version: number; };
+  const packageJsonPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "package.json");
+  const packageJson = JSON.parse(await fs.readFile(packageJsonPath, "utf8")) as { version: number };
   return packageJson.version;
 }
 
@@ -101,9 +92,7 @@ async function runAndThrow({ config, command }: CliOptions) {
     await localizer.writeInterchangeFiles();
   } else {
     // Should already have been validated.
-    throw new KnownError(
-      `Internal error: unknown command ${unreachable(command)}`
-    );
+    throw new KnownError(`Internal error: unknown command ${unreachable(command)}`);
   }
 }
 
@@ -112,9 +101,9 @@ class CustomRuntimeLitLocalizer extends BaseLitLocalizer {
     const { messages } = this.extractSourceMessages();
 
     const strings = messages
-      .map(message => {
+      .map((message) => {
         // Attempt to get the first string content
-        const stringContent = message.contents.find(content => typeof content === 'string');
+        const stringContent = message.contents.find((content) => typeof content === "string");
         return stringContent as string | undefined;
       })
       .filter((str): str is string => str !== undefined);
@@ -131,31 +120,27 @@ class CustomRuntimeLitLocalizer extends BaseLitLocalizer {
       let translations: Record<string, string> = {};
 
       try {
-        const existingContent = await fs.readFile(outputFile, 'utf8');
+        const existingContent = await fs.readFile(outputFile, "utf8");
         try {
           translations = JSON.parse(existingContent);
-        } catch (parseError) {
+        } catch (_parseError) {
           throw new Error(`Existing locale file ${outputFile} contains invalid JSON`);
         }
       } catch (readError) {
-        if ((readError as NodeJS.ErrnoException).code !== 'ENOENT') {
+        if ((readError as NodeJS.ErrnoException).code !== "ENOENT") {
           throw readError;
         }
       }
 
-      strings.forEach(str => {
+      strings.forEach((str) => {
         if (!(str in translations)) {
-          translations[str] = '';
+          translations[str] = "";
         }
       });
 
-      if (locale === "source") strings.push(...Object.keys(translations).filter(stringKey => !strings.includes(stringKey)));
+      if (locale === "source") strings.push(...Object.keys(translations).filter((stringKey) => !strings.includes(stringKey)));
 
-      await fs.writeFile(
-        outputFile, 
-        JSON.stringify(translations, null, 2), 
-        'utf8'
-      );
+      await fs.writeFile(outputFile, JSON.stringify(translations, null, 2), "utf8");
     }
   }
 }
@@ -163,36 +148,23 @@ class CustomRuntimeLitLocalizer extends BaseLitLocalizer {
 function makeLocalizer(config: Config): LitLocalizer {
   switch (config.output.mode) {
     case "runtime":
-      return new CustomRuntimeLitLocalizer(
-        config as Config & { output: RuntimeOutputConfig; }
-      );
+      return new CustomRuntimeLitLocalizer(config as Config & { output: RuntimeOutputConfig });
     default:
-      throw new KnownError(
-        `Internal error: unknown mode ${(unreachable(config.output as never) as Config["output"]).mode
-        }`
-      );
+      throw new KnownError(`Internal error: unknown mode ${(unreachable(config.output as never) as Config["output"]).mode}`);
   }
 }
 
 function cliOptsFromArgs(argv: string[]): CliOptions {
   const args = minimist(argv.slice(2));
   if (args._.length === 0) {
-    throw new KnownError(
-      `Missing command argument. ` +
-      `Valid commands: ${[...commands].join(", ")}`
-    );
+    throw new KnownError(`Missing command argument. ` + `Valid commands: ${[...commands].join(", ")}`);
   }
   const command = args._[0];
   if (!isCommand(command)) {
-    throw new KnownError(
-      `Invalid command ${command}}. ` +
-      `Valid commands: ${[...commands].join(", ")}`
-    );
+    throw new KnownError(`Invalid command ${command}}. ` + `Valid commands: ${[...commands].join(", ")}`);
   }
   if (args._.length > 1) {
-    throw new KnownError(
-      `Unknown argument(s): ${args._.slice(1).join(" ")}` + usage
-    );
+    throw new KnownError(`Unknown argument(s): ${args._.slice(1).join(" ")}${usage}`);
   }
   if ("help" in args) {
     throw new KnownError(usage);

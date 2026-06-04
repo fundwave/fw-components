@@ -3,14 +3,52 @@
   "workspaces": [
     "packages/*"
   ],
+  "type": "module",
   "scripts": {
+    "format": "prettier --check",
+    "format:fix": "prettier --write",
+    "lint": "eslint --cache",
+    "lint:fix": "eslint --cache --fix",
+    "lint:branch": "npx lint-staged --diff origin/main --allow-empty",
+    "tsc:check": "tscw --noEmit",
     "clean": "lerna clean --yes && lerna run clean",
     "preinstall": "npm run clean",
     "build": "lerna run build",
     "test": "lerna run test",
-    "publish": "lerna publish"
+    "publish": "lerna publish",
+    "prepare": "npm run setup-git-hooks",
+    "setup-git-hooks": "git config core.hooksPath .hooks"
   },
   "devDependencies": {
-    "lerna": "9.0.7"
+    "@trivago/prettier-plugin-sort-imports": "6.0.0",
+    "@typescript-eslint/eslint-plugin": "8.46.3",
+    "@typescript-eslint/parser": "8.46.3",
+    "eslint": "9.39.1",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-jsdoc": "61.1.12",
+    "eslint-plugin-react": "7.37.5",
+    "eslint-plugin-react-hooks": "7.0.1",
+    "eslint-plugin-react-refresh": "0.4.24",
+    "globals": "16.5.0",
+    "lerna": "9.0.7",
+    "lint-staged": "16.2.6",
+    "prettier": "3.6.2",
+    "tscw-config": "1.1.2",
+    "typescript": "5.9.3",
+    "typescript-eslint": "8.46.3"
+  },
+  "lint-staged": {
+    "*.{jsx,js}": [
+      "npm run lint:fix",
+      "npm run format:fix"
+    ],
+    "*.{tsx,ts}": [
+      "npm run lint:fix",
+      "npm run format:fix",
+      "npm run tsc:check -- -p ./tsconfig.json"
+    ],
+    "!(*.jsx|*.tsx|*.js|*.ts|.github/**)": [
+      "npm run format:fix"
+    ]
   }
 }

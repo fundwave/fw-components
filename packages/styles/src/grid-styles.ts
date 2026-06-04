@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html } from "lit";
 
 export const GridStyles = html`
   <style>
@@ -60,11 +60,13 @@ export const GridStyles = html`
       border-bottom: 1px solid var(--secondary-color-l3);
     }
 
-    table.plain:not(.card-view) tr td:first-child ,table.plain:not(.card-view) tr th:first-child{
-      padding-left : 0;
+    table.plain:not(.card-view) tr td:first-child,
+    table.plain:not(.card-view) tr th:first-child {
+      padding-left: 0;
     }
-    table.plain:not(.card-view) tr td:last-child ,table.plain:not(.card-view) tr th:last-child{
-      padding-right : 0;
+    table.plain:not(.card-view) tr td:last-child,
+    table.plain:not(.card-view) tr th:last-child {
+      padding-right: 0;
     }
 
     tr.border-top,
@@ -126,13 +128,13 @@ export const GridStyles = html`
     tr paper-input {
       --paper-input-container-input: {
         font-size: var(--body-font-size) !important;
-      }
+      };
     }
     tr.child paper-input {
       --paper-input-container-input: {
         font-size: var(--tertiary-font-size) !important;
         color: var(--secondary-color-l1) !important;
-      }
+      };
     }
     tr.header-row paper-input {
       --paper-input-container-shared-input-style_-_font-weight: bold;

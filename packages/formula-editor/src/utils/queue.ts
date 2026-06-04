@@ -18,7 +18,7 @@ export class Queue<Type> {
     return element;
   }
 
-  peek(): Type {
+  peek(): Type | undefined {
     if (this.isEmpty()) return undefined;
 
     return this._elements[this._head];
@@ -27,5 +27,4 @@ export class Queue<Type> {
   isEmpty(): boolean {
     return this._head === this._tail;
   }
-
 }

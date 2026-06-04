@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/formula-editor",
-  "version": "2.3.4",
+  "version": "2.3.5-linting.0",
   "description": "A WYSIWYG type formula editor",
   "main": "dist/formula-editor/src/formula-editor.js",
   "exports": {
@@ -13,13 +13,12 @@
     "access": "public"
   },
   "scripts": {
-    "start": "es-dev-server --app-index ../../index.html --node-resolve --watch --open",
     "build": "tsc --composite false",
     "dev": "tsc -w --composite false",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@fw-components/styles": "^2.3.4",
+    "@fw-components/styles": "^2.3.5-linting.0",
     "big.js": "6.2.2",
     "lit": "3.3.3",
     "match-sorter": "8.3.0"
