@@ -10,6 +10,9 @@ import tseslint from "typescript-eslint";
 
 export default [
   {
+    ignores: [".github/**"]
+  },
+  {
     languageOptions: {
       ecmaVersion: "latest",
       sourceType: "module",
