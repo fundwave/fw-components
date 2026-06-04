@@ -9,7 +9,6 @@
     "^react$|react-*",
     "constants(.*)$",
     "contexts(.*)$",
-    "api-client|openapi-client|oidc-client",
     "^(./|~/|@/)(?!utils/|images/|styles/|types/)",
     "<THIRD_PARTY_MODULES>",
     "utils(.*)$",
