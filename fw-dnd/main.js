@@ -25673,16 +25673,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   dndCrudList: () => (/* binding */ dndCrudList)
 /* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _fw_dnd_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fw-dnd.js */ "../../packages/fw-dnd/fw-dnd.js");
 /* harmony import */ var _polymer_iron_icons__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @polymer/iron-icons */ "../../node_modules/@polymer/iron-icons/iron-icons.js");
 /* harmony import */ var _polymer_paper_button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @polymer/paper-button */ "../../node_modules/@polymer/paper-button/paper-button.js");
-/* harmony import */ var _polymer_paper_input_paper_input_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @polymer/paper-input/paper-input.js */ "../../node_modules/@polymer/paper-input/paper-input.js");
-/* harmony import */ var _polymer_paper_input_paper_textarea_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @polymer/paper-input/paper-textarea.js */ "../../node_modules/@polymer/paper-input/paper-textarea.js");
-/* harmony import */ var _polymer_paper_icon_button__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @polymer/paper-icon-button */ "../../node_modules/@polymer/paper-icon-button/paper-icon-button.js");
-/* harmony import */ var _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fw-components/styles/input-styles.js */ "../../packages/styles/input-styles.js");
-/* harmony import */ var _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @fw-components/styles/button-styles.js */ "../../packages/styles/button-styles.js");
-/* harmony import */ var _styles_index_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./styles/index.js */ "../../packages/fw-dnd/styles/index.js");
-/* harmony import */ var _fw_dnd_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./fw-dnd.js */ "../../packages/fw-dnd/fw-dnd.js");
+/* harmony import */ var _polymer_paper_icon_button__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @polymer/paper-icon-button */ "../../node_modules/@polymer/paper-icon-button/paper-icon-button.js");
+/* harmony import */ var _polymer_paper_input_paper_input_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @polymer/paper-input/paper-input.js */ "../../node_modules/@polymer/paper-input/paper-input.js");
+/* harmony import */ var _polymer_paper_input_paper_textarea_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @polymer/paper-input/paper-textarea.js */ "../../node_modules/@polymer/paper-input/paper-textarea.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var _styles_index_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./styles/index.js */ "../../packages/fw-dnd/styles/index.js");
+/* harmony import */ var _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @fw-components/styles/button-styles.js */ "../../packages/styles/button-styles.js");
+/* harmony import */ var _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @fw-components/styles/input-styles.js */ "../../packages/styles/input-styles.js");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10, _templateObject11, _templateObject12, _templateObject13, _templateObject14, _templateObject15;
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -25737,12 +25737,12 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
     key: "render",
     value: function render() {
       var _this2 = this;
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      ", " ", " ", "\n      ", "\n\n      <fw-dnd\n        .list=", "\n        .headerName=", "\n        @item-reordered=", "\n        .dragItemRenderer=", "\n      ></fw-dnd>\n    "])), _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_6__.BoxInputStyles, _styles_index_js__WEBPACK_IMPORTED_MODULE_8__.CustomDndStyles, this.headerRow(), this.editable && this._addItemFieldVisible ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <div class=\"item-row item-bottom-border\">\n            <iron-icon style=\"visibility:hidden\" id=\"drag-icon\" icon=\"reorder\"></iron-icon>\n            <div class=\"item-grid-container\">\n              <paper-input\n                id=\"add-primary-input\"\n                class=\"box\"\n                .noLabelFloat=", "\n                .value=", "\n                @keydown=", "\n                @value-changed=", "\n              ></paper-input>\n              ", "\n\n              <paper-icon-button\n                icon=\"check\"\n                @tap=", "\n              ></paper-icon-button>\n              <paper-icon-button\n                icon=\"cancel\"\n                @tap=", "\n              ></paper-icon-button>\n            </div>\n          </div>"])), true, this._newItemPrimaryAttribute, function (e) {
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n      ", " ", " ", "\n      ", "\n\n      <fw-dnd\n        .list=", "\n        .headerName=", "\n        @item-reordered=", "\n        .dragItemRenderer=", "\n      ></fw-dnd>\n    "])), _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_9__.BoxInputStyles, _styles_index_js__WEBPACK_IMPORTED_MODULE_7__.CustomDndStyles, this.headerRow(), this.editable && this._addItemFieldVisible ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral([" <div class=\"item-row item-bottom-border\">\n            <iron-icon style=\"visibility:hidden\" id=\"drag-icon\" icon=\"reorder\"></iron-icon>\n            <div class=\"item-grid-container\">\n              <paper-input\n                id=\"add-primary-input\"\n                class=\"box\"\n                .noLabelFloat=", "\n                .value=", "\n                @keydown=", "\n                @value-changed=", "\n              ></paper-input>\n              ", "\n\n              <paper-icon-button\n                icon=\"check\"\n                @tap=", "\n              ></paper-icon-button>\n              <paper-icon-button\n                icon=\"cancel\"\n                @tap=", "\n              ></paper-icon-button>\n            </div>\n          </div>"])), true, this._newItemPrimaryAttribute, function (e) {
         if (e.keyCode === 13) _this2.addNewItem();
       }, function (e) {
         _this2._newItemPrimaryAttribute = e.target.value;
         _this2._removeErrorMsg(e.target);
-      }, this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["<paper-textarea\n                    class=\"box grid-row-2-item\"\n                    .noLabelFloat=", "\n                    .value=", "\n                    @value-changed=", "\n                  ></paper-textarea>"])), true, this._newItemSecondaryAttribute, function (e) {
+      }, this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["<paper-textarea\n                    class=\"box grid-row-2-item\"\n                    .noLabelFloat=", "\n                    .value=", "\n                    @value-changed=", "\n                  ></paper-textarea>"])), true, this._newItemSecondaryAttribute, function (e) {
         _this2._newItemSecondaryAttribute = e.target.value;
       }) : null, function () {
         _this2.addNewItem();
@@ -25758,7 +25758,7 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
     key: "headerRow",
     value: function headerRow() {
       var _this3 = this;
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      ", " ", "\n      <div style=", " class=\"header-row\">\n        <span>", "</span>\n        <span class=\"grid-row-2-item\">", "</span>\n        ", "\n      </div>\n    "])), _styles_index_js__WEBPACK_IMPORTED_MODULE_8__.HeaderRowStyle, this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["", " ", ""])), _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_7__.PrimaryButtonStyles, _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_7__.ButtonSpinnerStyles) : null, this.editable && this.positionAttribute ? "" : "padding-left:10px;width:99%;gap:5px", this.primaryHeader || "", this.secondaryHeader || "", this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["<paper-button\n              id=\"add-new-item-btn\"\n              class=\"primary-colored\"\n              noink\n              raised\n              class=\"grid-row-2-item\"\n              @click=", "\n            >\n              <iron-icon icon=\"add\" class=\"button-prefix-icon\"></iron-icon> Add\n            </paper-button>"])), function () {
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      ", " ", "\n      <div style=", " class=\"header-row\">\n        <span>", "</span>\n        <span class=\"grid-row-2-item\">", "</span>\n        ", "\n      </div>\n    "])), _styles_index_js__WEBPACK_IMPORTED_MODULE_7__.HeaderRowStyle, this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["", " ", ""])), _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_8__.PrimaryButtonStyles, _fw_components_styles_button_styles_js__WEBPACK_IMPORTED_MODULE_8__.ButtonSpinnerStyles) : null, this.editable && this.positionAttribute ? "" : "padding-left:10px;width:99%;gap:5px", this.primaryHeader || "", this.secondaryHeader || "", this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["<paper-button\n              id=\"add-new-item-btn\"\n              class=\"primary-colored\"\n              noink\n              raised\n              class=\"grid-row-2-item\"\n              @click=", "\n            >\n              <iron-icon icon=\"add\" class=\"button-prefix-icon\"></iron-icon> Add\n            </paper-button>"])), function () {
         _this3._addItemFieldVisible = true;
       }) : null);
     }
@@ -25767,14 +25767,14 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
     value: function renderListItem(item) {
       var _this$_editItemFieldV,
         _this4 = this;
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral([" <div class=\"item-row ", "\">\n      ", "\n      <div\n        style=", "\n        class=\"item-grid-container ", "", "\"\n        draggable=\"true\"\n        @dragstart=", "\n      >\n        ", "\n      </div>\n    </div>"])), this.editable && this.positionAttribute ? "item-bottom-border" : null, this.editable && this.positionAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["<iron-icon id=\"drag-icon\" icon=\"reorder\"></iron-icon>"]))) : null, this.editable ? "" : "gap:15px;padding-left:10px;", this.secondaryAttribute ? null : "grid-template-3-column", !this.editable || !this.positionAttribute ? "item-bottom-border" : null, function (e) {
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral([" <div class=\"item-row ", "\">\n      ", "\n      <div\n        style=", "\n        class=\"item-grid-container ", "", "\"\n        draggable=\"true\"\n        @dragstart=", "\n      >\n        ", "\n      </div>\n    </div>"])), this.editable && this.positionAttribute ? "item-bottom-border" : null, this.editable && this.positionAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["<iron-icon id=\"drag-icon\" icon=\"reorder\"></iron-icon>"]))) : null, this.editable ? "" : "gap:15px;padding-left:10px;", this.secondaryAttribute ? null : "grid-template-3-column", !this.editable || !this.positionAttribute ? "item-bottom-border" : null, function (e) {
         e.preventDefault();
         e.stopPropagation();
-      }, (_this$_editItemFieldV = this._editItemFieldVisible) !== null && _this$_editItemFieldV !== void 0 && _this$_editItemFieldV.includes(item[this.idAttribute]) ? this._renderItemEditFields(item) : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral([" <span>", "</span>\n              ", "\n              ", ""])), item[this.primaryAttribute], this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral([" <span class=\"grid-row-2-item\">", "</span>"])), item[this.secondaryAttribute]) : null, this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["\n                    <paper-icon-button\n                      class=\"edit-btn\"\n                      icon=\"create\"\n                      @tap=", "\n                    ></paper-icon-button>\n                    ", "\n                  "])), function () {
+      }, (_this$_editItemFieldV = this._editItemFieldVisible) !== null && _this$_editItemFieldV !== void 0 && _this$_editItemFieldV.includes(item[this.idAttribute]) ? this._renderItemEditFields(item) : (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral([" <span>", "</span>\n              ", "\n              ", ""])), item[this.primaryAttribute], this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral([" <span class=\"grid-row-2-item\">", "</span>"])), item[this.secondaryAttribute]) : null, this.editable ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject11 || (_templateObject11 = _taggedTemplateLiteral(["\n                    <paper-icon-button\n                      class=\"edit-btn\"\n                      icon=\"create\"\n                      @tap=", "\n                    ></paper-icon-button>\n                    ", "\n                  "])), function () {
         _this4._editItemFieldVisible = [].concat(_toConsumableArray(_this4._editItemFieldVisible), [item[_this4.idAttribute]]);
-      }, item[this.restrictDeleteAttribute] ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["<paper-icon-button\n                          icon=\"info\"\n                          noink\n                          class=\"info-btn ", "\"\n                          @tap=", "\n                          title=", "\n                        ></paper-icon-button>"])), this.secondaryAttribute ? "" : "grid-reposition-btn", function (e) {
+      }, item[this.restrictDeleteAttribute] ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject12 || (_templateObject12 = _taggedTemplateLiteral(["<paper-icon-button\n                          icon=\"info\"\n                          noink\n                          class=\"info-btn ", "\"\n                          @tap=", "\n                          title=", "\n                        ></paper-icon-button>"])), this.secondaryAttribute ? "" : "grid-reposition-btn", function (e) {
         return e.target.classList.toggle("info-btn-text");
-      }, this.getInfoMessage ? this.getInfoMessage(item) : null) : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["<paper-icon-button\n                          icon=\"delete\"\n                          class=\"delete-btn ", "\"\n                          @tap=", "\n                        ></paper-icon-button>"])), this.secondaryAttribute ? "" : "grid-reposition-btn", function () {
+      }, this.getInfoMessage ? this.getInfoMessage(item) : null) : (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject13 || (_templateObject13 = _taggedTemplateLiteral(["<paper-icon-button\n                          icon=\"delete\"\n                          class=\"delete-btn ", "\"\n                          @tap=", "\n                        ></paper-icon-button>"])), this.secondaryAttribute ? "" : "grid-reposition-btn", function () {
         _this4.deleteItem(item);
       })) : null));
     }
@@ -25782,12 +25782,12 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
     key: "_renderItemEditFields",
     value: function _renderItemEditFields(item) {
       var _this5 = this;
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["\n      <paper-input\n        class=\"box\"\n        .noLabelFloat=", "\n        id=\"edit-input-", "\"\n        .value=", "\n        @keydown=", "\n        @value-changed=", "\n      ></paper-input>\n\n      ", "\n\n      <paper-icon-button\n        icon=\"check\"\n        @tap=", "\n      ></paper-icon-button>\n\n      <paper-icon-button\n        icon=\"cancel\"\n        class=\"", "\"\n        @tap=", "\n      ></paper-icon-button>\n    "])), true, item[this.idAttribute], item[this.primaryAttribute], function (e) {
+      return (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject14 || (_templateObject14 = _taggedTemplateLiteral(["\n      <paper-input\n        class=\"box\"\n        .noLabelFloat=", "\n        id=\"edit-input-", "\"\n        .value=", "\n        @keydown=", "\n        @value-changed=", "\n      ></paper-input>\n\n      ", "\n\n      <paper-icon-button\n        icon=\"check\"\n        @tap=", "\n      ></paper-icon-button>\n\n      <paper-icon-button\n        icon=\"cancel\"\n        class=\"", "\"\n        @tap=", "\n      ></paper-icon-button>\n    "])), true, item[this.idAttribute], item[this.primaryAttribute], function (e) {
         if (e.keyCode === 13) _this5.updateItem(item[_this5.idAttribute]);
       }, function (e) {
         _this5._updateActiveEdits(item[_this5.idAttribute], _this5.primaryAttribute, e.target.value);
         _this5._removeErrorMsg(e.currentTarget);
-      }, this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject15 || (_templateObject15 = _taggedTemplateLiteral([" <paper-textarea\n            .noLabelFloat=", "\n            class=\"box grid-row-2-item\"\n            .value=", "\n            @value-changed=", "\n          ></paper-textarea>"])), true, item[this.secondaryAttribute], function (e) {
+      }, this.secondaryAttribute ? (0,lit__WEBPACK_IMPORTED_MODULE_6__.html)(_templateObject15 || (_templateObject15 = _taggedTemplateLiteral([" <paper-textarea\n            .noLabelFloat=", "\n            class=\"box grid-row-2-item\"\n            .value=", "\n            @value-changed=", "\n          ></paper-textarea>"])), true, item[this.secondaryAttribute], function (e) {
         _this5._updateActiveEdits(item[_this5.idAttribute], _this5.secondaryAttribute, e.target.value);
       }) : null, function () {
         _this5.updateItem(item[_this5.idAttribute]);
@@ -25895,9 +25895,9 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
       var styleNode = document.createElement("style");
       var dragDropNode = this.shadowRoot.querySelector("fw-dnd").shadowRoot;
       dragDropNode.appendChild(styleNode);
-      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _styles_index_js__WEBPACK_IMPORTED_MODULE_8__.CustomDndStyles.strings[0]);
-      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _styles_index_js__WEBPACK_IMPORTED_MODULE_8__.ItemRowStyle.strings[0]);
-      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_6__.BoxInputStyles.strings[1]);
+      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _styles_index_js__WEBPACK_IMPORTED_MODULE_7__.CustomDndStyles.strings[0]);
+      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _styles_index_js__WEBPACK_IMPORTED_MODULE_7__.ItemRowStyle.strings[0]);
+      dragDropNode.querySelector("style").insertAdjacentHTML("beforebegin", _fw_components_styles_input_styles_js__WEBPACK_IMPORTED_MODULE_9__.BoxInputStyles.strings[1]);
     }
   }, {
     key: "willUpdate",
@@ -25994,7 +25994,7 @@ var dndCrudList = /*#__PURE__*/function (_LitElement) {
       };
     }
   }]);
-}(lit__WEBPACK_IMPORTED_MODULE_0__.LitElement);
+}(lit__WEBPACK_IMPORTED_MODULE_6__.LitElement);
 window.customElements.define("fw-dnd-crud", dndCrudList);
 
 /***/ }),
@@ -26041,6 +26041,20 @@ var DnDList = /*#__PURE__*/function (_LitElement) {
     _this.headerName = "Table-1";
     _this.list = [];
     _this.loading = false;
+    _this.layout = "vertical"; // Default to vertical layout
+    _this._lastInsertPosition = null;
+    _this._lastDragEvent = null;
+    _this._dragOverThrottleId = null;
+    _this._lastMousePosition = {
+      x: 0,
+      y: 0
+    };
+    _this._movementDirection = {
+      x: 0,
+      y: 0
+    };
+    _this._currentRowIndex = -1; // Track current row for stability
+    _this._rowTransitionHysteresis = 20; // Pixels of hysteresis for row transitions
     return _this;
   }
   _inherits(DnDList, _LitElement);
@@ -26072,6 +26086,9 @@ var DnDList = /*#__PURE__*/function (_LitElement) {
       setTimeout(function () {
         _this3.dragStartElement.classList.add("dragging");
       }, 0);
+
+      // Reset row tracking on drag start
+      this._currentRowIndex = -1;
     }
   }, {
     key: "dragEnded",
@@ -26138,20 +26155,220 @@ var DnDList = /*#__PURE__*/function (_LitElement) {
   }, {
     key: "reorderListItems",
     value: function reorderListItems(e) {
+      var _this5 = this;
       e.preventDefault();
+
+      // Calculate movement direction
+      if (this._lastMousePosition.x !== 0 || this._lastMousePosition.y !== 0) {
+        this._movementDirection = {
+          x: e.clientX - this._lastMousePosition.x,
+          y: e.clientY - this._lastMousePosition.y
+        };
+      }
+
+      // Update last mouse position
+      this._lastMousePosition = {
+        x: e.clientX,
+        y: e.clientY
+      };
+
+      // Store the event for throttled processing
+      this._lastDragEvent = e;
+
+      // Throttle the drag event processing to prevent too frequent updates
+      if (!this._dragOverThrottleId) {
+        this._dragOverThrottleId = setTimeout(function () {
+          _this5._processDragEvent();
+          _this5._dragOverThrottleId = null;
+        }, 150); // Increased to 150ms throttle for more stability
+      }
+    }
+  }, {
+    key: "_processDragEvent",
+    value: function _processDragEvent() {
+      if (!this._lastDragEvent) return;
+      var e = this._lastDragEvent;
       var droppableContainer = this.shadowRoot.querySelector(".droppable-container");
       var draggingItem = this.shadowRoot.querySelector(".dragging");
+      if (!draggingItem) return;
       var siblings = _toConsumableArray(droppableContainer.querySelectorAll(".draggable-item:not(.dragging)"));
-      var nextSibling = siblings.find(function (sibling) {
-        var dim = sibling.getBoundingClientRect();
-        return e.clientY <= dim.top + dim.height / 2;
+      if (siblings.length === 0) return;
+
+      // Determine the dominant axis based on layout
+      var isHorizontalDominant = this.layout === "horizontal";
+      var isGridLayout = this.layout === "grid" || !isHorizontalDominant && this.layout !== "vertical";
+      var nextSibling;
+
+      // Calculate the dominant movement direction
+      var absX = Math.abs(this._movementDirection.x);
+      var absY = Math.abs(this._movementDirection.y);
+      var isMovingHorizontally = absX > absY;
+      if (isGridLayout) {
+        // For grid layout, we need to handle both horizontal and vertical movement
+
+        // First, group items by rows
+        var rows = this._groupItemsByRow(siblings);
+        if (rows.length > 0) {
+          // Find which row the cursor is in
+          var cursorRowIndex = -1;
+          for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];
+            if (row.length > 0) {
+              // Calculate the row's vertical bounds
+              var rowTop = Math.min.apply(Math, _toConsumableArray(row.map(function (item) {
+                return item.getBoundingClientRect().top;
+              })));
+              var rowBottom = Math.max.apply(Math, _toConsumableArray(row.map(function (item) {
+                return item.getBoundingClientRect().bottom;
+              })));
+
+              // Check if cursor is in this row
+              if (e.clientY >= rowTop && e.clientY <= rowBottom) {
+                cursorRowIndex = i;
+                break;
+              }
+            }
+          }
+
+          // If cursor is not in any row, find the closest row
+          if (cursorRowIndex === -1) {
+            var closestDistance = Number.MAX_VALUE;
+            for (var _i = 0; _i < rows.length; _i++) {
+              var _row = rows[_i];
+              if (_row.length > 0) {
+                // Calculate the row's center Y position
+                var _rowTop = Math.min.apply(Math, _toConsumableArray(_row.map(function (item) {
+                  return item.getBoundingClientRect().top;
+                })));
+                var _rowBottom = Math.max.apply(Math, _toConsumableArray(_row.map(function (item) {
+                  return item.getBoundingClientRect().bottom;
+                })));
+                var rowCenterY = (_rowTop + _rowBottom) / 2;
+
+                // Calculate distance to cursor
+                var distance = Math.abs(e.clientY - rowCenterY);
+                if (distance < closestDistance) {
+                  closestDistance = distance;
+                  cursorRowIndex = _i;
+                }
+              }
+            }
+          }
+
+          // Now that we have the row, find the position within the row
+          if (cursorRowIndex >= 0 && cursorRowIndex < rows.length) {
+            var currentRow = rows[cursorRowIndex];
+
+            // Sort the row by X position
+            currentRow.sort(function (a, b) {
+              var rectA = a.getBoundingClientRect();
+              var rectB = b.getBoundingClientRect();
+              return rectA.left - rectB.left;
+            });
+
+            // Find the position within the row based on X coordinate
+            nextSibling = currentRow.find(function (sibling) {
+              var rect = sibling.getBoundingClientRect();
+              return e.clientX < rect.left + rect.width * 0.5;
+            });
+
+            // If we're at the end of a row, check if we should move to the next row
+            if (!nextSibling && cursorRowIndex < rows.length - 1) {
+              var nextRow = rows[cursorRowIndex + 1];
+              if (nextRow.length > 0) {
+                // Sort the next row by X position
+                nextRow.sort(function (a, b) {
+                  var rectA = a.getBoundingClientRect();
+                  var rectB = b.getBoundingClientRect();
+                  return rectA.left - rectB.left;
+                });
+
+                // If cursor is closer to the next row than the current row
+                var currentRowBottom = Math.max.apply(Math, _toConsumableArray(currentRow.map(function (item) {
+                  return item.getBoundingClientRect().bottom;
+                })));
+                var nextRowTop = Math.min.apply(Math, _toConsumableArray(nextRow.map(function (item) {
+                  return item.getBoundingClientRect().top;
+                })));
+                if (e.clientY > (currentRowBottom + nextRowTop) / 2) {
+                  nextSibling = nextRow[0]; // Insert at the beginning of the next row
+                }
+              }
+            }
+          }
+        }
+
+        // If we still don't have a nextSibling, fall back to simple Y-coordinate based positioning
+        if (!nextSibling) {
+          nextSibling = siblings.find(function (sibling) {
+            var rect = sibling.getBoundingClientRect();
+            return e.clientY < rect.top + rect.height * 0.5;
+          });
+        }
+      } else if (isHorizontalDominant) {
+        // For horizontal layout, prioritize X-axis
+        nextSibling = siblings.find(function (sibling) {
+          var rect = sibling.getBoundingClientRect();
+          return e.clientX < rect.left + rect.width * 0.5;
+        });
+      } else {
+        // For vertical layout, prioritize Y-axis
+        nextSibling = siblings.find(function (sibling) {
+          var rect = sibling.getBoundingClientRect();
+          return e.clientY < rect.top + rect.height * 0.5;
+        });
+      }
+
+      // Create a position identifier to check if we need to update the DOM
+      var newPosition = nextSibling ? nextSibling.id : "end";
+
+      // Only update if position changed to prevent unnecessary DOM operations
+      if (this._lastInsertPosition !== newPosition) {
+        this._lastInsertPosition = newPosition;
+        droppableContainer.insertBefore(draggingItem, nextSibling);
+      }
+    }
+
+    // Helper method to group items by rows based on their vertical position
+  }, {
+    key: "_groupItemsByRow",
+    value: function _groupItemsByRow(items) {
+      if (items.length === 0) return [];
+
+      // Sort items by Y position
+      var sortedByY = _toConsumableArray(items).sort(function (a, b) {
+        var rectA = a.getBoundingClientRect();
+        var rectB = b.getBoundingClientRect();
+        return rectA.top - rectB.top;
       });
-      droppableContainer.insertBefore(draggingItem, nextSibling);
+      var rows = [];
+      var currentRow = [sortedByY[0]];
+      var rowTolerance = 10; // Pixels tolerance for considering items in the same row
+
+      for (var i = 1; i < sortedByY.length; i++) {
+        var currentRect = sortedByY[i].getBoundingClientRect();
+        var prevRect = sortedByY[i - 1].getBoundingClientRect();
+
+        // If Y position is similar, add to the same row
+        if (Math.abs(currentRect.top - prevRect.top) < rowTolerance) {
+          currentRow.push(sortedByY[i]);
+        } else {
+          // Start a new row
+          rows.push(currentRow);
+          currentRow = [sortedByY[i]];
+        }
+      }
+
+      // Add the last row
+      if (currentRow.length > 0) {
+        rows.push(currentRow);
+      }
+      return rows;
     }
   }], [{
     key: "styles",
     get: function get() {
-      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      :host,\n      .drag-test {\n        display: block;\n        height: 100%;\n      }\n    "])));
+      return (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n      :host,\n      .drag-test {\n        display: block;\n        height: 100%;\n      }\n\n      :host([layout=\"grid\"]) .droppable-container {\n        display: flex;\n        flex-wrap: wrap;\n        gap: 0.5rem;\n      }\n    "])));
     }
   }, {
     key: "properties",
@@ -26162,7 +26379,11 @@ var DnDList = /*#__PURE__*/function (_LitElement) {
         endContainer: String,
         startContainer: String,
         list: Array,
-        loading: Boolean
+        loading: Boolean,
+        layout: {
+          type: String,
+          reflect: true
+        } // 'horizontal', 'vertical', or 'grid'
       };
     }
   }]);
@@ -26217,14 +26438,14 @@ var _templateObject, _templateObject2, _templateObject3, _templateObject4, _temp
 function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t) } })); }
 
 var UnderlinedButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    .primary-text-underlined {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--primary-color, #205081);\n      padding: 0;\n      margin: 0;\n      border-radius: 0;\n      min-width: max-content;\n      text-transform: none;\n      border-bottom: 1px solid rgba(var(--secondary-color-rgb), 0.3);\n    }\n\n    .secondary-text-underlined {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      margin: 0;\n      padding: 0;\n      border-radius: 0;\n      min-width: max-content;\n      text-transform: none;\n      border-bottom: 1px solid rgba(var(--secondary-color-rgb), 0.3);\n    }\n  </style>\n"])));
-var TextButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  <style>\n    .primary-text-button {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--primary-color, #205081);\n      padding: 0 8px;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      margin: 0;\n      text-transform: none;\n    }\n\n    .secondary-text-button {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 8px;\n      min-width: 64px;\n      margin: 0;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .primary-text-button:hover {\n      font-weight: bold;\n    }\n\n    .secondary-text-button:hover {\n      font-weight: bold;\n    }\n\n    .primary-text-button[disabled], .secondary-text-button[disabled] {\n        opacity: 0.5;\n    }\n  </style>\n"])));
-var PrimaryButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  <style>\n    .primary-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid var(--primary-color, #205081);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 var(--button-padding, 16px);\n      min-width: 64px;\n      margin: 0;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n    .primary-outlined:hover {\n      background-color: var(--primary-color, #205081);\n      color: var(--light-color, #fff);\n    }\n    .primary-colored {\n      font-family: var(--theme-font);\n      background-color: var(--primary-color, #205081);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      margin: 0;\n      padding: 0 var(--button-padding, 16px);\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n    .primary-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--primary-color, #205081);\n    }\n    .primary-outlined[disabled], .primary-colored[disabled] {\n        opacity: 0.5;\n    }\n  </style>\n"])));
-var SecondaryButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  <style>\n    .secondary-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid rgba(var(--secondary-color-rgb), 0.3);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .secondary-outlined:hover {\n      background-color: var(--secondary-color, #515151);\n      color: var(--light-color, #fff);\n    }\n\n    .secondary-colored {\n      font-family: var(--theme-font);\n      background-color: var(--secondary-color, #515151);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .secondary-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--secondary-color, #515151);\n    }\n\n    .secondary-outlined[disabled], .secondary-colored[disabled] {\n        opacity: 0.5;\n    }\n  </style>\n"])));
-var AlertButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  <style>\n    .alert-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid var(--error-color);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--error-color, #d50000);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .alert-outlined:hover {\n      background-color: var(--error-color-l1, #db4437);\n      color: var(--light-color, #fff);\n    }\n\n    .alert-colored {\n      font-family: var(--theme-font);\n      background-color: var(--error-color, #d50000);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .alert-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--error-color, #d50000);\n    }\n\n    .alert-outlined[disabled], .alert-colored[disabled] {\n        opacity: 0.5;\n    }\n  </style>\n"])));
-var ToggleButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n  <style>\n    .toggle-group {\n      display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap;\n    }\n\n    .toggle-group .toggle:first-child{\n      border-top-left-radius: 5px; border-bottom-left-radius: 5px;\n    }\n    .toggle-group .toggle:last-child{\n      border-top-right-radius: 5px; border-bottom-right-radius: 5px;\n    }\n\n    .toggle {\n      text-transform: none;\n      margin: 0px;\n      border-radius: 0px;\n      background-color: transparent;\n      border: 1px solid var(--secondary-color-l3);\n      color: var(--secondary-color);\n      font-size: var(--secondary-font-size, 16px);\n      font-family: var(--theme-font);\n      display: flex;\n      justify-content: space-around;\n      min-width: 64px;\n      align-items: center;\n    }\n\n    .toggle.small {\n      height: 30px;\n      font-size: var(--tertiary-font-size, 14px);\n    }\n\n    .toggle:hover {\n      box-shadow: 0 1px 2px 1px rgba(var(--secondary-color-rgb), 0.1);\n    }\n\n    .selected-toggle {\n      background-color: var(--secondary-color);\n      color: var(--light-color, #fff);\n    }\n\n    .toggle iron-icon{\n      --iron-icon-height: var(--body-font-size, 16px);\n      margin-right: 5px;\n    }\n\n    .toggle mwc-icon{\n      --mdc-icon-size: var(--body-font-size, 16px);\n      margin-right: 5px;\n    }\n  </style>\n"])));
-var FabStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\n  <style>\n    paper-fab {\n      position: fixed;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      bottom: 3%;\n      right: 2%;\n    }\n\n    paper-fab[disabled], .fab[disabled] {\n        opacity: 0.5;\n    }\n\n    .fab {\n      font-size: var(--secondary-font-size, 16px);\n      position: fixed;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      bottom: 3%;\n      right: 2%;\n      box-shadow: var(--paper-material-elevation-2_-_box-shadow);\n      font-family: var(--theme-font);\n    }\n\n    .colored-fab {\n      background-color: var(--secondary-color, #515151);\n      --iron-icon-height: var(--h2-font-size, 26px);\n      --iron-icon-width: var(--h2-font-size, 26px);\n      color: var(--light-color, #fff);\n    }\n\n    .light-colored-fab {\n      background-color: var(--light-color, #fff);\n      --iron-icon-height: var(--h2-font-size, 20px);\n      --iron-icon-width: var(--h2-font-size, 20px);\n      color: var(--secondary-color);\n      /* --iron-icon-stroke-color: var(--secondary-color); */\n    }\n\n    .light-colored-fab:hover,\n    .colored-fab:hover {\n      box-shadow: var(--paper-material-elevation-3_-_box-shadow);\n      font-weight: bold;\n    }\n\n    .rectangular-fab {\n      height:  var(--rectangular-fab-height, 50px);\n      width: var(--rectangular-fab-width, 120px);\n      border-radius:  var(--rectangular-fab-height, 50px);\n      padding: var(--rectangular-fab-padding, 0px);\n      max-height: var(--rectangular-fab-max-height, 50px);\n      z-index:  var(--rectangular-fab-z-index, 1);\n    }\n    .small-fab {\n      height: 50px;\n      width: 50px;\n      padding: 5px;\n    }\n    @media all and (max-width: 767px) {\n      .rectangular-fab {\n        height: var(--rectangular-fab-height, 40px);\n        width: var(--rectangular-fab-width, 120px);\n        border-radius: 50px;\n        padding: 0;\n        --fab-icon-height: 40px;\n      }\n    }\n  </style>\n"])));
+var TextButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  <style>\n    .primary-text-button {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--primary-color, #205081);\n      padding: 0 8px;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      margin: 0;\n      text-transform: none;\n    }\n\n    .secondary-text-button {\n      font-family: var(--theme-font);\n      border: none;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 8px;\n      min-width: 64px;\n      margin: 0;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .primary-text-button:hover {\n      font-weight: bold;\n    }\n\n    .secondary-text-button:hover {\n      font-weight: bold;\n    }\n\n    .primary-text-button[disabled],\n    .secondary-text-button[disabled] {\n      opacity: 0.5;\n    }\n  </style>\n"])));
+var PrimaryButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  <style>\n    .primary-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid var(--primary-color, #205081);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 var(--button-padding, 16px);\n      min-width: 64px;\n      margin: 0;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n    .primary-outlined:hover {\n      background-color: var(--primary-color, #205081);\n      color: var(--light-color, #fff);\n    }\n    .primary-colored {\n      font-family: var(--theme-font);\n      background-color: var(--primary-color, #205081);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      margin: 0;\n      padding: 0 var(--button-padding, 16px);\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n    .primary-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--primary-color, #205081);\n    }\n    .primary-outlined[disabled],\n    .primary-colored[disabled] {\n      opacity: 0.5;\n    }\n  </style>\n"])));
+var SecondaryButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  <style>\n    .secondary-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid rgba(var(--secondary-color-rgb), 0.3);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--secondary-color, #515151);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .secondary-outlined:hover {\n      background-color: var(--secondary-color, #515151);\n      color: var(--light-color, #fff);\n    }\n\n    .secondary-colored {\n      font-family: var(--theme-font);\n      background-color: var(--secondary-color, #515151);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .secondary-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--secondary-color, #515151);\n    }\n\n    .secondary-outlined[disabled],\n    .secondary-colored[disabled] {\n      opacity: 0.5;\n    }\n  </style>\n"])));
+var AlertButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  <style>\n    .alert-outlined {\n      font-family: var(--theme-font);\n      border: 1px solid var(--error-color);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--error-color, #d50000);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .alert-outlined:hover {\n      background-color: var(--error-color-l1, #db4437);\n      color: var(--light-color, #fff);\n    }\n\n    .alert-colored {\n      font-family: var(--theme-font);\n      background-color: var(--error-color, #d50000);\n      border-radius: 5px;\n      font-size: var(--secondary-font-size, 16px);\n      color: var(--light-color, #fff);\n      padding: 0 var(--button-padding, 16px);\n      margin: 0;\n      min-width: 64px;\n      height: var(--button-height, 36px);\n      text-transform: none;\n    }\n\n    .alert-colored:hover {\n      box-shadow: 0 1px 2px 1px var(--error-color, #d50000);\n    }\n\n    .alert-outlined[disabled],\n    .alert-colored[disabled] {\n      opacity: 0.5;\n    }\n  </style>\n"])));
+var ToggleButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject6 || (_templateObject6 = _taggedTemplateLiteral(["\n  <style>\n    .toggle-group {\n      display: flex;\n      justify-content: flex-end;\n      align-items: center;\n      flex-wrap: wrap;\n    }\n\n    .toggle-group .toggle:first-child {\n      border-top-left-radius: 5px;\n      border-bottom-left-radius: 5px;\n    }\n    .toggle-group .toggle:last-child {\n      border-top-right-radius: 5px;\n      border-bottom-right-radius: 5px;\n    }\n\n    .toggle {\n      text-transform: none;\n      margin: 0px;\n      border-radius: 0px;\n      background-color: transparent;\n      border: 1px solid var(--secondary-color-l3);\n      color: var(--secondary-color);\n      font-size: var(--secondary-font-size, 16px);\n      font-family: var(--theme-font);\n      display: flex;\n      justify-content: space-around;\n      min-width: 64px;\n      align-items: center;\n    }\n\n    .toggle.small {\n      height: 30px;\n      font-size: var(--tertiary-font-size, 14px);\n    }\n\n    .toggle:hover {\n      box-shadow: 0 1px 2px 1px rgba(var(--secondary-color-rgb), 0.1);\n    }\n\n    .selected-toggle {\n      background-color: var(--secondary-color);\n      color: var(--light-color, #fff);\n    }\n\n    .toggle iron-icon {\n      --iron-icon-height: var(--body-font-size, 16px);\n      margin-right: 5px;\n    }\n\n    .toggle mwc-icon {\n      --mdc-icon-size: var(--body-font-size, 16px);\n      margin-right: 5px;\n    }\n  </style>\n"])));
+var FabStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\n  <style>\n    paper-fab {\n      position: fixed;\n      display: flex;\n      flex-direction: column;\n      justify-content: center;\n      align-items: center;\n      bottom: 3%;\n      right: 2%;\n    }\n\n    paper-fab[disabled],\n    .fab[disabled] {\n      opacity: 0.5;\n    }\n\n    .fab {\n      font-size: var(--secondary-font-size, 16px);\n      position: fixed;\n      display: flex;\n      justify-content: center;\n      align-items: center;\n      bottom: 3%;\n      right: 2%;\n      box-shadow: var(--paper-material-elevation-2_-_box-shadow);\n      font-family: var(--theme-font);\n    }\n\n    .colored-fab {\n      background-color: var(--secondary-color, #515151);\n      --iron-icon-height: var(--h2-font-size, 26px);\n      --iron-icon-width: var(--h2-font-size, 26px);\n      color: var(--light-color, #fff);\n    }\n\n    .light-colored-fab {\n      background-color: var(--light-color, #fff);\n      --iron-icon-height: var(--h2-font-size, 20px);\n      --iron-icon-width: var(--h2-font-size, 20px);\n      color: var(--secondary-color);\n      /* --iron-icon-stroke-color: var(--secondary-color); */\n    }\n\n    .light-colored-fab:hover,\n    .colored-fab:hover {\n      box-shadow: var(--paper-material-elevation-3_-_box-shadow);\n      font-weight: bold;\n    }\n\n    .rectangular-fab {\n      height: var(--rectangular-fab-height, 50px);\n      width: var(--rectangular-fab-width, 120px);\n      border-radius: var(--rectangular-fab-height, 50px);\n      padding: var(--rectangular-fab-padding, 0px);\n      max-height: var(--rectangular-fab-max-height, 50px);\n      z-index: var(--rectangular-fab-z-index, 1);\n    }\n    .small-fab {\n      height: 50px;\n      width: 50px;\n      padding: 5px;\n    }\n    @media all and (max-width: 767px) {\n      .rectangular-fab {\n        height: var(--rectangular-fab-height, 40px);\n        width: var(--rectangular-fab-width, 120px);\n        border-radius: 50px;\n        padding: 0;\n        --fab-icon-height: 40px;\n      }\n    }\n  </style>\n"])));
 var ButtonSpinnerStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\n  <style>\n    .colored-bt-spinner {\n      width: 18px;\n      height: 18px;\n      --paper-spinner-color: var(--light-color, #fff);\n      --paper-spinner-stroke-width: 3px;\n      margin-right: 8px;\n    }\n\n    .secondary-outlined-bt-spinner {\n      width: 18px;\n      height: 18px;\n      --paper-spinner-color: var(--secondary-color, #fff);\n      --paper-spinner-stroke-width: 3px;\n      margin-right: 8px;\n    }\n\n    .primary-outlined-bt-spinner {\n      width: 18px;\n      height: 18px;\n      --paper-spinner-color: var(--primary-color, #fff);\n      --paper-spinner-stroke-width: 3px;\n      margin-right: 8px;\n    }\n\n    .button-prefix-icon {\n      --iron-icon-height: var(--body-font-size, 16px);\n      --mdc-icon-size: var(--body-font-size, 16px);\n      margin-right: 5px;\n    }\n  </style>\n"])));
-var SmallButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["\n  <style>\n    .small-button {\n      height: 25px !important;\n      width: auto !important;\n      padding: 0px !important;\n      font-size: var(--tertiary-font-size) !important;\n    }\n    @media all and (max-width: 767px) {\n      .small-button{\n        height: 20px !important;\n      }\n    }\n  </style>\n"])));
+var SmallButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["\n  <style>\n    .small-button {\n      height: 25px !important;\n      width: auto !important;\n      padding: 0px !important;\n      font-size: var(--tertiary-font-size) !important;\n    }\n    @media all and (max-width: 767px) {\n      .small-button {\n        height: 20px !important;\n      }\n    }\n  </style>\n"])));
 var PaperToggleButtonStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["\n  <custom-style>\n    <style>\n      paper-toggle-button {\n        font-family: var(--theme-font);\n        cursor: pointer;\n        --paper-toggle-button-checked-button: {\n          height: 15px;\n          width: 50%;\n          border-radius: 0;\n          bottom: 2px;\n          box-shadow: none;\n          border-bottom-right-radius : 8px;\n          border-top-right-radius: 8px;\n        }\n        --paper-toggle-button-unchecked-button: {\n          height: 15px;\n          width: 50%;\n          border-radius: 0;\n          bottom: 2px;\n          box-shadow: none;\n          border-bottom-left-radius : 8px;\n          border-top-left-radius: 8px;\n        }\n        --paper-toggle-button-unchecked-bar: {\n          height: 15px;\n          bottom: 2px;\n          box-shadow: none;\n        }\n        --paper-toggle-button-checked-bar: {\n          height: 15px;\n          bottom: 2px;\n          box-shadow: none;\n        }\n        --paper-toggle-button-label-color: var(--secondary-color);\n        align-items: flex-start;\n      }\n\n      paper-toggle-button.primary-colored {\n        --paper-toggle-button-unchecked-bar-color: var(--secondary-color-l1);\n        --paper-toggle-button-unchecked-button-color:  var(--secondary-color-l1);\n        --paper-toggle-button-checked-bar-color:  var(--primary-color-l1);\n        --paper-toggle-button-checked-button-color:  var(--primary-color);\n      }\n\n      paper-toggle-button.secondary-colored {\n        --paper-toggle-button-unchecked-bar-color: var(--secondary-color-l2);\n        --paper-toggle-button-unchecked-button-color:  var(--secondary-color-l2);\n        --paper-toggle-button-checked-bar-color:  var(--secondary-color-l1);\n        --paper-toggle-button-checked-button-color:  var(--secondary-color);\n      }\n    </style>\n  </custom-style>\n"])));
 
 /***/ }),
@@ -26251,8 +26472,8 @@ __webpack_require__.r(__webpack_exports__);
 var _templateObject, _templateObject2, _templateObject3, _templateObject4, _templateObject5, _templateObject6, _templateObject7, _templateObject8, _templateObject9, _templateObject10;
 function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t) } })); }
 
-var SelectInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    sl-select {\n      --sl-input-border-radius-medium: 0;\n      --sl-focus-ring: none;\n      --sl-input-border-color-focus: none;\n      --sl-input-border-width: 0px;\n      --sl-input-border-color: none;\n      --sl-input-font-family: var(--theme-font);\n      --sl-font-sans: var(--theme-font);\n      --sl-input-spacing-medium: 4px;\n      --sl-input-font-size-medium: var(--secondary-font-size);\n      --sl-input-label-font-size-medium: var(--tertiary-font-size);\n      --sl-input-height-medium: 32px;\n      /*  hover text color */\n      --sl-color-neutral-0: var(--secondary-color);\n      /* Text color */\n      --sl-color-neutral-700: var(--secondary-color);\n      /* Padding */\n      --sl-spacing-2x-small: calc(var(--secondary-font-size) / 2);\n      --sl-color-primary-600: var(--secondary-color-l3);\n    }\n    sl-select.underlined {\n      border-bottom: 1px solid;\n    }\n    sl-select * {\n      font-family: var(--theme-font);\n    }\n    sl-option {\n      margin: 5px 0;\n    }\n    sl-option::part(base):hover {\n      background-color: var(--secondary-color-l3);\n    }\n    sl-option[aria-selected=\"true\"]::part(base), sl-option[selected]::part(base) {\n      background-color: var(--primary-color-l1) !important;\n      color: var(--light-color) !important;\n    }\n    sl-select::part(tag__base) {\n      font-family: var(--theme-font);\n      padding: 10px;\n      border-radius: 2px;\n    }\n  </style>\n"])));
-var InputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  <custom-style>\n    <style>\n      .right-aligned {\n        text-align: right;\n      }\n\n      .suffix-icon {\n        padding: 0px;\n        height: 24px;\n      }\n      paper-input,\n      paper-dropdown-menu,\n      paper-textarea {\n        --paper-input-container : {\n          padding: 0px;\n        }\n      }\n    </style>\n  </custom-style>\n"])));
+var SelectInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    sl-select {\n      --sl-input-border-radius-medium: 0;\n      --sl-focus-ring: none;\n      --sl-input-border-color-focus: none;\n      --sl-input-border-width: 0px;\n      --sl-input-border-color: none;\n      --sl-input-font-family: var(--theme-font);\n      --sl-font-sans: var(--theme-font);\n      --sl-input-spacing-medium: 4px;\n      --sl-input-font-size-medium: var(--secondary-font-size);\n      --sl-input-label-font-size-medium: var(--tertiary-font-size);\n      --sl-input-height-medium: 32px;\n      /*  hover text color */\n      --sl-color-neutral-0: var(--secondary-color);\n      /* Text color */\n      --sl-color-neutral-700: var(--secondary-color);\n      /* Padding */\n      --sl-spacing-2x-small: calc(var(--secondary-font-size) / 2);\n      --sl-color-primary-600: var(--secondary-color-l3);\n    }\n    sl-select.underlined {\n      border-bottom: 1px solid;\n    }\n    sl-select * {\n      font-family: var(--theme-font);\n    }\n    sl-option {\n      margin: 5px 0;\n    }\n    sl-option::part(base):hover {\n      background-color: var(--secondary-color-l3);\n    }\n    sl-option[aria-selected=\"true\"]::part(base),\n    sl-option[selected]::part(base) {\n      background-color: var(--primary-color-l1) !important;\n      color: var(--light-color) !important;\n    }\n    sl-select::part(tag__base) {\n      font-family: var(--theme-font);\n      padding: 10px;\n      border-radius: 2px;\n    }\n  </style>\n"])));
+var InputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  <custom-style>\n    <style>\n      .right-aligned {\n        text-align: right;\n      }\n\n      .suffix-icon {\n        padding: 0px;\n        height: 24px;\n      }\n      paper-input,\n      paper-dropdown-menu,\n      paper-textarea {\n        --paper-input-container: {\n          padding: 0px;\n        };\n      }\n    </style>\n  </custom-style>\n"])));
 var DropdownStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  <custom-style>\n    <style>\n      paper-listbox,\n      paper-item {\n        font-family: var(--theme-font);\n        color: var(--secondary-color);\n        font-size: var(--body-font-size, 16px);\n        cursor: pointer;\n      }\n\n      paper-listbox paper-item:hover {\n        background-color: var(--secondary-color-l4);\n      }\n\n      paper-listbox {\n        max-height: 60vh;\n      }\n      paper-item:hover {\n        background-color: var(--secondary-color-l4);\n      }\n    </style>\n  </custom-style>\n"])));
 var UnderlinedInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject4 || (_templateObject4 = _taggedTemplateLiteral(["\n  ", "\n  <custom-style>\n    <style>\n      paper-dropdown-menu.underlined[readonly],\n      paper-input.underlined[readonly] {\n        --paper-input-container-focus-color: var(--secondary-color);\n        --paper-input-container-underline-focus: {\n          display: none;\n        }\n      }\n\n      paper-textarea.underlined,\n      paper-input.underlined,\n      paper-dropdown-menu.underlined {\n        font-family: var(--theme-font);\n\n        --paper-input-container-focus: {\n          color: var(--primary-color);\n        }\n\n        --paper-input-container-label: {\n          color: var(--secondary-color);\n          font-family: var(--theme-font);\n          font-size: var(--secondary-font-size, 15px);\n        }\n\n        --paper-input-container-label-floating: {\n          font-family: var(--theme-font);\n          color: var(--secondary-color);\n          font-size: var(--secondary-font-size, 15px);\n        }\n        --paper-input-container-input: {\n          color: var(--secondary-color);\n          font-style: inherit;\n          font-size: var(--body-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-disabled : {\n          color: var(--secondary-color);\n          opacity: 1;\n        }\n\n        --paper-input-container-input-disabled: {\n          color: var(--secondary-color);\n        }\n      }\n    </style>\n  </custom-style>\n"])), InputStyles);
 var CheckboxStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject5 || (_templateObject5 = _taggedTemplateLiteral(["\n  ", "\n  <custom-style>\n    <style>\n      paper-checkbox.primary-colored-checkbox {\n        font-family: var(--theme-font);\n        font-size: var(--secondary-font-size, 15px);\n        --paper-checkbox-checked-color: var(--primary-color);\n        --paper-checkbox-unchecked-color: var(--secondary-color-l1);\n        --paper-checkbox-label-checked-color: var(--secondary-color);\n        --paper-checkbox-label-color: var(--secondary-color);\n      }\n\n      paper-checkbox.secondary-colored-checkbox {\n        font-family: var(--theme-font);\n        font-size: var(--secondary-font-size, 15px);\n        --paper-checkbox-checked-color: var(--secondary-color);\n        --paper-checkbox-unchecked-color: var(--secondary-color-l1);\n        --paper-checkbox-label-checked-color: var(--secondary-color);\n        --paper-checkbox-label-color: var(--secondary-color);\n      }\n\n      paper-checkbox.colored-text-checkbox {\n        font-family: var(--theme-font);\n        font-size: var(--secondary-font-size, 15px);\n        --paper-checkbox-checked-color: var(--primary-color);\n        --paper-checkbox-unchecked-color: var(--primary-color);\n        --paper-checkbox-label-checked-color: var(--primary-color);\n        --paper-checkbox-label-color: var(--primary-color);\n      }\n    </style>\n  </custom-style>\n"])), InputStyles);
@@ -26260,7 +26481,7 @@ var PlainInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject
 var LargeInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject7 || (_templateObject7 = _taggedTemplateLiteral(["\n  ", "\n\n  <custom-style>\n    <style>\n      paper-textarea.large,\n      paper-input.large,\n      paper-dropdown-menu.large {\n        font-family: var(--theme-font);\n\n        --paper-input-container-focus: {\n          color: var(--primary-color);\n        }\n\n        --paper-input-container-input: {\n          color: var(--secondary-color);\n          font-style: normal;\n          font-size: var(--h2-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-placeholder: {\n          color: var(--secondary-color-l3);\n          font-style: inherit;\n          font-size: var(--body-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-disabled : {\n          color: var(--secondary-color);\n          opacity: 1;\n        }\n\n        --paper-input-container-input-disabled: {\n          color: var(--secondary-color);\n        }\n\n        --paper-input-container-underline-disabled: {\n          border-bottom: none;\n        }\n      }\n    </style>\n  </custom-style>\n"])), InputStyles);
 var BoxInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject8 || (_templateObject8 = _taggedTemplateLiteral(["\n  ", "\n\n  <custom-style>\n    <style>\n      paper-input.box, paper-textarea.box {\n        font-family: var(--theme-font);\n\n        --paper-input-container-input: {\n          color: var(--secondary-color);\n          font-style: normal;\n          font-size: var(--body-font-size, 16px);\n          font-family: var(--theme-font);\n          border: 1px solid var(--secondary-color-l2);\n          border-radius: 2px;\n          padding: 5px 10px;\n          box-sizing: border-box;\n        }\n\n        --paper-input-container-input-focus: {\n          border: 1px solid var(--primary-color-l1);\n        }\n\n        --paper-input-container-input-invalid: {\n          border: 1px solid var(--error-color-l1);\n        }\n\n        --paper-input-container-placeholder: {\n          color: var(--secondary-color-l3);\n          font-style: normal;\n          font-size: var(--body-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-underline-focus: {\n          display: none !important;\n        }\n\n        --paper-input-container-underline: {\n          display: none !important;\n        }\n      }\n\n      paper-input.box.no-focus {\n        --paper-input-container-input-focus: {\n          border: 1px solid var(--secondary-color-l2);\n        }\n      }\n    </style>\n  </custom-style>\n"])), InputStyles);
 var SmallInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject9 || (_templateObject9 = _taggedTemplateLiteral(["\n  ", "\n\n  <custom-style>\n    <style>\n      paper-textarea.small,\n      paper-input.small,\n      paper-dropdown-menu.small {\n        font-family: var(--theme-font);\n\n        --paper-input-container-focus: {\n          color: var(--primary-color);\n        }\n\n        --paper-input-container-label: {\n          color: var(--secondary-color);\n          font-family: var(--theme-font);\n          font-size: var(--tertiary-font-size, 15px);\n        }\n\n        --paper-input-container-label-floating: {\n          font-family: var(--theme-font);\n          color: var(--secondary-color);\n          font-size: var(--tertiary-font-size, 15px);\n        }\n        --paper-input-container-input: {\n          color: var(--secondary-color);\n          font-style: inherit;\n          font-size: var(--secondary-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-placeholder: {\n          color: var(--secondary-color-l3);\n          font-style: inherit;\n          font-size: var(--tertiary-font-size, 16px);\n          font-family: var(--theme-font);\n        }\n\n        --paper-input-container-disabled : {\n          color: var(--secondary-color);\n          opacity: 1;\n        }\n\n        --paper-input-container-input-disabled: {\n          color: var(--secondary-color);\n        }\n      }\n    </style>\n  </custom-style>\n"])), InputStyles);
-var AllInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["\n  ", " ", " ", " ", "\n  ", " ", " ", "\n  ", "\n"])), InputStyles, BoxInputStyles, CheckboxStyles, LargeInputStyles, PlainInputStyles, SmallInputStyles, UnderlinedInputStyles, DropdownStyles);
+var AllInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject10 || (_templateObject10 = _taggedTemplateLiteral(["\n  ", " ", " ", " ", " ", " ", " ", " ", "\n"])), InputStyles, BoxInputStyles, CheckboxStyles, LargeInputStyles, PlainInputStyles, SmallInputStyles, UnderlinedInputStyles, DropdownStyles);
 
 /***/ }),
 

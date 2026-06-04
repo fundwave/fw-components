@@ -23676,8 +23676,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FwColorPick: () => (/* binding */ FwColorPick)
 /* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
+/* harmony import */ var _fw_components_localize__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @fw-components/localize */ "../../packages/localize/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
 var __decorate = function(decorators, target, key, desc) {
   var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
   if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23686,7 +23687,8 @@ var __decorate = function(decorators, target, key, desc) {
 };
 
 
-let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+
+let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_1__.LitElement {
   constructor() {
     super(...arguments);
     this.textColor = "";
@@ -23694,9 +23696,9 @@ let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.Li
   }
   handleChange(e) {
     var _a;
-    const colorHEX = (_a = e.target) === null || _a === void 0 ? void 0 : _a.value;
+    const colorHEX = (_a = e.target) == null ? void 0 : _a.value;
     this.value = colorHEX;
-    if (colorHEX == "rgba(0, 0, 0, 0)")
+    if (colorHEX === "rgba(0, 0, 0, 0)")
       return;
     const colorRGB = hexToRgb(colorHEX);
     const colorHSL = rgbToHsl(colorRGB.red, colorRGB.green, colorRGB.blue);
@@ -23708,7 +23710,7 @@ let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.Li
     this.dispatchEvent(event);
   }
   getColorForLabel(value) {
-    const { red, green, blue } = hexToRgb(value !== null && value !== void 0 ? value : "#ffffff");
+    const { red, green, blue } = hexToRgb(value != null ? value : "#ffffff");
     const intensity = red * 0.299 + green * 0.587 + blue * 0.114;
     return intensity > 186 ? "#000000" : "#FFFFFF";
   }
@@ -23717,7 +23719,7 @@ let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.Li
       this.textColor = this.getColorForLabel(this.value);
   }
   render() {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_1__.html)`
       <style>
         .color-button {
           position: relative;
@@ -23736,29 +23738,23 @@ let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.Li
         }
       </style>
       <button part="color-button" class="color-button" data-label-color="${this.value}">
-        ${this.label}
-        <input
-          part="color-hidden-input"
-          class="colorpicker-hidden"
-          type="color"
-          value=${this.value}
-          @change=${this.handleChange}
-        />
+        ${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_0__.msg)((this.label || "").trim())}
+        <input part="color-hidden-input" class="colorpicker-hidden" type="color" value=${this.value} @change=${this.handleChange} />
       </button>
     `;
   }
 };
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_2__.property)()
 ], FwColorPick.prototype, "label", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.state)()
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_2__.state)()
 ], FwColorPick.prototype, "textColor", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_2__.property)()
 ], FwColorPick.prototype, "value", void 0);
 FwColorPick = __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.customElement)("fw-color-pick")
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_2__.customElement)("fw-color-pick")
 ], FwColorPick);
 
 function hexToRgb(hex) {
@@ -23775,11 +23771,7 @@ function rgbToHsl(r, g, b) {
   const l = Math.max(r, g, b);
   const s = l - Math.min(r, g, b);
   const h = s ? l === r ? (g - b) / s : l === g ? 2 + (b - r) / s : 4 + (r - g) / s : 0;
-  const hslArr = [
-    60 * h < 0 ? 60 * h + 360 : 60 * h,
-    100 * (s ? l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s)) : 0),
-    100 * (2 * l - s) / 2
-  ];
+  const hslArr = [60 * h < 0 ? 60 * h + 360 : 60 * h, 100 * (s ? l <= 0.5 ? s / (2 * l - s) : s / (2 - (2 * l - s)) : 0), 100 * (2 * l - s) / 2];
   const hslObj = { h: hslArr[0], s: hslArr[1], l: hslArr[2] };
   return hslObj;
 }
@@ -23797,46 +23789,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FwFontPick: () => (/* binding */ FwFontPick)
 /* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
-/* harmony import */ var lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lit/directives/repeat.js */ "./node_modules/lit/directives/repeat.js");
-/* harmony import */ var _polymer_paper_dropdown_menu_paper_dropdown_menu__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @polymer/paper-dropdown-menu/paper-dropdown-menu */ "../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js");
-/* harmony import */ var _polymer_paper_listbox_paper_listbox__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @polymer/paper-listbox/paper-listbox */ "../../node_modules/@polymer/paper-listbox/paper-listbox.js");
-/* harmony import */ var _polymer_paper_item_paper_item__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @polymer/paper-item/paper-item */ "../../node_modules/@polymer/paper-item/paper-item.js");
+/* harmony import */ var _polymer_paper_dropdown_menu_paper_dropdown_menu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @polymer/paper-dropdown-menu/paper-dropdown-menu */ "../../node_modules/@polymer/paper-dropdown-menu/paper-dropdown-menu.js");
+/* harmony import */ var _polymer_paper_item_paper_item__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @polymer/paper-item/paper-item */ "../../node_modules/@polymer/paper-item/paper-item.js");
+/* harmony import */ var _polymer_paper_listbox_paper_listbox__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @polymer/paper-listbox/paper-listbox */ "../../node_modules/@polymer/paper-listbox/paper-listbox.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
+/* harmony import */ var lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit/directives/repeat.js */ "./node_modules/lit/directives/repeat.js");
 /* harmony import */ var _fw_components_styles_input_styles__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @fw-components/styles/input-styles */ "../../packages/styles/input-styles.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 var __decorate = function(decorators, target, key, desc) {
   var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
   if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
   else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
   return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __awaiter = function(thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function(resolve) {
-      resolve(value);
-    });
-  }
-  return new (P || (P = Promise))(function(resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
 
 
 
@@ -23844,7 +23829,7 @@ var __awaiter = function(thisArg, _arguments, P, generator) {
 
 
 
-let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_3__.LitElement {
   constructor() {
     super(...arguments);
     this.label = "";
@@ -23857,11 +23842,11 @@ let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitE
     };
   }
   optionSelectHandler(e) {
-    return __awaiter(this, void 0, void 0, function* () {
+    return __async(this, null, function* () {
       const selection = e.detail.item.obj;
       if (selection.name === this.value.name)
         return;
-      let detail = {
+      const detail = {
         value: selection
       };
       const event = new CustomEvent("value-changed", {
@@ -23877,7 +23862,7 @@ let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitE
     });
   }
   render() {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`
       ${_fw_components_styles_input_styles__WEBPACK_IMPORTED_MODULE_6__.DropdownStyles} ${_fw_components_styles_input_styles__WEBPACK_IMPORTED_MODULE_6__.PlainInputStyles}
       <span part="font-container">
         <style>
@@ -23886,10 +23871,10 @@ let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitE
           }
         </style>
         <div part="font-button">
-          <paper-dropdown-menu .dynamicAlign=${true} class="plain" no-label-float @iron-select=${(e) => this.optionSelectHandler(e)} style="width:100%" >
-              <paper-listbox  style="color:#000" slot="dropdown-content" .selected=${this.value.name || ""} attr-for-selected="name">
-              ${this.options && (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.options, (item) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<paper-item style='font-family: ${item.style}' .name=${item.name} .obj=${item}>${item.name}</paper-item>`)}
-              </paper-listbox>
+          <paper-dropdown-menu .dynamicAlign=${true} class="plain" no-label-float @iron-select=${(e) => this.optionSelectHandler(e)} style="width:100%">
+            <paper-listbox style="color:#000" slot="dropdown-content" .selected=${this.value.name || ""} attr-for-selected="name">
+              ${this.options && (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(this.options, (item) => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<paper-item style="font-family: ${item.style}" .name=${item.name} .obj=${item}>${item.name}</paper-item>`)}
+            </paper-listbox>
           </paper-dropdown-menu>
         </div>
       </span>
@@ -23897,19 +23882,19 @@ let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitE
   }
 };
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: String })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__.property)({ type: String })
 ], FwFontPick.prototype, "label", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Array })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__.property)({ type: Array })
 ], FwFontPick.prototype, "options", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.state)()
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__.state)()
 ], FwFontPick.prototype, "showDropdown", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Object })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__.property)({ type: Object })
 ], FwFontPick.prototype, "value", void 0);
 FwFontPick = __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.customElement)("fw-font-pick")
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_4__.customElement)("fw-font-pick")
 ], FwFontPick);
 
 
@@ -23928,6 +23913,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
 /* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
+var _a;
 var __decorate = function(decorators, target, key, desc) {
   var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
   if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23936,68 +23922,62 @@ var __decorate = function(decorators, target, key, desc) {
 };
 
 
-let FwSizePick = class FwSizePick2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+let FwSizePick = (_a = class extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
   constructor() {
     super(...arguments);
     this.value = "";
   }
   handleChange(e) {
-    var _a;
-    let size = (_a = e.target) === null || _a === void 0 ? void 0 : _a.value;
-    let detail = {
-      "value": size + "px"
+    var _a2;
+    const size = (_a2 = e.target) == null ? void 0 : _a2.value;
+    const detail = {
+      value: `${size}px`
     };
     this.value = detail.value;
     const event = new CustomEvent("value-changed", { detail, bubbles: true, composed: true });
     this.dispatchEvent(event);
   }
   render() {
-    var _a;
+    var _a2;
     return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-    <style>
-      .size-label {
-        font-size: ${this.value} !important;
-      }
-    </style>
-    <span part="size-container" class="size-container">
-      <p class="size-label" part="size-label">${this.label}</p>
-      <input
-        part="size-input"
-        type="number"
-        .value="${((_a = this.value) === null || _a === void 0 ? void 0 : _a.slice(0, -2)) || ""}"
-        @change="${this.handleChange}"
-      />
-    </span>
+      <style>
+        .size-label {
+          font-size: ${this.value} !important;
+        }
+      </style>
+      <span part="size-container" class="size-container">
+        <p class="size-label" part="size-label">${this.label}</p>
+        <input part="size-input" type="number" .value="${((_a2 = this.value) == null ? void 0 : _a2.slice(0, -2)) || ""}" @change="${this.handleChange}" />
+      </span>
     `;
   }
-};
-FwSizePick.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
-  .size-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    height: 3.2rem;
-    max-width: 6rem;
-    padding: 0.2rem 0.5rem;
-  }
-  .size-container > input {
-    width: 3rem;
-    box-sizing: border-box;
-    padding: 0.5rem 0.3rem;
-    font-size: 1.2rem;
-    border-radius: 4px;
-    border: solid 1px #1b1b1b1b;
-  }
-  .size-container > input:focus {
-    outline: solid 1px #1b1b1b4b;
-  }
+}, _a.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
+    .size-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      height: 3.2rem;
+      max-width: 6rem;
+      padding: 0.2rem 0.5rem;
+    }
+    .size-container > input {
+      width: 3rem;
+      box-sizing: border-box;
+      padding: 0.5rem 0.3rem;
+      font-size: 1.2rem;
+      border-radius: 4px;
+      border: solid 1px #1b1b1b1b;
+    }
+    .size-container > input:focus {
+      outline: solid 1px #1b1b1b4b;
+    }
 
-  .size-container > p {
-    margin: 0;
-    font-family: "DM Sans", sans-serif;
-  }
-  `;
+    .size-container > p {
+      margin: 0;
+      font-family: "DM Sans", sans-serif;
+    }
+  `, _a);
 __decorate([
   (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)()
 ], FwSizePick.prototype, "label", void 0);
@@ -24022,12 +24002,30 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   FwThemeBuilder: () => (/* binding */ FwThemeBuilder)
 /* harmony export */ });
-/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
-/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
-/* harmony import */ var _fw_color_pick__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fw-color-pick */ "../../packages/fw-theme-builder/fw-color-pick.js");
-/* harmony import */ var _fw_size_pick__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./fw-size-pick */ "../../packages/fw-theme-builder/fw-size-pick.js");
-/* harmony import */ var _fw_font_pick__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fw-font-pick */ "../../packages/fw-theme-builder/fw-font-pick.js");
-/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./models */ "../../packages/fw-theme-builder/models.js");
+/* harmony import */ var _fw_color_pick__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fw-color-pick */ "../../packages/fw-theme-builder/fw-color-pick.js");
+/* harmony import */ var _fw_font_pick__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fw-font-pick */ "../../packages/fw-theme-builder/fw-font-pick.js");
+/* harmony import */ var _fw_size_pick__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fw-size-pick */ "../../packages/fw-theme-builder/fw-size-pick.js");
+/* harmony import */ var _models__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./models */ "../../packages/fw-theme-builder/models.js");
+/* harmony import */ var _fw_components_localize__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @fw-components/localize */ "../../packages/localize/index.js");
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! lit */ "./node_modules/lit/index.js");
+/* harmony import */ var lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! lit/decorators.js */ "./node_modules/lit/decorators.js");
+var __defProp = Object.defineProperty;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var _a;
 var __decorate = function(decorators, target, key, desc) {
   var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
   if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -24040,49 +24038,50 @@ var __decorate = function(decorators, target, key, desc) {
 
 
 
+
 var ThemeEnum;
 (function(ThemeEnum2) {
   ThemeEnum2["COLORS"] = "colors";
   ThemeEnum2["FONTS"] = "fonts";
   ThemeEnum2["SIZES"] = "sizes";
 })(ThemeEnum || (ThemeEnum = {}));
-let FwThemeBuilder = class FwThemeBuilder2 extends lit__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+let FwThemeBuilder = (_a = class extends lit__WEBPACK_IMPORTED_MODULE_5__.LitElement {
   constructor() {
     super(...arguments);
     this.nav = "Home";
-    this.fontOptions = _models__WEBPACK_IMPORTED_MODULE_5__.fontOptions;
-    this.theme = _models__WEBPACK_IMPORTED_MODULE_5__.defaultTheme;
+    this.fontOptions = _models__WEBPACK_IMPORTED_MODULE_3__.fontOptions;
+    this.theme = _models__WEBPACK_IMPORTED_MODULE_3__.defaultTheme;
     this.viewByGroup = false;
   }
   sectionChangeHandler(s) {
     this.nav = s;
   }
   navigateBack() {
-    if (this.nav == "Home")
+    if (this.nav === "Home")
       return;
-    if (this.nav == ThemeEnum.COLORS || this.nav == ThemeEnum.SIZES || this.nav == ThemeEnum.FONTS) {
+    if (this.nav === ThemeEnum.COLORS || this.nav === ThemeEnum.SIZES || this.nav === ThemeEnum.FONTS) {
       this.nav = "Home";
     } else {
       this.nav = ThemeEnum.COLORS;
     }
   }
   createFontPickComponent(font) {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <fw-font-pick
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <fw-font-pick
       exportparts="font-container, font-label, font-button, font-dropdown-container, font-dropdown-option, font-dropdown-selected"
       .label=${font}
       @value-changed=${(e) => {
-      var _a;
-      let detail = {
+      var _a2;
+      const detail = {
         type: font,
         value: e.detail.value
       };
-      (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.dispatchEvent(new CustomEvent("font-changed", {
+      (_a2 = this.shadowRoot) == null ? void 0 : _a2.dispatchEvent(new CustomEvent("font-changed", {
         detail,
         bubbles: true,
         composed: true
       }));
       this.theme.fonts[font] = e.detail.value;
-      this.theme = Object.assign({}, this.theme);
+      this.theme = __spreadValues({}, this.theme);
     }}
       .options="${this.fontOptions}"
       .value=${this.theme.fonts[font]}
@@ -24090,154 +24089,110 @@ let FwThemeBuilder = class FwThemeBuilder2 extends lit__WEBPACK_IMPORTED_MODULE_
     </fw-font-pick>`;
   }
   createSizePickComponent(size) {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <fw-size-pick
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <fw-size-pick
       exportparts="size-container, size-label, size-input"
       .label=${size}
       @value-changed=${(e) => {
-      var _a;
-      let detail = {
+      var _a2;
+      const detail = {
         type: size,
         value: e.detail.value
       };
-      (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.dispatchEvent(new CustomEvent("size-changed", {
+      (_a2 = this.shadowRoot) == null ? void 0 : _a2.dispatchEvent(new CustomEvent("size-changed", {
         detail,
         bubbles: true,
         composed: true
       }));
       this.theme.sizes[size] = e.detail.value;
-      this.theme = Object.assign({}, this.theme);
+      this.theme = __spreadValues({}, this.theme);
     }}
       .value=${this.theme.sizes[size]}
     >
     </fw-size-pick>`;
   }
   createColorPickComponent(group, type) {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <fw-color-pick
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <fw-color-pick
       exportparts="color-button, color-label, color-hidden-input"
       @value-changed=${(e) => {
-      var _a;
-      let detail = {
+      var _a2;
+      const detail = {
         group,
         type,
         value: e.detail.hex,
         rgb: e.detail.rgb,
         hsl: e.detail.hsl
       };
-      (_a = this.shadowRoot) === null || _a === void 0 ? void 0 : _a.dispatchEvent(new CustomEvent("color-changed", {
+      (_a2 = this.shadowRoot) == null ? void 0 : _a2.dispatchEvent(new CustomEvent("color-changed", {
         detail,
         bubbles: true,
         composed: true
       }));
       this.theme.colors[group][type] = e.detail.hex;
-      this.theme = Object.assign({}, this.theme);
+      this.theme = __spreadValues({}, this.theme);
     }}
-      .label=${`${group} ${(type === null || type === void 0 ? void 0 : type.toLowerCase().slice(-3)) == "hex" ? type === null || type === void 0 ? void 0 : type.toLowerCase().slice(0, -4) : type}`}
+      .label=${`${group} ${(type == null ? void 0 : type.toLowerCase().slice(-3)) === "hex" ? type == null ? void 0 : type.toLowerCase().slice(0, -4) : type}`}
       .value="${this.theme.colors[group][type]}"
     >
     </fw-color-pick>`;
   }
   getContent() {
-    var _a, _b;
+    var _a2, _b;
     let content;
     switch (this.nav) {
       case "Home":
-        content = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <div part="content-container">
-          ${((_a = Object.keys(this.theme)) !== null && _a !== void 0 ? _a : []).map((section) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <button
-              part="theme-button"
-              @click=${() => this.sectionChangeHandler(`${section}`)}
-            >
-              ${section}
-            </button>`)}
+        content = (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <div part="content-container">
+          ${((_a2 = Object.keys(this.theme)) != null ? _a2 : []).map((section) => (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <button part="theme-button" @click=${() => this.sectionChangeHandler(`${section}`)}>${section}</button>`)}
         </div>`;
         break;
       case ThemeEnum.COLORS:
-        content = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <div part="content-container">
-          ${((_b = Object.keys(this.theme.colors)) !== null && _b !== void 0 ? _b : []).map((clr) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <button
-              part="theme-button"
-              @click=${() => this.sectionChangeHandler(`colors-${clr}`)}
-            >
-              ${clr}
-            </button>`)}
+        content = (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <div part="content-container">
+          ${((_b = Object.keys(this.theme.colors)) != null ? _b : []).map((color) => (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <button part="theme-button" @click=${() => this.sectionChangeHandler(`colors-${color}`)}>${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_4__.msg)(color)}</button>`)}
         </div>`;
         break;
       case ThemeEnum.SIZES:
-        content = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <span part="content-container">
-          ${this.theme[ThemeEnum.SIZES] && Object.keys(this.theme[ThemeEnum.SIZES]).length != 0 ? Object.keys(this.theme[ThemeEnum.SIZES]).map((size) => this.createSizePickComponent(size)) : null}
+        content = (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <span part="content-container">
+          ${this.theme[ThemeEnum.SIZES] && Object.keys(this.theme[ThemeEnum.SIZES]).length !== 0 ? Object.keys(this.theme[ThemeEnum.SIZES]).map((size) => this.createSizePickComponent(size)) : null}
         </span>`;
         break;
       case ThemeEnum.FONTS:
-        content = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <span part="content-container">
-          ${Object.keys(this.theme[ThemeEnum.FONTS]).map((font) => this.createFontPickComponent(font))}
-        </span>`;
+        content = (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <span part="content-container"> ${Object.keys(this.theme[ThemeEnum.FONTS]).map((font) => this.createFontPickComponent(font))} </span>`;
         break;
       default:
-        const group = this.nav.slice(7);
-        content = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <span part="content-container">
-          ${Object.keys(this.theme[ThemeEnum.COLORS][group]).map((type) => this.createColorPickComponent(group, type))}
+        content = (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <span part="content-container">
+          ${Object.keys(this.theme[ThemeEnum.COLORS][this.nav.slice(7)]).map((type) => this.createColorPickComponent(this.nav.slice(7), type))}
         </span>`;
         break;
     }
     return content;
   }
   render() {
-    return (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+    return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
       <div part="container">
-        ${this.viewByGroup ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)` <span
-                part="back-icon-container"
-                class="back-button ${this.nav == "Home" ? "back-hidden" : ""}"
-                @click="${this.navigateBack}"
-              >
-                <svg
-                  class="back-icon"
-                  width="46"
-                  height="80"
-                  viewBox="0 0 46 80"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+        ${this.viewByGroup ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <span part="back-icon-container" class="back-button ${this.nav === "Home" ? "back-hidden" : ""}" @click="${this.navigateBack}">
+                <svg class="back-icon" width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M43.9567 77.8954C46.6811 75.1012 46.6811 70.5876 43.9567 67.7935L16.8527 39.9955L43.9567 12.1975C46.6811 9.40334 46.6811 4.88973 43.9567 2.0956C41.2324 -0.698533 36.8314 -0.698533 34.1071 2.0956L2.04329 34.9804C-0.681091 37.7745 -0.681092 42.2881 2.04328 45.0822L34.1071 77.967C36.7616 80.6895 41.2323 80.6895 43.9567 77.8954Z"
                     fill="black"
                   />
                 </svg>
               </span>
-              <span part="content-span"> ${this.getContent()} </span>` : (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+              <span part="content-span"> ${this.getContent()} </span>` : (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
               ${// Fonts
-    this.theme && this.theme[ThemeEnum.FONTS] && Object.keys(this.theme[ThemeEnum.FONTS]).length != 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div part="fonts-ungrouped-container">
-                      <h2
-                        class="section-heading"
-                        part="fonts-ungrouped-heading"
-                      >
-                        Fonts
-                      </h2>
+    this.theme && this.theme[ThemeEnum.FONTS] && Object.keys(this.theme[ThemeEnum.FONTS]).length !== 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div part="fonts-ungrouped-container">
+                      <h2 class="section-heading" part="fonts-ungrouped-heading">${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_4__.msg)("Fonts")}</h2>
                       ${Object.keys(this.theme[ThemeEnum.FONTS]).map((font) => this.createFontPickComponent(font))}
                     </div>` : null}
               ${// Sizes
-    this.theme && this.theme[ThemeEnum.SIZES] && Object.keys(this.theme[ThemeEnum.SIZES]).length != 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div part="sizes-ungrouped-container">
-                      <h2
-                        class="section-heading"
-                        part="sizes-ungrouped-heading"
-                      >
-                        Sizes
-                      </h2>
+    this.theme && this.theme[ThemeEnum.SIZES] && Object.keys(this.theme[ThemeEnum.SIZES]).length !== 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div part="sizes-ungrouped-container">
+                      <h2 class="section-heading" part="sizes-ungrouped-heading">${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_4__.msg)("Sizes")}</h2>
                       ${Object.keys(this.theme[ThemeEnum.SIZES]).map((size) => this.createSizePickComponent(size))}
                     </div>` : null}
               ${// Colors
-    this.theme && this.theme[ThemeEnum.COLORS] && Object.keys(this.theme[ThemeEnum.COLORS]).length != 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`<div part="colors-ungrouped-container">
-                      <h2
-                        class="section-heading"
-                        part="colors-ungrouped-heading"
-                      >
-                        Colors
-                      </h2>
-                      ${Object.keys(this.theme[ThemeEnum.COLORS]).map((group) => (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
+    this.theme && this.theme[ThemeEnum.COLORS] && Object.keys(this.theme[ThemeEnum.COLORS]).length !== 0 ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`<div part="colors-ungrouped-container">
+                      <h2 class="section-heading" part="colors-ungrouped-heading">${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_4__.msg)("Colors")}</h2>
+                      ${Object.keys(this.theme[ThemeEnum.COLORS]).map((group) => (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
                           <div part="color-group-container">
-                            <h3
-                              class="color-group-heading"
-                              part="color-group-heading"
-                            >
-                              ${group}
-                            </h3>
+                            <h3 class="color-group-heading" part="color-group-heading">${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_4__.msg)(group)}</h3>
                             ${Object.keys(this.theme[ThemeEnum.COLORS][group]).map((type) => this.createColorPickComponent(group, type))}
                           </div>
                         `)}
@@ -24246,8 +24201,7 @@ let FwThemeBuilder = class FwThemeBuilder2 extends lit__WEBPACK_IMPORTED_MODULE_
       </div>
     `;
   }
-};
-FwThemeBuilder.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
+}, _a.styles = (0,lit__WEBPACK_IMPORTED_MODULE_5__.css)`
     .back-button {
       user-select: none;
       cursor: pointer;
@@ -24273,21 +24227,21 @@ FwThemeBuilder.styles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.css)`
       border-bottom: 1px solid #1b1b1b3b;
       padding-bottom: 0.2rem;
     }
-  `;
+  `, _a);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.state)()
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__.state)()
 ], FwThemeBuilder.prototype, "nav", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Array })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__.property)({ type: Array })
 ], FwThemeBuilder.prototype, "fontOptions", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Object })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__.property)({ type: Object })
 ], FwThemeBuilder.prototype, "theme", void 0);
 __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.property)({ type: Boolean })
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__.property)({ type: Boolean })
 ], FwThemeBuilder.prototype, "viewByGroup", void 0);
 FwThemeBuilder = __decorate([
-  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_1__.customElement)("fw-theme-builder")
+  (0,lit_decorators_js__WEBPACK_IMPORTED_MODULE_6__.customElement)("fw-theme-builder")
 ], FwThemeBuilder);
 
 
@@ -24394,49 +24348,49 @@ const fontOptions = [
 ];
 const defaultTheme = {
   fonts: {
-    "Title": {
+    Title: {
       name: "DM Sans",
       url: "https://fonts.gstatic.com/s/dmsans/v11/rP2Hp2ywxg089UriCZOIHQ.woff2",
       style: "'DM Sans', sans-serif"
     },
-    "Body": {
+    Body: {
       name: "DM Sans",
       url: "https://fonts.gstatic.com/s/dmsans/v11/rP2Hp2ywxg089UriCZOIHQ.woff2",
       style: "'DM Sans', sans-serif"
     }
   },
   sizes: {
-    "Tiny": "10px",
-    "XS": "14px",
-    "S": "16px",
-    "M": "18px",
-    "L": "20px",
-    "XL": "22px",
-    "Huge": "48px"
+    Tiny: "10px",
+    XS: "14px",
+    S: "16px",
+    M: "18px",
+    L: "20px",
+    XL: "22px",
+    Huge: "48px"
   },
   colors: {
-    "Primary": {
-      "Hex": "#ad38d1",
-      "L1": "#ba68d3",
-      "L2": "#dcb5e7",
-      "L3": "#e5d3eb",
-      "Contrast": "#f0f0f0"
+    Primary: {
+      Hex: "#ad38d1",
+      L1: "#ba68d3",
+      L2: "#dcb5e7",
+      L3: "#e5d3eb",
+      Contrast: "#f0f0f0"
     },
-    "Secondary": {
-      "Hex": "#4a48c7",
-      "L1": "#5f5dce",
-      "L2": "#706fd1",
-      "L3": "#9190df",
-      "Contrast": "#ebdbdb"
+    Secondary: {
+      Hex: "#4a48c7",
+      L1: "#5f5dce",
+      L2: "#706fd1",
+      L3: "#9190df",
+      Contrast: "#ebdbdb"
     },
-    "Background": {
-      "Hex": "#eeeeee"
+    Background: {
+      Hex: "#eeeeee"
     },
-    "Error": {
-      "Hex": "#e61e1e",
-      "L1": "#f1b4b4"
+    Error: {
+      Hex: "#e61e1e",
+      L1: "#f1b4b4"
     },
-    "Text": {
+    Text: {
       "Title": "#1b1b1b",
       "Subtitle": "#1b1b1b",
       "Body": "#1b1b1b",
@@ -24502,7 +24456,8 @@ const SelectInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     sl-option::part(base):hover {
       background-color: var(--secondary-color-l3);
     }
-    sl-option[aria-selected="true"]::part(base), sl-option[selected]::part(base) {
+    sl-option[aria-selected="true"]::part(base),
+    sl-option[selected]::part(base) {
       background-color: var(--primary-color-l1) !important;
       color: var(--light-color) !important;
     }
@@ -24527,9 +24482,9 @@ const InputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
       paper-input,
       paper-dropdown-menu,
       paper-textarea {
-        --paper-input-container : {
+        --paper-input-container: {
           padding: 0px;
-        }
+        };
       }
     </style>
   </custom-style>
@@ -24848,9 +24803,7 @@ const SmallInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
   </custom-style>
 `;
 const AllInputStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
-  ${InputStyles} ${BoxInputStyles} ${CheckboxStyles} ${LargeInputStyles}
-  ${PlainInputStyles} ${SmallInputStyles} ${UnderlinedInputStyles}
-  ${DropdownStyles}
+  ${InputStyles} ${BoxInputStyles} ${CheckboxStyles} ${LargeInputStyles} ${PlainInputStyles} ${SmallInputStyles} ${UnderlinedInputStyles} ${DropdownStyles}
 `;
 
 
@@ -25282,6 +25235,648 @@ const ThemeBuilderShowcaseStyles = (0,lit__WEBPACK_IMPORTED_MODULE_0__.html)`
     }
   </style>
 `;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/init/install.js":
+/*!********************************************************!*\
+  !*** ../../node_modules/@lit/localize/init/install.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   _installMsgImplementation: () => (/* binding */ _installMsgImplementation),
+/* harmony export */   msg: () => (/* binding */ msg)
+/* harmony export */ });
+/* harmony import */ var _internal_default_msg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../internal/default-msg.js */ "../../node_modules/@lit/localize/internal/default-msg.js");
+
+let msg = _internal_default_msg_js__WEBPACK_IMPORTED_MODULE_0__.defaultMsg;
+let installed = false;
+function _installMsgImplementation(impl) {
+  if (installed) {
+    throw new Error("lit-localize can only be configured once");
+  }
+  msg = impl;
+  installed = true;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/init/runtime.js":
+/*!********************************************************!*\
+  !*** ../../node_modules/@lit/localize/init/runtime.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   configureLocalization: () => (/* binding */ configureLocalization)
+/* harmony export */ });
+/* harmony import */ var _internal_deferred_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../internal/deferred.js */ "../../node_modules/@lit/localize/internal/deferred.js");
+/* harmony import */ var _internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../internal/locale-status-event.js */ "../../node_modules/@lit/localize/internal/locale-status-event.js");
+/* harmony import */ var _internal_runtime_msg_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../internal/runtime-msg.js */ "../../node_modules/@lit/localize/internal/runtime-msg.js");
+/* harmony import */ var _install_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./install.js */ "../../node_modules/@lit/localize/init/install.js");
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+
+
+function dispatchStatusEvent(detail) {
+  window.dispatchEvent(new CustomEvent(_internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_1__.LOCALE_STATUS_EVENT, { detail }));
+}
+let activeLocale = "";
+let loadingLocale;
+let sourceLocale;
+let validLocales;
+let loadLocale;
+let templates;
+let loading = new _internal_deferred_js__WEBPACK_IMPORTED_MODULE_0__.Deferred();
+loading.resolve();
+let requestId = 0;
+const configureLocalization = (config) => {
+  (0,_install_js__WEBPACK_IMPORTED_MODULE_3__._installMsgImplementation)((template, options) => (0,_internal_runtime_msg_js__WEBPACK_IMPORTED_MODULE_2__.runtimeMsg)(templates, template, options));
+  activeLocale = sourceLocale = config.sourceLocale;
+  validLocales = new Set(config.targetLocales);
+  validLocales.add(config.sourceLocale);
+  loadLocale = config.loadLocale;
+  return { getLocale, setLocale };
+};
+const getLocale = () => {
+  return activeLocale;
+};
+const setLocale = (newLocale) => {
+  if (newLocale === (loadingLocale != null ? loadingLocale : activeLocale)) {
+    return loading.promise;
+  }
+  if (!validLocales || !loadLocale) {
+    throw new Error("Internal error");
+  }
+  if (!validLocales.has(newLocale)) {
+    throw new Error("Invalid locale code");
+  }
+  requestId++;
+  const thisRequestId = requestId;
+  loadingLocale = newLocale;
+  if (loading.settled) {
+    loading = new _internal_deferred_js__WEBPACK_IMPORTED_MODULE_0__.Deferred();
+  }
+  dispatchStatusEvent({ status: "loading", loadingLocale: newLocale });
+  const localePromise = newLocale === sourceLocale ? (
+    // We could switch to the source locale synchronously, but we prefer to
+    // queue it on a microtask so that switching locales is consistently
+    // asynchronous.
+    Promise.resolve({ templates: void 0 })
+  ) : loadLocale(newLocale);
+  localePromise.then((mod) => {
+    if (requestId === thisRequestId) {
+      activeLocale = newLocale;
+      loadingLocale = void 0;
+      templates = mod.templates;
+      dispatchStatusEvent({ status: "ready", readyLocale: newLocale });
+      loading.resolve();
+    }
+  }, (err) => {
+    if (requestId === thisRequestId) {
+      dispatchStatusEvent({
+        status: "error",
+        errorLocale: newLocale,
+        errorMessage: err.toString()
+      });
+      loading.reject(err);
+    }
+  });
+  return loading.promise;
+};
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/init/transform.js":
+/*!**********************************************************!*\
+  !*** ../../node_modules/@lit/localize/init/transform.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   configureTransformLocalization: () => (/* binding */ configureTransformLocalization)
+/* harmony export */ });
+/* harmony import */ var _internal_default_msg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../internal/default-msg.js */ "../../node_modules/@lit/localize/internal/default-msg.js");
+/* harmony import */ var _install_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./install.js */ "../../node_modules/@lit/localize/init/install.js");
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+const configureTransformLocalization = (config) => {
+  (0,_install_js__WEBPACK_IMPORTED_MODULE_1__._installMsgImplementation)(_internal_default_msg_js__WEBPACK_IMPORTED_MODULE_0__.defaultMsg);
+  const sourceLocale = config.sourceLocale;
+  return {
+    getLocale: () => sourceLocale
+  };
+};
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/default-msg.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/default-msg.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   defaultMsg: () => (/* binding */ defaultMsg)
+/* harmony export */ });
+/* harmony import */ var _str_tag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./str-tag.js */ "../../node_modules/@lit/localize/internal/str-tag.js");
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+const defaultMsg = (template) => (0,_str_tag_js__WEBPACK_IMPORTED_MODULE_0__.isStrTagged)(template) ? (0,_str_tag_js__WEBPACK_IMPORTED_MODULE_0__.joinStringsAndValues)(template.strings, template.values) : template;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/deferred.js":
+/*!*************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/deferred.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Deferred: () => (/* binding */ Deferred)
+/* harmony export */ });
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+class Deferred {
+  constructor() {
+    this.settled = false;
+    this.promise = new Promise((resolve, reject) => {
+      this._resolve = resolve;
+      this._reject = reject;
+    });
+  }
+  resolve(value) {
+    this.settled = true;
+    this._resolve(value);
+  }
+  reject(error) {
+    this.settled = true;
+    this._reject(error);
+  }
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/fnv1a64.js":
+/*!************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/fnv1a64.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   fnv1a64: () => (/* binding */ fnv1a64)
+/* harmony export */ });
+/**
+ * @license
+ * Copyright 2014 Travis Webb
+ * SPDX-License-Identifier: MIT
+ */
+const hl = [];
+for (let i = 0; i < 256; i++) {
+  hl[i] = (i >> 4 & 15).toString(16) + (i & 15).toString(16);
+}
+function fnv1a64(str) {
+  let t0 = 0, v0 = 8997, t1 = 0, v1 = 33826, t2 = 0, v2 = 40164, t3 = 0, v3 = 52210;
+  for (let i = 0; i < str.length; i++) {
+    v0 ^= str.charCodeAt(i);
+    t0 = v0 * 435;
+    t1 = v1 * 435;
+    t2 = v2 * 435;
+    t3 = v3 * 435;
+    t2 += v0 << 8;
+    t3 += v1 << 8;
+    t1 += t0 >>> 16;
+    v0 = t0 & 65535;
+    t2 += t1 >>> 16;
+    v1 = t1 & 65535;
+    v3 = t3 + (t2 >>> 16) & 65535;
+    v2 = t2 & 65535;
+  }
+  return hl[v3 >> 8] + hl[v3 & 255] + hl[v2 >> 8] + hl[v2 & 255] + hl[v1 >> 8] + hl[v1 & 255] + hl[v0 >> 8] + hl[v0 & 255];
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/id-generation.js":
+/*!******************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/id-generation.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   HASH_DELIMITER: () => (/* binding */ HASH_DELIMITER),
+/* harmony export */   generateMsgId: () => (/* binding */ generateMsgId)
+/* harmony export */ });
+/* harmony import */ var _fnv1a64_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./fnv1a64.js */ "../../node_modules/@lit/localize/internal/fnv1a64.js");
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+const HASH_DELIMITER = "";
+const HTML_PREFIX = "h";
+const STRING_PREFIX = "s";
+function generateMsgId(strings, isHtmlTagged) {
+  return (isHtmlTagged ? HTML_PREFIX : STRING_PREFIX) + (0,_fnv1a64_js__WEBPACK_IMPORTED_MODULE_0__.fnv1a64)(typeof strings === "string" ? strings : strings.join(HASH_DELIMITER));
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/locale-status-event.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/locale-status-event.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LOCALE_STATUS_EVENT: () => (/* binding */ LOCALE_STATUS_EVENT)
+/* harmony export */ });
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+const LOCALE_STATUS_EVENT = "lit-localize-status";
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/localized-controller.js":
+/*!*************************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/localized-controller.js ***!
+  \*************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   updateWhenLocaleChanges: () => (/* binding */ updateWhenLocaleChanges)
+/* harmony export */ });
+/* harmony import */ var _locale_status_event_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./locale-status-event.js */ "../../node_modules/@lit/localize/internal/locale-status-event.js");
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+class LocalizeController {
+  constructor(host) {
+    this.__litLocalizeEventHandler = (event) => {
+      if (event.detail.status === "ready") {
+        this.host.requestUpdate();
+      }
+    };
+    this.host = host;
+  }
+  hostConnected() {
+    window.addEventListener(_locale_status_event_js__WEBPACK_IMPORTED_MODULE_0__.LOCALE_STATUS_EVENT, this.__litLocalizeEventHandler);
+  }
+  hostDisconnected() {
+    window.removeEventListener(_locale_status_event_js__WEBPACK_IMPORTED_MODULE_0__.LOCALE_STATUS_EVENT, this.__litLocalizeEventHandler);
+  }
+}
+const _updateWhenLocaleChanges = (host) => host.addController(new LocalizeController(host));
+const updateWhenLocaleChanges = _updateWhenLocaleChanges;
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/localized-decorator.js":
+/*!************************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/localized-decorator.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   localized: () => (/* binding */ localized)
+/* harmony export */ });
+/* harmony import */ var _localized_controller_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./localized-controller.js */ "../../node_modules/@lit/localize/internal/localized-controller.js");
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+const localized = () => (clazz, _context) => {
+  clazz.addInitializer(_localized_controller_js__WEBPACK_IMPORTED_MODULE_0__.updateWhenLocaleChanges);
+  return clazz;
+};
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/runtime-msg.js":
+/*!****************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/runtime-msg.js ***!
+  \****************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   runtimeMsg: () => (/* binding */ runtimeMsg)
+/* harmony export */ });
+/* harmony import */ var _default_msg_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./default-msg.js */ "../../node_modules/@lit/localize/internal/default-msg.js");
+/* harmony import */ var _str_tag_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./str-tag.js */ "../../node_modules/@lit/localize/internal/str-tag.js");
+/* harmony import */ var _id_generation_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./id-generation.js */ "../../node_modules/@lit/localize/internal/id-generation.js");
+var __defProp = Object.defineProperty;
+var __defProps = Object.defineProperties;
+var __getOwnPropDescs = Object.getOwnPropertyDescriptors;
+var __getOwnPropSymbols = Object.getOwnPropertySymbols;
+var __hasOwnProp = Object.prototype.hasOwnProperty;
+var __propIsEnum = Object.prototype.propertyIsEnumerable;
+var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
+var __spreadValues = (a, b) => {
+  for (var prop in b || (b = {}))
+    if (__hasOwnProp.call(b, prop))
+      __defNormalProp(a, prop, b[prop]);
+  if (__getOwnPropSymbols)
+    for (var prop of __getOwnPropSymbols(b)) {
+      if (__propIsEnum.call(b, prop))
+        __defNormalProp(a, prop, b[prop]);
+    }
+  return a;
+};
+var __spreadProps = (a, b) => __defProps(a, __getOwnPropDescs(b));
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+
+const expressionOrders = /* @__PURE__ */ new WeakMap();
+const hashCache = /* @__PURE__ */ new Map();
+function runtimeMsg(templates, template, options) {
+  var _a;
+  if (templates) {
+    const id = (_a = options == null ? void 0 : options.id) != null ? _a : generateId(template);
+    const localized = templates[id];
+    if (localized) {
+      if (typeof localized === "string") {
+        return localized;
+      } else if ("strTag" in localized) {
+        return (0,_str_tag_js__WEBPACK_IMPORTED_MODULE_1__.joinStringsAndValues)(
+          localized.strings,
+          // Cast `template` because its type wasn't automatically narrowed (but
+          // we know it must be the same type as `localized`).
+          template.values,
+          localized.values
+        );
+      } else {
+        let order = expressionOrders.get(localized);
+        if (order === void 0) {
+          order = localized.values;
+          expressionOrders.set(localized, order);
+        }
+        return __spreadProps(__spreadValues({}, localized), {
+          values: order.map((i) => template.values[i])
+        });
+      }
+    }
+  }
+  return (0,_default_msg_js__WEBPACK_IMPORTED_MODULE_0__.defaultMsg)(template);
+}
+function generateId(template) {
+  const strings = typeof template === "string" ? template : template.strings;
+  let id = hashCache.get(strings);
+  if (id === void 0) {
+    id = (0,_id_generation_js__WEBPACK_IMPORTED_MODULE_2__.generateMsgId)(strings, typeof template !== "string" && !("strTag" in template));
+    hashCache.set(strings, id);
+  }
+  return id;
+}
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/str-tag.js":
+/*!************************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/str-tag.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   isStrTagged: () => (/* binding */ isStrTagged),
+/* harmony export */   joinStringsAndValues: () => (/* binding */ joinStringsAndValues),
+/* harmony export */   str: () => (/* binding */ str)
+/* harmony export */ });
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+const _str = (strings, ...values) => ({
+  strTag: true,
+  strings,
+  values
+});
+const str = _str;
+const isStrTagged = (val) => typeof val !== "string" && "strTag" in val;
+const joinStringsAndValues = (strings, values, valueOrder) => {
+  let concat = strings[0];
+  for (let i = 1; i < strings.length; i++) {
+    concat += values[valueOrder ? valueOrder[i - 1] : i - 1];
+    concat += strings[i];
+  }
+  return concat;
+};
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/internal/types.js":
+/*!**********************************************************!*\
+  !*** ../../node_modules/@lit/localize/internal/types.js ***!
+  \**********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/**
+ * @license
+ * Copyright 2021 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+
+/***/ }),
+
+/***/ "../../node_modules/@lit/localize/lit-localize.js":
+/*!********************************************************!*\
+  !*** ../../node_modules/@lit/localize/lit-localize.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   LOCALE_STATUS_EVENT: () => (/* reexport safe */ _internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_0__.LOCALE_STATUS_EVENT),
+/* harmony export */   configureLocalization: () => (/* reexport safe */ _init_runtime_js__WEBPACK_IMPORTED_MODULE_6__.configureLocalization),
+/* harmony export */   configureTransformLocalization: () => (/* reexport safe */ _init_transform_js__WEBPACK_IMPORTED_MODULE_7__.configureTransformLocalization),
+/* harmony export */   isStrTagged: () => (/* reexport safe */ _internal_str_tag_js__WEBPACK_IMPORTED_MODULE_1__.isStrTagged),
+/* harmony export */   joinStringsAndValues: () => (/* reexport safe */ _internal_str_tag_js__WEBPACK_IMPORTED_MODULE_1__.joinStringsAndValues),
+/* harmony export */   localized: () => (/* reexport safe */ _internal_localized_decorator_js__WEBPACK_IMPORTED_MODULE_5__.localized),
+/* harmony export */   msg: () => (/* reexport safe */ _init_install_js__WEBPACK_IMPORTED_MODULE_3__.msg),
+/* harmony export */   str: () => (/* reexport safe */ _internal_str_tag_js__WEBPACK_IMPORTED_MODULE_1__.str),
+/* harmony export */   updateWhenLocaleChanges: () => (/* reexport safe */ _internal_localized_controller_js__WEBPACK_IMPORTED_MODULE_4__.updateWhenLocaleChanges)
+/* harmony export */ });
+/* harmony import */ var _internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./internal/locale-status-event.js */ "../../node_modules/@lit/localize/internal/locale-status-event.js");
+/* harmony import */ var _internal_str_tag_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./internal/str-tag.js */ "../../node_modules/@lit/localize/internal/str-tag.js");
+/* harmony import */ var _internal_types_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./internal/types.js */ "../../node_modules/@lit/localize/internal/types.js");
+/* harmony import */ var _init_install_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./init/install.js */ "../../node_modules/@lit/localize/init/install.js");
+/* harmony import */ var _internal_localized_controller_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./internal/localized-controller.js */ "../../node_modules/@lit/localize/internal/localized-controller.js");
+/* harmony import */ var _internal_localized_decorator_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./internal/localized-decorator.js */ "../../node_modules/@lit/localize/internal/localized-decorator.js");
+/* harmony import */ var _init_runtime_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./init/runtime.js */ "../../node_modules/@lit/localize/init/runtime.js");
+/* harmony import */ var _init_transform_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./init/transform.js */ "../../node_modules/@lit/localize/init/transform.js");
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+
+
+
+
+
+
+
+
+
+
+/***/ }),
+
+/***/ "../../packages/localize/index.js":
+/*!****************************************!*\
+  !*** ../../packages/localize/index.js ***!
+  \****************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   configureLocalization: () => (/* binding */ configureLocalization),
+/* harmony export */   msg: () => (/* reexport safe */ _lit_localize_init_install_js__WEBPACK_IMPORTED_MODULE_0__.msg),
+/* harmony export */   msgImpl: () => (/* binding */ msgImpl),
+/* harmony export */   str: () => (/* reexport safe */ _lit_localize__WEBPACK_IMPORTED_MODULE_3__.str),
+/* harmony export */   updateWhenLocaleChanges: () => (/* reexport safe */ _lit_localize__WEBPACK_IMPORTED_MODULE_3__.updateWhenLocaleChanges)
+/* harmony export */ });
+/* harmony import */ var _lit_localize_init_install_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @lit/localize/init/install.js */ "../../node_modules/@lit/localize/init/install.js");
+/* harmony import */ var _lit_localize_internal_deferred_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @lit/localize/internal/deferred.js */ "../../node_modules/@lit/localize/internal/deferred.js");
+/* harmony import */ var _lit_localize_internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @lit/localize/internal/locale-status-event.js */ "../../node_modules/@lit/localize/internal/locale-status-event.js");
+/* harmony import */ var _lit_localize__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @lit/localize */ "../../node_modules/@lit/localize/lit-localize.js");
+
+
+
+
+
+
+function dispatchStatusEvent(detail) {
+  window.dispatchEvent(new CustomEvent(_lit_localize_internal_locale_status_event_js__WEBPACK_IMPORTED_MODULE_2__.LOCALE_STATUS_EVENT, { detail }));
+}
+let activeLocale = "";
+let loadingLocale;
+let sourceLocale;
+let validLocales;
+let loadLocale;
+let dictionary = {};
+let loading = new _lit_localize_internal_deferred_js__WEBPACK_IMPORTED_MODULE_1__.Deferred();
+loading.resolve();
+let requestId = 0;
+const msgImpl = (payload, dictionary2) => {
+  if (dictionary2 == null ? void 0 : dictionary2[payload])
+    return dictionary2 == null ? void 0 : dictionary2[payload];
+  else
+    return payload;
+};
+const configureLocalization = (config) => {
+  (0,_lit_localize_init_install_js__WEBPACK_IMPORTED_MODULE_0__._installMsgImplementation)((payload) => msgImpl(payload, dictionary));
+  activeLocale = sourceLocale = config.sourceLocale;
+  validLocales = new Set(config.targetLocales);
+  validLocales.add(config.sourceLocale);
+  loadLocale = config.loadLocale;
+  return { getLocale, setLocale };
+};
+const getLocale = () => {
+  return activeLocale;
+};
+const setLocale = (newLocale) => {
+  if (newLocale === (loadingLocale != null ? loadingLocale : activeLocale)) {
+    return loading.promise;
+  }
+  if (!validLocales || !loadLocale) {
+    throw new Error("Internal error");
+  }
+  if (!validLocales.has(newLocale)) {
+    throw new Error("Invalid locale code");
+  }
+  requestId++;
+  const thisRequestId = requestId;
+  loadingLocale = newLocale;
+  if (loading.settled) {
+    loading = new _lit_localize_internal_deferred_js__WEBPACK_IMPORTED_MODULE_1__.Deferred();
+  }
+  dispatchStatusEvent({ status: "loading", loadingLocale: newLocale });
+  const localePromise = newLocale === sourceLocale ? (
+    // We could switch to the source locale synchronously, but we prefer to
+    // queue it on a microtask so that switching locales is consistently
+    // asynchronous.
+    Promise.resolve({})
+  ) : loadLocale(newLocale);
+  localePromise.then((localeDictionary) => {
+    if (requestId === thisRequestId) {
+      activeLocale = newLocale;
+      loadingLocale = void 0;
+      dictionary = localeDictionary;
+      dispatchStatusEvent({ status: "ready", readyLocale: newLocale });
+      loading.resolve();
+    }
+  }, (err) => {
+    if (requestId === thisRequestId) {
+      dispatchStatusEvent({
+        status: "error",
+        errorLocale: newLocale,
+        errorMessage: err.toString()
+      });
+      loading.reject(err);
+    }
+  });
+  return loading.promise;
+};
 
 
 /***/ }),
