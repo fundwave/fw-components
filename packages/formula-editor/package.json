@@ -15,6 +15,8 @@
   "scripts": {
     "build": "tsc --composite false",
     "dev": "tsc -w --composite false",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -32,7 +34,8 @@
   "devDependencies": {
     "@types/big.js": "6.2.2",
     "es-dev-server": "2.1.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "2.1.9"
   },
   "gitHead": "c0e5c9903eedbe31cd57a39b88eb333b83149e3a"
 }
