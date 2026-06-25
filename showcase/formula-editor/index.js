@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { property, query, state } from "lit/decorators.js";
 import "@fw-components/formula-editor";
 import { Parser } from "@fw-components/formula-editor/utils/parser.js";
-import { Formula } from "@fw-components/formula-editor/types";
+import { Formula } from "@fw-components/formula-editor/types/index.js";
 
 export class FWFormulaEditorShowcase extends LitElement {
   @property({ type: Object })
