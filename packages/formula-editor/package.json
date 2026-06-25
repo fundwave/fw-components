@@ -5,7 +5,7 @@
   "main": "dist/formula-editor.js",
   "exports": {
     ".": "./dist/formula-editor.js",
-    "./utils/*.js": "./dist/utils/*.js"
+    "./*": "./dist/*"
   },
   "publishConfig": {
     "access": "public"

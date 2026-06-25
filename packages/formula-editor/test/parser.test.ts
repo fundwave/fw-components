@@ -153,17 +153,21 @@ describe("Parser.addParentheses", () => {
   });
 
   it("adds parentheses when lower-precedence op is nested", () => {
-    const result = parser.addParentheses("(A + B) * C");
-    expect(result).toBe("(A + B) * C");
+    const result = parser.addParentheses("(A + B) * C / A");
+    expect(result).toBe("((A + B) * C) / A");
   });
 
   it("handles unary minus formula", () => {
     const vars2 = new Map<string, number>([
       ["X", 100],
-      ["Y", 200]
+      ["Y", 200],
+      ["A", 10],
+      ["B", 5],
+      ["C", 2]
     ]);
+
     const p2 = new Parser(vars2, 0);
-    const result = p2.addParentheses("- X / Y");
-    expect(result).toBe("-X / Y");
+    const result = p2.addParentheses("-X / Y + A * X - B / C");
+    expect(result).toBe("(-X / Y + A * X) - B / C");
   });
 });
