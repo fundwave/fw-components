@@ -1,6 +1,6 @@
 {
   "packages": ["packages/*"],
-  "version": "2.4.1-handle-unary-prefixes.3",
+  "version": "2.5.0",
   "command": {
     "version": {
       "message": "chore(release): publish %s \n [skip ci]"
