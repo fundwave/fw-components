@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/formula-editor",
-  "version": "2.4.1-handle-unary-prefixes.0",
+  "version": "2.4.1-handle-unary-prefixes.1",
   "description": "A WYSIWYG type formula editor",
   "main": "dist/formula-editor.js",
   "exports": {
