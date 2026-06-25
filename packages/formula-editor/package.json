@@ -2,12 +2,10 @@
   "name": "@fw-components/formula-editor",
   "version": "2.4.1-handle-unary-prefixes.0",
   "description": "A WYSIWYG type formula editor",
-  "main": "dist/formula-editor/src/formula-editor.js",
+  "main": "dist/formula-editor.js",
   "exports": {
-    ".": "./dist/formula-editor/src/formula-editor.js",
-    "./types": "./dist/formula-editor/src/types",
-    "./types/*.js": "./dist/formula-editor/src/types/*.js",
-    "./utils/*.js": "./dist/formula-editor/src/utils/*.js"
+    ".": "./dist/formula-editor.js",
+    "./utils/*.js": "./dist/utils/*.js"
   },
   "publishConfig": {
     "access": "public"
