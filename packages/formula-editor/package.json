@@ -1,13 +1,11 @@
 {
   "name": "@fw-components/formula-editor",
-  "version": "2.4.0",
+  "version": "2.4.1-handle-unary-prefixes.3",
   "description": "A WYSIWYG type formula editor",
-  "main": "dist/formula-editor/src/formula-editor.js",
+  "main": "dist/formula-editor.js",
   "exports": {
-    ".": "./dist/formula-editor/src/formula-editor.js",
-    "./types": "./dist/formula-editor/src/types",
-    "./types/*.js": "./dist/formula-editor/src/types/*.js",
-    "./utils/*.js": "./dist/formula-editor/src/utils/*.js"
+    ".": "./dist/formula-editor.js",
+    "./*": "./dist/*"
   },
   "publishConfig": {
     "access": "public"
@@ -15,6 +13,8 @@
   "scripts": {
     "build": "tsc --composite false",
     "dev": "tsc -w --composite false",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -32,7 +32,8 @@
   "devDependencies": {
     "@types/big.js": "6.2.2",
     "es-dev-server": "2.1.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "2.1.9"
   },
   "gitHead": "c0e5c9903eedbe31cd57a39b88eb333b83149e3a"
 }

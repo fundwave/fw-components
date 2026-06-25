@@ -39,6 +39,20 @@ export class Parser {
     return !Number.isNaN(Number(value));
   }
 
+  /**
+   * Checks whether a token is a valid operand: a known variable, a number, or a unary-prefixed variable
+   */
+  private isOperand(token: string): boolean {
+    if (!token.trim().length) return false;
+    if (!Number.isNaN(Number(token)) || this.variables.has(token)) return true;
+
+    if (token.length > 1 && unaryOperators.includes(token[0])) {
+      const inner = token.substring(1);
+      return !Number.isNaN(Number(inner)) || this.variables.has(inner);
+    }
+    return false;
+  }
+
   formatFormulaToken(token: string) {
     for (const existingKey of this.variables.keys()) {
       if (existingKey.toLowerCase() === token.toLowerCase()) {
@@ -253,7 +267,7 @@ export class Parser {
         }
 
         operatorStack.push(token);
-      } else if ((!Number.isNaN(Number(token)) || this.variables.has(token)) && token.trim().length) {
+      } else if (this.isOperand(token)) {
         outputQueue.enqueue(token);
       }
     }
@@ -283,11 +297,7 @@ export class Parser {
       let parsedRightExpression: string;
 
       // check if the symbol is a number or variable or unaryOperatorPreceded Variable
-      if (
-        (unaryOperators.includes(symbol[0]) && this.variables.has(symbol.substring(1))) ||
-        this.variables.has(symbol) ||
-        (!Number.isNaN(parseFloat(symbol)) && Number.isFinite(parseFloat(symbol)))
-      ) {
+      if (this.isOperand(symbol)) {
         resultStack.push(symbol);
         operatorStack.push(null);
       }
@@ -332,8 +342,8 @@ export class Parser {
 
     while (!formulaRPN.isEmpty()) {
       const frontItem = formulaRPN.dequeue()!;
-      if (!this.allowedOperators.has(frontItem)) {
-        const [sign, variableKey] = /^[+-]/.test(frontItem) ? [frontItem[0], frontItem.slice(1)] : ["", frontItem];
+      if (this.isOperand(frontItem)) {
+        const [sign, variableKey] = /^[+-]/.test(frontItem) && frontItem.length > 1 ? [frontItem[0], frontItem.slice(1)] : ["", frontItem];
         const operandValue = Number.parseFloat(this.variables.get(variableKey)?.toString() ?? variableKey);
 
         const number = Number.parseFloat(`${sign}1`) * operandValue;
