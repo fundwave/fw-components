@@ -23738,7 +23738,7 @@ let FwColorPick = class FwColorPick2 extends lit__WEBPACK_IMPORTED_MODULE_1__.Li
         }
       </style>
       <button part="color-button" class="color-button" data-label-color="${this.value}">
-        ${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_0__.msg)((this.label || "").trim())}
+        <span part="color-label">${(0,_fw_components_localize__WEBPACK_IMPORTED_MODULE_0__.msg)((this.label || "").trim())}</span>
         <input part="color-hidden-input" class="colorpicker-hidden" type="color" value=${this.value} @change=${this.handleChange} />
       </button>
     `;
@@ -23870,10 +23870,11 @@ let FwFontPick = class FwFontPick2 extends lit__WEBPACK_IMPORTED_MODULE_3__.LitE
             font-family: ${this.value.style};
           }
         </style>
+        <span part="font-label">${this.label}</span>
         <div part="font-button">
-          <paper-dropdown-menu .dynamicAlign=${true} class="plain" no-label-float @iron-select=${(e) => this.optionSelectHandler(e)} style="width:100%">
-            <paper-listbox style="color:#000" slot="dropdown-content" .selected=${this.value.name || ""} attr-for-selected="name">
-              ${this.options && (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(this.options, (item) => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<paper-item style="font-family: ${item.style}" .name=${item.name} .obj=${item}>${item.name}</paper-item>`)}
+          <paper-dropdown-menu part="font-dropdown-container" .dynamicAlign=${true} class="plain" no-label-float @iron-select=${(e) => this.optionSelectHandler(e)} style="width:100%">
+            <paper-listbox part="font-listbox" style="color:#000; max-height:200px; overflow-y:auto;" slot="dropdown-content" .selected=${this.value.name || ""} attr-for-selected="name">
+              ${this.options && (0,lit_directives_repeat_js__WEBPACK_IMPORTED_MODULE_5__.repeat)(this.options, (item) => (0,lit__WEBPACK_IMPORTED_MODULE_3__.html)`<paper-item part="font-dropdown-option" style="font-family: ${item.style}" .name=${item.name} .obj=${item}>${item.name}</paper-item>`)}
             </paper-listbox>
           </paper-dropdown-menu>
         </div>
@@ -24067,7 +24068,7 @@ let FwThemeBuilder = (_a = class extends lit__WEBPACK_IMPORTED_MODULE_5__.LitEle
   }
   createFontPickComponent(font) {
     return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <fw-font-pick
-      exportparts="font-container, font-label, font-button, font-dropdown-container, font-dropdown-option, font-dropdown-selected"
+      exportparts="font-container, font-label, font-button, font-dropdown-container, font-listbox, font-dropdown-option"
       .label=${font}
       @value-changed=${(e) => {
       var _a2;
@@ -24169,7 +24170,7 @@ let FwThemeBuilder = (_a = class extends lit__WEBPACK_IMPORTED_MODULE_5__.LitEle
     return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)`
       <div part="container">
         ${this.viewByGroup ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)` <span part="back-icon-container" class="back-button ${this.nav === "Home" ? "back-hidden" : ""}" @click="${this.navigateBack}">
-                <svg class="back-icon" width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg part="back-icon" class="back-icon" width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M43.9567 77.8954C46.6811 75.1012 46.6811 70.5876 43.9567 67.7935L16.8527 39.9955L43.9567 12.1975C46.6811 9.40334 46.6811 4.88973 43.9567 2.0956C41.2324 -0.698533 36.8314 -0.698533 34.1071 2.0956L2.04329 34.9804C-0.681091 37.7745 -0.681092 42.2881 2.04328 45.0822L34.1071 77.967C36.7616 80.6895 41.2323 80.6895 43.9567 77.8954Z"
                     fill="black"
@@ -24212,6 +24213,7 @@ let FwThemeBuilder = (_a = class extends lit__WEBPACK_IMPORTED_MODULE_5__.LitEle
     .back-hidden {
       opacity: 0;
       cursor: default;
+      pointer-events: none;
     }
     .back-icon {
       height: 1rem;
