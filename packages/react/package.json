@@ -1,5 +1,5 @@
 {
-  "name": "@fw-components/react-ui",
+  "name": "@fw-components/react",
   "version": "2.4.0",
   "description": "Fundwave's React UI component library",
   "main": "dist/index.js",

@@ -1,11 +1,11 @@
-# @fw-components/react-ui
+# @fw-components/react
 
 Fundwave's React UI component library is a set of Tailwind-styled React components.
 
 ## Installation
 
 ```sh
-npm i @fw-components/react-ui
+npm i @fw-components/react
 ```
 
 `react` and `react-dom` (^18.2.0) are peer dependencies and must already be present in your app.
@@ -19,7 +19,7 @@ The package ships a pre-built, ready-to-use stylesheet, you don't need Tailwind 
 For a normal (non-shadow-root) app, import the CSS file once in your app entry point and let your bundler emit it as a `<link>`/inlined `<style>` the usual way:
 
 ```ts
-import "@fw-components/react-ui/styles.css";
+import "@fw-components/react/styles.css";
 ```
 
 ### Option 2: CSS-as-string import (Shadow DOM / dynamic injection)
@@ -27,7 +27,7 @@ import "@fw-components/react-ui/styles.css";
 If your app (or the part of it rendering these components) lives inside a shadow root, a plain `<link>`/global `<style>` tag won't reach it. For that case (or any other scenario where you need the CSS as a JS string rather than a file path), the same compiled output is also published as a JS module:
 
 ```ts
-import { styles } from "@fw-components/react-ui/styles";
+import { styles } from "@fw-components/react/styles";
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
@@ -37,7 +37,7 @@ shadowRoot.adoptedStyleSheets = [sheet];
 Or, without constructable stylesheets support, inject it as an inline `<style>` tag scoped to the shadow root:
 
 ```ts
-import { styles } from "@fw-components/react-ui/styles";
+import { styles } from "@fw-components/react/styles";
 
 const styleTag = document.createElement("style");
 styleTag.textContent = styles;
@@ -49,7 +49,7 @@ shadowRoot.appendChild(styleTag);
 ## Usage
 
 ```tsx
-import { Button, Input, Select } from "@fw-components/react-ui";
+import { Button, Input, Select } from "@fw-components/react";
 
 function Example() {
   return (
@@ -84,7 +84,7 @@ function Example() {
 ### Input / Textarea / Checkbox
 
 ```tsx
-import { Input, Textarea, Checkbox } from "@fw-components/react-ui";
+import { Input, Textarea, Checkbox } from "@fw-components/react";
 
 <Input label="Amount" type="number" value={amount} onChange={setAmount} clearable />
 <Textarea label="Notes" value={notes} onChange={setNotes} />
@@ -134,7 +134,7 @@ A styled re-export of [Radix UI's Dropdown Menu](https://www.radix-ui.com/primit
 Provider + hook for imperative confirm/delete dialogs:
 
 ```tsx
-import { ConfirmationProvider, ConfirmationType, useConfirmation } from "@fw-components/react-ui";
+import { ConfirmationProvider, ConfirmationType, useConfirmation } from "@fw-components/react";
 
 // once, near the root
 <ConfirmationProvider>
