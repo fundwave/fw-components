@@ -2,6 +2,7 @@ import * as LucideIcons from "lucide-react";
 import * as React from "react";
 
 import { formatComma, undoFormatting } from "../utils/formatting";
+import type { IconComponent } from "../types";
 import { cn } from "../utils/tailwind";
 
 // Custom ref types with validate methods
@@ -10,8 +11,9 @@ export interface InputRef extends HTMLInputElement {
 }
 
 interface BaseInputProps extends Omit<React.ComponentProps<"input">, "onChange" | "type"> {
-  label?: string;
-  icon?: keyof typeof LucideIcons;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
+  icon?: keyof typeof LucideIcons | IconComponent;
   errorMessage?: string;
   required?: boolean;
   invalid?: boolean;
@@ -34,19 +36,19 @@ interface TextInputProps extends BaseInputProps {
 type InputProps = NumberInputProps | TextInputProps;
 
 const OUTLINED_INPUT_CLASSES =
-  "fwui:block fwui:w-full fwui:rounded-md fwui:text-sm fwui:p-2 fwui:border fwui:border-neutral-300 fwui:focus:border-blue-500 fwui:focus:ring-blue-500 fwui:transition-colors fwui:duration-150";
+  "fwr:block fwr:w-full fwr:rounded-md fwr:text-sm fwr:p-2 fwr:border fwr:border-input fwr:focus:border-primary fwr:focus:ring-primary fwr:transition-colors fwr:duration-150";
 const DISABLED_CLASSES =
-  "fwui:disabled:bg-gray-100 fwui:disabled:text-gray-500 fwui:disabled:cursor-not-allowed fwui:disabled:border-gray-300 fwui:disabled:focus:border-gray-300 fwui:disabled:focus:ring-0";
-const ERROR_CLASSES = "fwui:error fwui:border-red-500 fwui:focus:border-red-500 fwui:focus:ring-red-500";
+  "fwr:disabled:bg-muted fwr:disabled:text-muted-foreground fwr:disabled:cursor-not-allowed fwr:disabled:border-input fwr:disabled:focus:border-input fwr:disabled:focus:ring-0";
+const ERROR_CLASSES = "fwr:error fwr:border-destructive fwr:focus:border-destructive fwr:focus:ring-destructive";
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
-  const { className, label, icon, errorMessage, required, clearable, invalid: invalidProp, ...restProps } = props;
+  const { className, label, description, icon, errorMessage, required, clearable, invalid: invalidProp, ...restProps } = props;
   const [invalid, setInvalid] = React.useState(invalidProp || false);
   const [isFocused, setIsFocused] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const IconComponent = icon ? (LucideIcons[icon] as React.ComponentType<{ className?: string }>) : null;
-  const inputClass = cn(OUTLINED_INPUT_CLASSES, DISABLED_CLASSES, icon ? "fwui:pl-8 fwui:m-0" : "", clearable ? "fwui:pr-8" : "", invalid ? ERROR_CLASSES : "", className);
+  const ResolvedIcon = typeof icon === "string" ? (LucideIcons[icon] as IconComponent) : (icon ?? null);
+  const inputClass = cn(OUTLINED_INPUT_CLASSES, DISABLED_CLASSES, icon ? "fwr:pl-8 fwr:m-0" : "", clearable ? "fwr:pr-8" : "", invalid ? ERROR_CLASSES : "", className);
   const isNumberType = props.type === "number";
 
   React.useEffect(() => {
@@ -152,14 +154,15 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
   return (
     <div>
       {label && (
-        <label className="fwui:block fwui:text-xs fwui:font-medium fwui:text-gray-700 fwui:mb-1">
-          {label} {required && typeof label === "string" && <span className="fwui:text-red-500">*</span>}
+        <label className="fwr:block fwr:text-xs fwr:font-medium fwr:text-foreground fwr:mb-1">
+          {label} {required && typeof label === "string" && <span className="fwr:text-destructive">*</span>}
+          {description && <p className="fwr:text-xs fwr:text-muted-foreground fwr:mb-2">{description}</p>}
         </label>
       )}
-      <div className="fwui:relative fwui:flex fwui:items-center">
-        {IconComponent && (
-          <div className="fwui:flex fwui:items-center fwui:justify-center fwui:absolute fwui:inset-y-0 fwui:left-0 fwui:pl-2 fwui:pointer-events-none">
-            <IconComponent className="fwui:w-4 fwui:h-4 fwui:text-gray-400" />
+      <div className="fwr:relative fwr:flex fwr:items-center">
+        {ResolvedIcon && (
+          <div className="fwr:flex fwr:items-center fwr:justify-center fwr:absolute fwr:inset-y-0 fwr:left-0 fwr:pl-2 fwr:pointer-events-none">
+            <ResolvedIcon className="fwr:w-4 fwr:h-4 fwr:text-muted-foreground" />
           </div>
         )}
         <input
@@ -177,14 +180,14 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
           <button
             onClick={handleClear}
             type="button"
-            className="fwui:absolute fwui:inset-y-0 fwui:right-0 fwui:pr-2 fwui:flex fwui:items-center fwui:justify-center fwui:text-gray-400 fwui:hover:text-gray-600"
+            className="fwr:absolute fwr:inset-y-0 fwr:right-0 fwr:pr-2 fwr:flex fwr:items-center fwr:justify-center fwr:text-muted-foreground fwr:hover:text-foreground"
             aria-label="Clear input"
           >
-            <LucideIcons.X className="fwui:w-4 fwui:h-4" />
+            <LucideIcons.X className="fwr:w-4 fwr:h-4" />
           </button>
         )}
       </div>
-      {invalid && <span className="fwui:text-xs fwui:text-red-600 fwui:mt-1 fwui:block">{errorMessage || "Please fill this field"}</span>}
+      {invalid && <span className="fwr:text-xs fwr:text-destructive fwr:mt-1 fwr:block">{errorMessage || "Please fill this field"}</span>}
     </div>
   );
 });
@@ -194,14 +197,15 @@ export interface TextareaRef extends HTMLTextAreaElement {
   validate: () => boolean;
 }
 interface TextareaProps extends Omit<React.ComponentProps<"textarea">, "onChange"> {
-  label?: string;
+  label?: React.ReactNode;
+  description?: React.ReactNode;
   errorMessage?: string;
   invalid?: boolean;
   required?: boolean;
   onChange?: (value: string) => void;
 }
 
-const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ className, label, invalid, errorMessage, onChange, required, ...props }, ref) => {
+const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ className, label, description, invalid, errorMessage, onChange, required, ...props }, ref) => {
   const textareaRef = React.useRef<HTMLTextAreaElement>(null);
   const textareaClass = cn(OUTLINED_INPUT_CLASSES, DISABLED_CLASSES, invalid ? ERROR_CLASSES : "", className);
 
@@ -247,12 +251,13 @@ const Textarea = React.forwardRef<TextareaRef, TextareaProps>(({ className, labe
   return (
     <div>
       {label && (
-        <label className="fwui:block fwui:text-xs fwui:font-medium fwui:text-gray-700 fwui:mb-1">
-          {label} {required && typeof label === "string" && <span className="text-red-500">*</span>}
+        <label className="fwr:block fwr:text-xs fwr:font-medium fwr:text-foreground fwr:mb-1">
+          {label} {required && typeof label === "string" && <span className="fwr:text-destructive">*</span>}
+          {description && <p className="fwr:text-xs fwr:text-muted-foreground fwr:mb-2">{description}</p>}
         </label>
       )}
       <textarea className={textareaClass} ref={textareaRef} onChange={handleChange} style={{ resize: "none", overflow: "hidden" }} {...props} />
-      {invalid && errorMessage && <span className="fwui:text-xs fwui:text-red-600 fwui:mt-1 fwui:block">{errorMessage}</span>}
+      {invalid && errorMessage && <span className="fwr:text-xs fwr:text-destructive fwr:mt-1 fwr:block">{errorMessage}</span>}
     </div>
   );
 });
@@ -262,13 +267,14 @@ export interface CheckboxRef extends HTMLInputElement {
   validate: () => boolean;
 }
 interface CheckboxProps extends React.ComponentProps<"input"> {
-  label?: string;
+  label?: React.ReactNode;
+  labelPosition?: "before" | "after";
   invalid?: boolean;
   errorMessage?: string;
   required?: boolean;
 }
 
-const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ className, label, invalid, errorMessage, required, ...props }, ref) => {
+const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ className, label, labelPosition = "before", invalid, errorMessage, required, ...props }, ref) => {
   const checkboxRef = React.useRef<HTMLInputElement>(null);
 
   React.useImperativeHandle(ref, () => {
@@ -289,27 +295,36 @@ const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ className, labe
     } as CheckboxRef;
   }, [required]);
 
+  const labelElement = label && (
+    <label
+      className={cn("fwr:block fwr:text-sm fwr:text-foreground fwr:select-none", labelPosition === "before" ? "fwr:mr-2" : "fwr:ml-2")}
+      onClick={(e) => {
+        e.preventDefault();
+        checkboxRef.current?.click();
+      }}
+    >
+      {label} {required && typeof label === "string" && <span className="fwr:text-destructive">*</span>}
+    </label>
+  );
+
   return (
-    <div className="fwui:flex fwui:items-start">
-      <div className="fwui:flex fwui:items-center fwui:h-5">
-        {label && (
-          <label className="fwui:mr-2 fwui:block fwui:text-sm fwui:text-gray-700 fwui:select-none" onClick={(e) => e.preventDefault()}>
-            {label} {required && typeof label === "string" && <span className="text-red-500">*</span>}
-          </label>
-        )}
+    <div className="fwr:flex fwr:items-start">
+      {labelPosition === "before" && labelElement}
+      <div className="fwr:flex fwr:items-center fwr:h-5">
         <input
           type="checkbox"
           className={cn(
-            "fwui:form-checkbox fwui:h-4 fwui:w-4 fwui:text-blue-600 fwui:border-gray-300 fwui:rounded fwui:focus:ring-blue-500 fwui:transition-colors fwui:duration-150",
-            "fwui:disabled:bg-gray-100 fwui:disabled:text-gray-500 fwui:disabled:cursor-not-allowed fwui:disabled:border-gray-300 fwui:disabled:focus:border-gray-300 fwui:disabled:focus:ring-0",
-            invalid ? "fwui:border-red-500 fwui:focus:border-red-500 fwui:focus:ring-red-500" : "",
+            "fwr:form-checkbox fwr:h-4 fwr:w-4 fwr:text-primary fwr:border-input fwr:rounded fwr:focus:ring-primary fwr:transition-colors fwr:duration-150",
+            "fwr:disabled:bg-muted fwr:disabled:text-muted-foreground fwr:disabled:cursor-not-allowed fwr:disabled:border-input fwr:disabled:focus:border-input fwr:disabled:focus:ring-0",
+            invalid ? "fwr:border-destructive fwr:focus:border-destructive fwr:focus:ring-destructive" : "",
             className
           )}
           ref={checkboxRef}
           {...props}
         />
       </div>
-      {invalid && errorMessage && <span className="fwui:ml-2 fwui:text-xs fwui:text-red-600 fwui:mt-1 fwui:block">{errorMessage}</span>}
+      {labelPosition === "after" && labelElement}
+      {invalid && errorMessage && <span className="fwr:ml-2 fwr:text-xs fwr:text-destructive fwr:mt-1 fwr:block">{errorMessage}</span>}
     </div>
   );
 });

@@ -4,6 +4,7 @@ import { createPortal } from "react-dom";
 
 import Spinner from "./Spinner";
 
+import type { IconComponent } from "../types";
 import { cn } from "../utils/tailwind";
 
 export interface Option {
@@ -22,6 +23,7 @@ interface SelectPropsBase<T> {
   id?: string;
   name?: string;
   label?: React.ReactNode;
+  description?: React.ReactNode;
   placeholder?: string;
   errorMessage?: string;
   noResultsMessage?: string;
@@ -47,6 +49,7 @@ interface SelectPropsBase<T> {
   filterFunction?: (option: T, searchTerm: string) => boolean;
   labelKey?: T extends Option ? "label" : keyof T;
   valueKey?: T extends Option ? "value" : keyof T;
+  prefixIcon?: IconComponent;
   onSearchChange?: (searchTerm: string) => Promise<unknown[] | void> | unknown[] | void;
   mountDocument?: ShadowRoot | Document;
   maxVisibleOptions?: number;
@@ -117,6 +120,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     options = [],
     placeholder = "Search...",
     label,
+    description,
     required = false,
     name,
     errorMessage,
@@ -137,6 +141,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     filterFunction,
     labelKey = "label" as keyof T,
     valueKey = "value" as keyof T,
+    prefixIcon: PrefixIcon,
     mountDocument,
     maxVisibleOptions = 3
   } = props;
@@ -642,8 +647,8 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
         id={`${id}-options`}
         onMouseDown={(event) => event.preventDefault()}
         className={cn(
-          "fwui:max-h-60 fwui:overflow-auto fwui:rounded-md fwui:bg-white fwui:py-1 fwui:text-sm fwui:shadow-lg fwui:space-y-0.5 fwui:border fwui:border-neutral-200",
-          props.usePortal ? "fwui:fixed fwui:z-[9999]" : "fwui:absolute fwui:z-50 fwui:w-full",
+          "fwr:max-h-60 fwr:overflow-auto fwr:rounded-md fwr:bg-popover fwr:py-1 fwr:text-sm fwr:shadow-lg fwr:space-y-0.5 fwr:border fwr:border-border",
+          props.usePortal ? "fwr:fixed fwr:z-[9999]" : "fwr:absolute fwr:z-50 fwr:w-full",
           listClassName
         )}
         style={
@@ -660,14 +665,14 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
         tabIndex={-1}
       >
         {loading ? (
-          <li className="fwui:relative fwui:cursor-default fwui:select-none fwui:py-2 fwui:px-3 fwui:text-neutral-500 fwui:flex fwui:items-center fwui:gap-2">
+          <li className="fwr:relative fwr:cursor-default fwr:select-none fwr:py-2 fwr:px-3 fwr:text-neutral-500 fwr:flex fwr:items-center fwr:gap-2">
             <Spinner />
             Loading options...
           </li>
         ) : (
           <>
             {getEmptyMessage() && filteredOptions.length === 0 && !allowAddNew ? (
-              <li className="fwui:relative fwui:cursor-default fwui:select-none fwui:py-2 fwui:px-3 fwui:text-neutral-500">{getEmptyMessage()}</li>
+              <li className="fwr:relative fwr:cursor-default fwr:select-none fwr:py-2 fwr:px-3 fwr:text-neutral-500">{getEmptyMessage()}</li>
             ) : (
               filteredOptions.map((option, index) => {
                 const isSelected = valueArray.includes(getOptionValue(option));
@@ -683,23 +688,23 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                     onClick={() => !isDisabled && selectOption(option)}
                     onMouseEnter={() => !isDisabled && setHighlightedIndex(index)}
                     className={cn(
-                      "fwui:relative fwui:select-none fwui:py-2 fwui:px-3",
-                      isDisabled ? "fwui:cursor-not-allowed fwui:text-neutral-400" : "fwui:cursor-pointer",
+                      "fwr:relative fwr:select-none fwr:py-2 fwr:px-3",
+                      isDisabled ? "fwr:cursor-not-allowed fwr:text-neutral-400" : "fwr:cursor-pointer",
                       isSelected
                         ? isHighlighted
-                          ? "fwui:bg-blue-100 fwui:text-blue-900"
-                          : "fwui:bg-blue-50 fwui:text-blue-900"
+                          ? "fwr:bg-primary/20 fwr:text-primary"
+                          : "fwr:bg-primary/10 fwr:text-primary"
                         : isHighlighted
-                          ? "fwui:bg-neutral-200 fwui:text-neutral-800"
-                          : "fwui:text-neutral-900 fwui:hover:bg-neutral-50"
+                          ? "fwr:bg-neutral-200 fwr:text-neutral-800"
+                          : "fwr:text-neutral-900 fwr:hover:bg-neutral-50"
                     )}
                     role="option"
                     aria-selected={isSelected}
                     aria-disabled={isDisabled}
                   >
-                    <div className="fwui:flex fwui:items-center fwui:justify-between">
+                    <div className="fwr:flex fwr:items-center fwr:justify-between">
                       <span>{renderOption ? renderOption(option) : getOptionLabel(option)}</span>
-                      {isSelected && <Check className="fwui:w-4" />}
+                      {isSelected && <Check className="fwr:w-4" />}
                     </div>
                   </li>
                 );
@@ -718,15 +723,15 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                 }}
                 onMouseEnter={() => setHighlightedIndex(filteredOptions.length)}
                 className={cn(
-                  "fwui:relative fwui:select-none fwui:py-2 fwui:px-3",
-                  isAddingNew ? "fwui:cursor-wait" : "fwui:cursor-pointer",
-                  highlightedIndex === filteredOptions.length ? "fwui:bg-neutral-200 fwui:text-neutral-800" : "fwui:text-neutral-900 fwui:hover:bg-neutral-50"
+                  "fwr:relative fwr:select-none fwr:py-2 fwr:px-3",
+                  isAddingNew ? "fwr:cursor-wait" : "fwr:cursor-pointer",
+                  highlightedIndex === filteredOptions.length ? "fwr:bg-neutral-200 fwr:text-neutral-800" : "fwr:text-neutral-900 fwr:hover:bg-neutral-50"
                 )}
                 role="option"
                 aria-selected={highlightedIndex === filteredOptions.length}
               >
-                <div className="fwui:flex fwui:items-center fwui:gap-2">
-                  {isAddingNew ? <Spinner /> : <Plus size={16} className="fwui:mr-2" />}
+                <div className="fwr:flex fwr:items-center fwr:gap-2">
+                  {isAddingNew ? <Spinner /> : <Plus size={16} className="fwr:mr-2" />}
                   <span>{isAddingNew ? "Adding..." : `Add "${searchTerm}"`}</span>
                 </div>
               </li>
@@ -761,21 +766,22 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
   ]);
 
   return (
-    <div className="fwui:w-full">
+    <div className="fwr:w-full">
       {label && (
-        <label htmlFor={id} className="fwui:block fwui:text-xs fwui:font-medium fwui:text-neutral-700 fwui:mb-1" id={`${id}-label`}>
-          {label} {required && typeof label === "string" && <span className="fwui:text-red-500">*</span>}
+        <label htmlFor={id} className="fwr:block fwr:text-xs fwr:font-medium fwr:text-foreground fwr:mb-1" id={`${id}-label`}>
+          {label} {required && typeof label === "string" && <span className="fwr:text-destructive">*</span>}
+          {description && <p className="fwr:text-xs fwr:text-muted-foreground fwr:mb-2">{description}</p>}
         </label>
       )}
 
-      <div ref={containerRef} className="fwui:relative">
+      <div ref={containerRef} className="fwr:relative">
         <div
           className={cn(
-            "fwui:border fwui:rounded-md",
-            invalid ? "fwui:border-red-500" : "fwui:border-neutral-300",
+            "fwr:border fwr:rounded-md",
+            invalid ? "fwr:border-destructive" : "fwr:border-input",
             disabled || isAddingNew
-              ? "fwui:bg-neutral-100 fwui:cursor-not-allowed"
-              : "fwui:bg-white fwui:focus-within:border-blue-500 fwui:focus-within:ring-1 fwui:focus-within:ring-blue-500",
+              ? "fwr:bg-muted fwr:cursor-not-allowed"
+              : "fwr:bg-background fwr:focus-within:border-primary fwr:focus-within:ring-1 fwr:focus-within:ring-primary",
             className
           )}
           onClick={(e) => toggleSelectDropdown(e)}
@@ -787,15 +793,16 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
           aria-busy={loading}
           aria-disabled={disabled}
         >
-          <div className="fwui:flex fwui:flex-wrap fwui:items-center fwui:gap-1 fwui:p-2 fwui:pr-8">
+          <div className="fwr:flex fwr:flex-wrap fwr:items-center fwr:gap-1 fwr:p-2 fwr:pr-8">
+            {PrefixIcon && <PrefixIcon className="fwr:mr-2 fwr:flex fwr:items-center fwr:text-foreground fwr:w-4 fwr:h-4" />}
             {isMulti && (
               <>
                 {visibleOptions.map((option) => (
                   <div
                     key={`selected-${String(getOptionValue(option))}`}
                     className={cn(
-                      "fwui:inline-flex fwui:items-center fwui:rounded-full fwui:px-2 fwui:py-1 fwui:text-xs",
-                      disabled ? "fwui:bg-neutral-200 fwui:text-neutral-500" : "fwui:bg-blue-100 fwui:text-blue-800"
+                      "fwr:inline-flex fwr:items-center fwr:rounded-full fwr:px-2 fwr:py-1 fwr:text-xs",
+                      disabled ? "fwr:bg-neutral-200 fwr:text-neutral-500" : "fwr:bg-primary/10 fwr:text-primary"
                     )}
                   >
                     {getOptionLabel(option)}
@@ -803,7 +810,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                       <button
                         type="button"
                         onClick={(e) => removeOption(getOptionValue(option), e)}
-                        className="fwui:ml-1 fwui:text-blue-600 fwui:hover:text-blue-800 fwui:focus:outline-none fwui:focus:ring-1 fwui:focus:ring-blue-500"
+                        className="fwr:ml-1 fwr:text-primary fwr:hover:text-primary/80 fwr:focus:outline-none fwr:focus:ring-1 fwr:focus:ring-primary"
                         tabIndex={-1}
                         aria-label={`Remove ${getOptionLabel(option)}`}
                       >
@@ -816,8 +823,8 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                 {hiddenOptionsCount > 0 && (
                   <div
                     className={cn(
-                      "fwui:inline-flex fwui:items-center fwui:rounded-full fwui:px-2 fwui:py-1 fwui:text-xs",
-                      disabled ? "fwui:bg-neutral-200 fwui:text-neutral-500" : "fwui:bg-blue-100 fwui:text-blue-800"
+                      "fwr:inline-flex fwr:items-center fwr:rounded-full fwr:px-2 fwr:py-1 fwr:text-xs",
+                      disabled ? "fwr:bg-neutral-200 fwr:text-neutral-500" : "fwr:bg-primary/10 fwr:text-primary"
                     )}
                   >
                     +{hiddenOptionsCount}
@@ -827,12 +834,12 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
             )}
 
             {addNewError && (
-              <div className="fwui:inline-flex fwui:items-center fwui:rounded-full fwui:px-2 fwui:py-1 fwui:text-xs fwui:bg-red-100 fwui:text-red-800">
-                <span className="fwui:truncate fwui:max-w-[200px]">{addNewError}</span>
+              <div className="fwr:inline-flex fwr:items-center fwr:rounded-full fwr:px-2 fwr:py-1 fwr:text-xs fwr:bg-destructive/10 fwr:text-destructive">
+                <span className="fwr:truncate fwr:max-w-[200px]">{addNewError}</span>
                 <button
                   type="button"
                   onClick={dismissError}
-                  className="fwui:ml-1 fwui:text-red-600 fwui:hover:text-red-800 fwui:focus:outline-none fwui:focus:ring-1 fwui:focus:ring-red-500"
+                  className="fwr:ml-1 fwr:text-destructive fwr:hover:text-destructive/80 fwr:focus:outline-none fwr:focus:ring-1 fwr:focus:ring-destructive"
                   tabIndex={-1}
                   aria-label="Dismiss error"
                 >
@@ -854,8 +861,8 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                 onBlur={handleBlur}
                 placeholder={displayPlaceholder}
                 className={cn(
-                  "fwui:flex-1 fwui:min-w-[60px] fwui:border-0 fwui:focus:ring-0 fwui:p-0 fwui:text-sm fwui:focus:bg-transparent fwui:bg-transparent fwui:focus:outline-none fwui:focus:shadow-none",
-                  (disabled || isAddingNew) && "fwui:bg-neutral-100 fwui:text-neutral-500 fwui:cursor-not-allowed",
+                  "fwr:flex-1 fwr:min-w-[60px] fwr:border-0 fwr:focus:ring-0 fwr:p-0 fwr:text-sm fwr:focus:bg-transparent fwr:bg-transparent fwr:focus:outline-none fwr:focus:shadow-none",
+                  (disabled || isAddingNew) && "fwr:bg-neutral-100 fwr:text-neutral-500 fwr:cursor-not-allowed",
                   inputClassName
                 )}
                 autoComplete="off"
@@ -866,17 +873,17 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                 disabled={disabled || isAddingNew}
               />
             ) : (
-              <div className={cn("fwui:flex-1 fwui:min-w-[60px] fwui:p-0 fwui:text-sm", disabled ? "fwui:text-neutral-500" : "fwui:text-neutral-900")}>
+              <div className={cn("fwr:flex-1 fwr:min-w-[60px] fwr:p-0 fwr:text-sm", disabled ? "fwr:text-neutral-500" : "fwr:text-neutral-900")}>
                 {!isMulti && selectedOption ? (
                   <span>{getOptionLabel(selectedOption)}</span>
                 ) : isMulti && selectedOptions.length === 0 ? (
-                  <span className="fwui:text-neutral-400">{placeholder}</span>
+                  <span className="fwr:text-neutral-400">{placeholder}</span>
                 ) : null}
               </div>
             )}
           </div>
 
-          <div className="fwui:absolute fwui:right-2 fwui:inset-y-0 fwui:flex fwui:items-center">
+          <div className="fwr:absolute fwr:right-2 fwr:inset-y-0 fwr:flex fwr:items-center">
             {isAddingNew || loading ? (
               <Spinner />
             ) : (
@@ -891,14 +898,14 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                   }
                 }}
                 className={cn(
-                  "fwui:text-neutral-400 fwui:p-1 fwui:focus:outline-none fwui:focus:ring-1 fwui:focus:ring-blue-500",
-                  disabled ? "fwui:opacity-50 fwui:cursor-not-allowed" : "fwui:hover:text-neutral-600"
+                  "fwr:text-neutral-400 fwr:p-1 fwr:focus:outline-none fwr:focus:ring-1 fwr:focus:ring-primary",
+                  disabled ? "fwr:opacity-50 fwr:cursor-not-allowed" : "fwr:hover:text-neutral-600"
                 )}
                 aria-label={showClearIcon ? "Clear" : isOpen ? "Close dropdown" : "Open dropdown"}
                 disabled={disabled}
                 tabIndex={-1}
               >
-                {showClearIcon ? <X size={16} /> : <ChevronDown size={16} className={isOpen ? "fwui:transform fwui:rotate-180" : ""} />}
+                {showClearIcon ? <X size={16} /> : <ChevronDown size={16} className={isOpen ? "fwr:transform fwr:rotate-180" : ""} />}
               </button>
             )}
           </div>
@@ -909,7 +916,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
           (props.usePortal && mountDocument ? createPortal(dropdownContent, mountDocument instanceof ShadowRoot ? mountDocument : mountDocument.body) : dropdownContent)}
       </div>
       {invalid && errorMessage && (
-        <p className="fwui:mt-1 fwui:text-xs fwui:text-red-600" id={`${id}-error`}>
+        <p className="fwr:mt-1 fwr:text-xs fwr:text-destructive" id={`${id}-error`}>
           {errorMessage}
         </p>
       )}

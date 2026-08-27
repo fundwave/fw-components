@@ -1,7 +1,8 @@
 export { default as Button, themeVariantClasses } from "./components/Button";
 export type { ButtonProps } from "./components/Button";
 
-export { default as ConfirmationDialog, ConfirmationProvider, useConfirmation, ConfirmationType } from "./components/ConfirmationDialog";
+export { default as ConfirmationDialog } from "./components/ConfirmationDialog";
+export { ConfirmationProvider, useConfirmation, ConfirmationType } from "./providers/ConfirmationProvider";
 
 export {
   DropdownMenu,
@@ -24,7 +25,8 @@ export {
 export { Input, Textarea, Checkbox, default as InputDefault } from "./components/Input";
 export type { InputRef, InputProps, TextareaRef, CheckboxRef } from "./components/Input";
 
-export { default as RightSideModal, CenterModal, ModalManager } from "./components/Modal";
+export { default as RightSideModal, CenterModal } from "./components/Modal";
+export { ModalManager } from "./providers/modalManager";
 
 export { default as Select } from "./components/Select";
 export type { Option, SelectOption, SelectRef, SelectProps } from "./components/Select";
