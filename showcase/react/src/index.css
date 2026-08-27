@@ -1,0 +1,12 @@
+body {
+  background: var(--color-background);
+  min-height: 100vh;
+}
+
+code {
+  font-family: 'Fira Code', 'Courier New', monospace;
+  background: var(--color-muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+}

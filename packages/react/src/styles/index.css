@@ -1,0 +1,32 @@
+@import "tailwindcss" prefix(fwr);
+@plugin "@tailwindcss/forms";
+
+@theme {
+  --color-background: var(--fwr-color-background, var(--color-white));
+  --color-foreground: var(--fwr-color-foreground, var(--color-gray-950));
+
+  --color-popover: var(--fwr-color-popover, var(--color-white));
+  --color-popover-foreground: var(--fwr-color-popover-foreground, var(--color-gray-950));
+
+  --color-accent: var(--fwr-color-accent, var(--color-blue-500));
+  --color-accent-foreground: var(--fwr-color-accent-foreground, var(--color-white));
+
+  --color-base: var(--fwr-color-base, var(--color-gray-500));
+  --color-base-foreground: var(--fwr-color-base-foreground, var(--color-white));
+
+  --color-muted: var(--fwr-color-muted, var(--color-gray-100));
+  --color-muted-foreground: var(--fwr-color-muted-foreground, var(--color-gray-500));
+
+  --color-success: var(--fwr-color-success, var(--color-green-600));
+  --color-success-foreground: var(--fwr-color-success-foreground, var(--color-white));
+  
+  --color-warning: var(--fwr-color-warning, var(--color-yellow-500));
+  --color-warning-foreground: var(--fwr-color-warning-foreground, var(--color-gray-900));
+
+  --color-destructive: var(--fwr-color-destructive, var(--color-red-600));
+  --color-destructive-foreground: var(--fwr-color-destructive-foreground, var(--color-white));
+
+  --color-border: var(--fwr-color-border, var(--color-gray-200));
+  --color-input: var(--fwr-color-input, var(--color-gray-200));
+  --color-ring: var(--fwr-color-ring, var(--color-blue-500));
+}
