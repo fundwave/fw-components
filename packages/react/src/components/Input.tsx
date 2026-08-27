@@ -23,7 +23,7 @@ interface BaseInputProps extends Omit<React.ComponentProps<"input">, "onChange" 
 
 interface NumberInputProps extends BaseInputProps {
   type: "number";
-  onChange?: (value: number) => void;
+  onChange?: (value: number | undefined) => void;
   value?: number;
 }
 
@@ -42,7 +42,7 @@ const DISABLED_CLASSES =
 const ERROR_CLASSES = "fwr:error fwr:border-destructive fwr:focus:border-destructive fwr:focus:ring-destructive";
 
 const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
-  const { className, label, description, icon, errorMessage, required, clearable, invalid: invalidProp, ...restProps } = props;
+  const { className, label, description, icon, errorMessage, required, clearable, onClear, invalid: invalidProp, ...restProps } = props;
   const [invalid, setInvalid] = React.useState(invalidProp || false);
   const [isFocused, setIsFocused] = React.useState(false);
   const [inputValue, setInputValue] = React.useState("");
@@ -76,7 +76,9 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
           }
           if (isNumberType && inputRef.current.value) {
             const numValue = undoFormatting(inputRef.current.value);
-            return !isNaN(numValue as number);
+            const isValidNumber = !isNaN(numValue as number);
+            setInvalid(!isValidNumber);
+            return isValidNumber;
           }
           const isValid = inputRef.current.checkValidity();
           setInvalid(!isValid);
@@ -97,8 +99,12 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
     if (!props.onChange) return;
 
     if (props.type === "number") {
+      if (newValue.trim() === "") {
+        props.onChange(undefined);
+        return;
+      }
       const unformattedValue = undoFormatting(newValue);
-      props.onChange(unformattedValue as number);
+      props.onChange(Number(unformattedValue));
     } else {
       props.onChange(newValue);
     }
@@ -135,7 +141,7 @@ const Input = React.forwardRef<InputRef, InputProps>((props, ref) => {
 
   const handleClear = () => {
     handleChange({ target: { value: "" } } as React.ChangeEvent<HTMLInputElement>);
-    props.onClear?.();
+    onClear?.();
   };
 
   const typeProps = isNumberType
@@ -274,7 +280,7 @@ interface CheckboxProps extends React.ComponentProps<"input"> {
   required?: boolean;
 }
 
-const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ className, label, labelPosition = "before", invalid, errorMessage, required, ...props }, ref) => {
+const Checkbox = React.forwardRef<CheckboxRef, CheckboxProps>(({ className, label, labelPosition = "after", invalid, errorMessage, required, ...props }, ref) => {
   const checkboxRef = React.useRef<HTMLInputElement>(null);
 
   React.useImperativeHandle(ref, () => {

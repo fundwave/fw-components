@@ -38,7 +38,7 @@ export const themeVariantClasses: Record<"primary" | "secondary" | "danger", Rec
 };
 
 const baseButtonClass =
-  "fwr:inline-flex fwr:items-center fwr:justify-center fwr:font-medium fwr:rounded-md fwr:flex-shrink-0 fwr:focus:outline-none fwr:disabled:opacity-50 fwr:disabled:cursor-not-allowed fwr:disabled:pointer-events-none fwr:transition-all fwr:duration-200 fwr:ease-in-out fwr:hover:cursor-pointer";
+  "fwr:inline-flex fwr:items-center fwr:justify-center fwr:font-medium fwr:rounded-md fwr:flex-shrink-0 fwr:focus:outline-none fwr:focus-visible:ring-2 fwr:focus-visible:ring-primary fwr:focus-visible:ring-offset-2 fwr:disabled:opacity-50 fwr:disabled:cursor-not-allowed fwr:disabled:pointer-events-none fwr:transition-all fwr:duration-200 fwr:ease-in-out fwr:hover:cursor-pointer";
 
 const sizeClasses: Record<"text" | "icon", Record<"sm" | "md" | "lg" | "base", string>> = {
   text: {

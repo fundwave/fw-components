@@ -12,17 +12,11 @@ const DropdownMenuTrigger = React.forwardRef<
     anchorRef?: React.RefObject<HTMLElement>;
   }
 >(({ className, anchorRef, children, ...props }, ref) => {
-  if (!anchorRef) {
-    return (
-      <DropdownMenuPrimitive.Trigger ref={ref} className={className} {...props}>
-        {children}
-      </DropdownMenuPrimitive.Trigger>
-    );
-  }
-
   const triggerRef = React.useRef<HTMLButtonElement>(null);
 
   React.useEffect(() => {
+    if (!anchorRef) return;
+
     const updatePosition = () => {
       if (anchorRef?.current && triggerRef.current) {
         const anchorRect = anchorRef.current.getBoundingClientRect();
@@ -58,6 +52,14 @@ const DropdownMenuTrigger = React.forwardRef<
       window.removeEventListener("scroll", updatePosition, true);
     };
   }, [anchorRef]);
+
+  if (!anchorRef) {
+    return (
+      <DropdownMenuPrimitive.Trigger ref={ref} className={className} {...props}>
+        {children}
+      </DropdownMenuPrimitive.Trigger>
+    );
+  }
 
   return (
     <DropdownMenuPrimitive.Trigger ref={triggerRef} className={cn("fwr:opacity-0", className)} {...props}>

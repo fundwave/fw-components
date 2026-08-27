@@ -33,16 +33,17 @@ const Modal: React.FC<ModalProps> = ({
   zIndex = ModalManager.baseZIndex,
   position = "right",
   contentPadding = "fwr:p-4",
-  mountContainer = document.body,
+  mountContainer,
   headerActions
 }) => {
+  const resolvedMountContainer = mountContainer ?? (typeof document !== "undefined" ? document.body : undefined);
   const modalRef = useRef<HTMLDivElement>(null);
   const modalId = useRef(ModalManager.generateUniqueId()).current;
   const [modalZIndex, setModalZIndex] = useState(zIndex);
 
   useEffect(() => {
     if (isOpen) {
-      const newZIndex = ModalManager.register(modalId);
+      const newZIndex = ModalManager.register(modalId, zIndex);
       setModalZIndex(newZIndex);
     } else if (modalId) {
       ModalManager.unregister(modalId);
@@ -53,7 +54,7 @@ const Modal: React.FC<ModalProps> = ({
         ModalManager.unregister(modalId);
       }
     };
-  }, [isOpen, modalId]);
+  }, [isOpen, modalId, zIndex]);
 
   useEffect(() => {
     const handleEscKey = (event: KeyboardEvent) => {
@@ -90,6 +91,8 @@ const Modal: React.FC<ModalProps> = ({
 
   const isCenter = position === "center";
 
+  if (!resolvedMountContainer) return null;
+
   return createPortal(
     <div
       className="fwr:fixed fwr:inset-0 fwr:overflow-hidden fwr:isolation"
@@ -97,12 +100,14 @@ const Modal: React.FC<ModalProps> = ({
         zIndex: modalZIndex,
         display: isOpen ? "block" : "none"
       }}
+      onClick={handleBackdropClick}
     >
-      <div className="fwr:fixed fwr:inset-0 fwr:bg-black/30" aria-hidden="true" onClick={handleBackdropClick} />
+      <div className="fwr:fixed fwr:inset-0 fwr:bg-black/30" aria-hidden="true" />
 
       <div className={`fwr:fixed fwr:inset-0 ${isCenter ? "fwr:flex fwr:items-center fwr:justify-center" : "fwr:flex fwr:justify-end"}`}>
         <div
           ref={modalRef}
+          onClick={(e) => e.stopPropagation()}
           className={`fwr:transform fwr:transition fwr:duration-300 fwr:ease-in-out ${
             isCenter
               ? `${width} fwr:bg-background fwr:shadow-xl fwr:rounded-lg fwr:max-h-[90vh] fwr:pointer-events-auto`
@@ -135,7 +140,7 @@ const Modal: React.FC<ModalProps> = ({
         </div>
       </div>
     </div>,
-    mountContainer
+    resolvedMountContainer
   );
 };
 

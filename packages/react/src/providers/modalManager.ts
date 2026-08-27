@@ -2,9 +2,9 @@ export const ModalManager = {
   stack: new Map<string, number>(),
   baseZIndex: 192,
 
-  register(id: string): number {
+  register(id: string, minZIndex?: number): number {
     const currentMaxZ = this.getMaxZIndex();
-    const newZ = currentMaxZ + 10;
+    const newZ = Math.max(currentMaxZ + 10, minZIndex ?? 0);
     this.stack.set(id, newZ);
     return newZ;
   },

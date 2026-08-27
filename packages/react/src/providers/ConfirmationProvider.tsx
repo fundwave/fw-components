@@ -1,5 +1,5 @@
 import { Info, Trash } from "lucide-react";
-import React, { createContext, ReactNode, useContext, useState } from "react";
+import React, { createContext, ReactNode, useContext, useRef, useState } from "react";
 
 import type { IconComponent } from "../types";
 
@@ -44,20 +44,24 @@ export const ConfirmationProvider: React.FC<ConfirmationProviderProps> = ({ chil
   const [label, setLabel] = useState("Confirm");
   const [type, setType] = useState(ConfirmationType.INFO);
   const [icon, setIcon] = useState<IconComponent>(Info);
-  const [resolveRef, setResolveRef] = useState<((_value: boolean) => void) | null>(null);
+  const resolveRef = useRef<((_value: boolean) => void) | null>(null);
 
   const confirm = (message: string, title = "Confirm", label?: string, type?: ConfirmationType, icon?: IconComponent): Promise<boolean> => {
+    if (resolveRef.current) {
+      resolveRef.current(false);
+      resolveRef.current = null;
+    }
+
     setMessage(message);
     setTitle(title);
-
-    if (icon) setIcon(icon);
-    if (label) setLabel(label);
-    if (type) setType(type);
+    setIcon(icon ?? Info);
+    setLabel(label ?? "Confirm");
+    setType(type ?? ConfirmationType.INFO);
 
     setIsOpen(true);
 
     return new Promise<boolean>((resolve) => {
-      setResolveRef(() => resolve);
+      resolveRef.current = resolve;
     });
   };
 
@@ -67,17 +71,17 @@ export const ConfirmationProvider: React.FC<ConfirmationProviderProps> = ({ chil
 
   const handleConfirm = () => {
     setIsOpen(false);
-    if (resolveRef) {
-      resolveRef(true);
-      setResolveRef(null);
+    if (resolveRef.current) {
+      resolveRef.current(true);
+      resolveRef.current = null;
     }
   };
 
   const handleCancel = () => {
     setIsOpen(false);
-    if (resolveRef) {
-      resolveRef(false);
-      setResolveRef(null);
+    if (resolveRef.current) {
+      resolveRef.current(false);
+      resolveRef.current = null;
     }
   };
 

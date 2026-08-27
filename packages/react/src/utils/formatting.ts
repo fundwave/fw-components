@@ -47,7 +47,7 @@ Precision upto n decimals( default : 2).
 Optional mantissa + trim mantissa => trim/remove zeroes from mantissa.
 */
 export const formatComma = (value?: string | number, n?: number, trim?: boolean, negative: numbro.Format["negative"] = "parenthesis"): string | number | undefined => {
-  if (value) {
+  if (value !== undefined && value !== null && value !== "") {
     const unformatted = undoFormatting(value);
     const options = getOptions(n, trim, negative);
     return numbro(unformatted).format(options);
@@ -56,6 +56,6 @@ export const formatComma = (value?: string | number, n?: number, trim?: boolean,
 };
 
 export const undoFormatting = (value?: string | number): number | string | undefined => {
-  if (value) return numbro.unformat(value.toString());
+  if (value !== undefined && value !== null && value !== "") return numbro.unformat(value.toString());
   return value;
 };

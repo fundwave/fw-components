@@ -152,7 +152,8 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
   const value = isMulti ? ((props.value as string[] | undefined) ?? []) : (props.value as string | null);
   const onChange = props.onChange;
 
-  const id = props.id || useId();
+  const generatedId = useId();
+  const id = props.id || generatedId;
 
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -174,22 +175,21 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     height: number;
   } | null>(null);
 
-  useImperativeHandle(
-    ref,
-    () =>
-      ({
-        ...containerRef.current!,
-        validate: () => {
-          if (required) {
-            const hasValue = isMulti ? (value as string[]).length > 0 : !!value;
-            setInvalid(!hasValue);
-            return hasValue;
-          }
-          setInvalid(false);
-          return true;
-        }
-      }) as SelectRef
-  );
+  useImperativeHandle(ref, () => {
+    const validate = () => {
+      if (required) {
+        const hasValue = isMulti ? (value as string[]).length > 0 : !!value;
+        setInvalid(!hasValue);
+        return hasValue;
+      }
+      setInvalid(false);
+      return true;
+    };
+    const node = containerRef.current;
+    if (!node) return { validate } as SelectRef;
+    Object.defineProperty(node, "validate", { value: validate, configurable: true });
+    return node as SelectRef;
+  });
 
   const getOptionValue = (option: T): string => {
     return String(option[valueKey as keyof T]);
@@ -354,7 +354,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     return (
       <div
         ref={overlayRef}
-        className="fixed inset-0 z-[9998] bg-transparent"
+        className="fwr:fixed fwr:inset-0 fwr:z-[9998] fwr:bg-transparent"
         style={{ touchAction: "none" }}
         aria-hidden="true"
         onClick={(e) => e.stopPropagation()}
@@ -402,9 +402,8 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
 
   useEffect(() => {
     if (isOpen && highlightedIndex >= 0 && listRef.current) {
-      // Fix: Create a safe selector by escaping special characters
-      const safeId = `id-${CSS.escape(id)}-option-${highlightedIndex}`;
-      const highlightedElement = listRef.current.querySelector(`[data-option-id="${safeId}"]`);
+      const optionId = `id-${id}-option-${highlightedIndex}`;
+      const highlightedElement = listRef.current.querySelector(`[data-option-id="${CSS.escape(optionId)}"]`);
       if (highlightedElement) {
         requestAnimationFrame(() => {
           highlightedElement.scrollIntoView({ block: "nearest" });
@@ -454,7 +453,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
         setIsOpen(true);
       }
     } else {
-      (onChange as (value: T | null) => void)(null);
+      onChange("");
       if (!isOpen) {
         setIsOpen(true);
       }
@@ -498,7 +497,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     if (isMulti) {
       (onChange as (values: string[]) => void)([]);
     } else {
-      (onChange as (value: string | null) => void)(null);
+      onChange("");
     }
     setSearchTerm("");
     setIsOpen(true);
@@ -678,7 +677,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
                 const isSelected = valueArray.includes(getOptionValue(option));
                 const isHighlighted = index === highlightedIndex;
                 const isDisabled = isOptionDisabled(option);
-                const optionId = `id-${CSS.escape(id)}-option-${index}`;
+                const optionId = `id-${id}-option-${index}`;
 
                 return (
                   <li
@@ -714,7 +713,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
             {allowAddNew && searchTerm && (
               <li
                 id={`id-${id}-option-${filteredOptions.length}`}
-                data-option-id={`id-${CSS.escape(id)}-option-${filteredOptions.length}`}
+                data-option-id={`id-${id}-option-${filteredOptions.length}`}
                 onClick={(e) => {
                   e.stopPropagation();
                   if (!isAddingNew) {

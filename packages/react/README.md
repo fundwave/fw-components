@@ -31,7 +31,7 @@ import { styles } from "@fw-components/react/styles";
 
 const sheet = new CSSStyleSheet();
 sheet.replaceSync(styles);
-shadowRoot.adoptedStyleSheets = [sheet];
+shadowRoot.adoptedStyleSheets = [...shadowRoot.adoptedStyleSheets, sheet];
 ```
 
 Or, without constructable stylesheets support, inject it as an inline `<style>` tag scoped to the shadow root:
