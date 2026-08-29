@@ -45,6 +45,7 @@ export class FwThemeBuilder extends LitElement {
     .back-hidden {
       opacity: 0;
       cursor: default;
+      pointer-events: none;
     }
     .back-icon {
       height: 1rem;
@@ -77,7 +78,7 @@ export class FwThemeBuilder extends LitElement {
 
   createFontPickComponent(font: string) {
     return html` <fw-font-pick
-      exportparts="font-container, font-label, font-button, font-dropdown-container, font-dropdown-option, font-dropdown-selected"
+      exportparts="font-container, font-label, font-button, font-dropdown-container, font-listbox, font-dropdown-option"
       .label=${font}
       @value-changed=${(e: CustomEvent) => {
         const detail = {
@@ -190,7 +191,7 @@ export class FwThemeBuilder extends LitElement {
       <div part="container">
         ${this.viewByGroup
           ? html` <span part="back-icon-container" class="back-button ${this.nav === "Home" ? "back-hidden" : ""}" @click="${this.navigateBack}">
-                <svg class="back-icon" width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg part="back-icon" class="back-icon" width="46" height="80" viewBox="0 0 46 80" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     d="M43.9567 77.8954C46.6811 75.1012 46.6811 70.5876 43.9567 67.7935L16.8527 39.9955L43.9567 12.1975C46.6811 9.40334 46.6811 4.88973 43.9567 2.0956C41.2324 -0.698533 36.8314 -0.698533 34.1071 2.0956L2.04329 34.9804C-0.681091 37.7745 -0.681092 42.2881 2.04328 45.0822L34.1071 77.967C36.7616 80.6895 41.2323 80.6895 43.9567 77.8954Z"
                     fill="black"

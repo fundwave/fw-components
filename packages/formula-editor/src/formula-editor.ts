@@ -7,6 +7,7 @@ import { getFormulaTokens } from "./utils/get-formula-tokens.js";
 import { Parser } from "./utils/parser.js";
 
 import { FormulaEditorStyles } from "./styles/editor.js";
+import { mathematicalOperators } from "./utils/constants.js";
 
 @customElement("formula-editor")
 export class FormulaEditor extends LitElement {
@@ -61,13 +62,13 @@ export class FormulaEditor extends LitElement {
   errorString: string = "";
 
   @property({ type: Object })
-  formulaRegex: RegExp = /.*/;
+  formulaRegex: RegExp = /[A-Za-z0-9_#@.]+|[-+(),*^/\s]/g;
 
   @property({ type: Boolean })
   allowedNumbers: boolean = true;
 
   @property({ type: Object })
-  allowedOperators: Set<string> = new Set();
+  allowedOperators: Set<string> = mathematicalOperators;
 
   @query("#fw-formula-editor")
   editor!: HTMLTextAreaElement;
