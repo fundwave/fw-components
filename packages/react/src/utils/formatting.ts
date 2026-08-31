@@ -41,6 +41,10 @@ const getOptions = (n?: number, trim = true, negative: numbro.Format["negative"]
   return options;
 };
 
+export const setOptions = (options: Partial<numbro.Format>): void => {
+  numbro.setDefaults(options);
+};
+
 /*
 Format value to include commas.
 Precision upto n decimals( default : 2).
