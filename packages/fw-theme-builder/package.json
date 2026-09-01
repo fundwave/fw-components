@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/fw-theme-builder",
-  "version": "2.5.2-react-ui.1",
+  "version": "2.5.1",
   "description": "Theme builder web component",
   "publishConfig": {
     "access": "public"
