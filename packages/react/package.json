@@ -2,6 +2,7 @@
   "name": "@fw-components/react",
   "version": "2.4.1-react-ui.0",
   "description": "Fundwave's React UI component library",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "exports": {
