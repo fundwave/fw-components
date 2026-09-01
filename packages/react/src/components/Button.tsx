@@ -3,9 +3,11 @@ import React, { ReactNode, useEffect, useRef, useState } from "react";
 
 import Spinner from "./Spinner";
 
-import { groupLoadingEmitter } from "../providers/groupLoadingEmitter";
+import { GroupLoadingEmitter } from "../providers/GroupLoadingEmitter";
 import type { IconComponent } from "../types";
 import { cn } from "../utils/tailwind";
+
+const groupLoadingEmitter = new GroupLoadingEmitter();
 
 export const themeVariantClasses: Record<"primary" | "secondary" | "danger", Record<"filled" | "outlined" | "ghost" | "plain" | "link", string>> = {
   primary: {

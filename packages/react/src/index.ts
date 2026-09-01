@@ -26,7 +26,7 @@ export { Input, Textarea, Checkbox, default as InputDefault } from "./components
 export type { InputRef, InputProps, TextareaRef, CheckboxRef } from "./components/Input";
 
 export { default as RightSideModal, CenterModal } from "./components/Modal";
-export { ModalManager } from "./providers/modalManager";
+export { ModalManager } from "./providers/ModalManager";
 
 export { default as Select } from "./components/Select";
 export type { Option, SelectOption, SelectRef, SelectProps } from "./components/Select";

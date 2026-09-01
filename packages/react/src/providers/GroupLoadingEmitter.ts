@@ -15,5 +15,3 @@ export class GroupLoadingEmitter {
     };
   }
 }
-
-export const groupLoadingEmitter = new GroupLoadingEmitter();

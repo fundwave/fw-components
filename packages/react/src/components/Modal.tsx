@@ -2,7 +2,7 @@ import { X } from "lucide-react";
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 
-import { ModalManager } from "../providers/modalManager";
+import { ModalManager } from "../providers/ModalManager";
 import { cn } from "../utils/tailwind";
 
 interface ModalProps {
