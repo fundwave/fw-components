@@ -12,7 +12,7 @@ npm i @fw-components/react
 
 ## Setup
 
-The package ships a pre-built, ready-to-use stylesheet, you don't need Tailwind in your own app to use it. All utility classes emitted by these components are namespaced with the `fwui:` prefix (e.g. `fwui:flex`, `fwui:bg-primary`), so they can't collide with your app's own Tailwind (or other) classes, and only the classes actually used by these components are included in the build. There are two ways to bring the stylesheet into your app.
+The package ships a pre-built, ready-to-use stylesheet, you don't need Tailwind in your own app to use it. All utility classes emitted by these components are namespaced with the `fwr:` prefix (e.g. `fwr:flex`, `fwr:bg-primary`), so they can't collide with your app's own Tailwind (or other) classes, and only the classes actually used by these components are included in the build. There are two ways to bring the stylesheet into your app.
 
 ### Option 1: CSS file import (regular DOM)
 
@@ -44,7 +44,7 @@ styleTag.textContent = styles;
 shadowRoot.appendChild(styleTag);
 ```
 
-`styles` is the exact same compiled, `fwui:`-prefixed, minified CSS as `styles.css` - just as a string - so there's no extra build step on the consumer's side, and because every class is prefixed, injecting it into a shadow root (or even the main document) is safe even if the host page already has its own Tailwind setup.
+`styles` is the exact same compiled, `fwr:`-prefixed, minified CSS as `styles.css` - just as a string - so there's no extra build step on the consumer's side, and because every class is prefixed, injecting it into a shadow root (or even the main document) is safe even if the host page already has its own Tailwind setup.
 
 ## Usage
 
@@ -71,15 +71,16 @@ function Example() {
 
 | Prop     | Type                                                     | Default   | Description                                                               |
 | -------- | -------------------------------------------------------- | --------- | ------------------------------------------------------------------------- |
-| title    | `ReactNode`                                              | -         | Button label/content (required)                                           |
-| onClick  | `(e?) => Promise<void> \| void`                          | -         | Click handler; button auto-disables and shows a spinner while it resolves |
-| variant  | `"filled" \| "outlined" \| "ghost" \| "plain" \| "link"` | `filled`  | Visual style                                                              |
-| theme    | `"primary" \| "secondary" \| "danger"`                   | `primary` | Color theme                                                               |
-| size     | `"sm" \| "md" \| "lg" \| "base"`                         | `md`      | Button size                                                               |
-| mode     | `"text" \| "icon"`                                       | `text`    | Icon-only vs. text button                                                 |
-| icon     | `LucideIcon`                                             | -         | Icon component (used with `mode="icon"` or alongside text)                |
-| group    | `string`                                                 | -         | Groups buttons so they share a single pending/loading state               |
-| disabled | `boolean`                                                | `false`   | Disables the button                                                       |
+| title        | `ReactNode`                                              | -                                   | Button label/content (required)                                           |
+| onClick      | `(e?) => Promise<void> \| void`                          | -                                   | Click handler; button auto-disables and shows a spinner while it resolves |
+| variant      | `"filled" \| "outlined" \| "ghost" \| "plain" \| "link"` | `filled` (`ghost` when `mode="icon"`) | Visual style                                                             |
+| theme        | `"primary" \| "secondary" \| "danger"`                   | `primary`                           | Color theme                                                               |
+| size         | `"sm" \| "md" \| "lg" \| "base"`                         | `md`                                | Button size                                                               |
+| mode         | `"text" \| "icon"`                                       | `text`                              | Icon-only vs. text button                                                 |
+| icon         | `LucideIcon`                                             | -                                   | Icon component (used with `mode="icon"` or alongside text)                |
+| iconPosition | `"prefix" \| "suffix"`                                   | `prefix`                            | Where `icon` renders relative to `title` (ignored when `mode="icon"`)     |
+| group        | `string`                                                 | -                                   | Groups buttons so they share a single pending/loading state               |
+| disabled     | `boolean`                                                | `false`                             | Disables the button                                                       |
 
 ### Input / Textarea / Checkbox
 
@@ -93,8 +94,16 @@ import { Input, Textarea, Checkbox } from "@fw-components/react";
 
 - `Input` supports `type="number"`, `"text"`, `"date"`, `"datetime-local"`, `"submit"`. When `type="number"`, values are comma-formatted for display and `onChange` receives a plain `number` (formatting is handled internally via `numbro`).
 - All three forward a `ref` exposing a `validate(): boolean` method (checks `required` and native validity) for imperative form validation.
-- Common props: `label`, `errorMessage`, `invalid`, `required`, `className`.
-- `Input` additionally supports `icon` (any `lucide-react` icon name) and `clearable` (adds a clear button, fires `onClear`).
+- Common props: `label`, `description` (helper text under the label), `errorMessage`, `invalid`, `required`, `className`.
+- `Input` additionally supports `icon` (a `lucide-react` icon name, or any custom icon component) and `clearable` (adds a clear button, fires `onClear`).
+
+Number formatting/parsing (comma-grouping, mantissa, parentheses for negatives) for `type="number"` inputs is powered by [`numbro`](https://numbrojs.com/), configured with app-wide defaults (`mantissa: 2`, `thousandSeparated: true`, `negative: "parenthesis"`). Override these defaults as:
+
+```ts
+import { setOptions } from "@fw-components/react";
+
+setOptions({ mantissa: 0, negative: "sign" });
+```
 
 ### Select
 
@@ -103,6 +112,34 @@ import { Input, Textarea, Checkbox } from "@fw-components/react";
 ```
 
 Generic single/multi-select with search, custom option rendering, and portal-rendered dropdown. `value`/`onChange` work with plain option `value` strings (a single string, or an array when `isMulti`) rather than full option objects. `Option` shape is `{ value: string; label: string; disabled?: boolean }` by default, or pass your own type via the generic parameter along with `labelKey`/`valueKey`. Forwards a `ref` exposing `validate(): boolean`.
+
+| Prop               | Type                                                          | Default              | Description                                                                                     |
+| ------------------ | -------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------ |
+| options             | `T[]`                                                          | `[]`                 | Option list                                                                                       |
+| value               | `string \| string[]`                                           | -                     | Selected value(s) (required); array when `isMulti`                                                |
+| onChange            | `(value: string \| string[]) => void`                          | -                     | Change handler (required)                                                                         |
+| isMulti             | `boolean`                                                      | `false`               | Enables multi-select with chip display                                                            |
+| searchable          | `boolean`                                                      | `true`                | Shows a text input to filter options                                                              |
+| filterFunction      | `(option: T, searchTerm: string) => boolean`                   | label `includes` match | Custom search matching                                                                          |
+| labelKey / valueKey | `keyof T`                                                       | `"label"` / `"value"` | Keys to read label/value from when using a custom option type                                     |
+| renderOption        | `(option: T) => ReactNode`                                     | -                     | Custom rendering for each option row                                                              |
+| onAddNew            | `(value: string) => Promise<void> \| void`                     | -                     | Enables an inline "Add \"…\"" option that creates a new entry from the search term                |
+| allowCustomValue    | `boolean`                                                      | `false`               | Lets the typed search term itself become the (single-select) value when the dropdown closes       |
+| onSearchChange      | `(searchTerm: string) => Promise<unknown[] \| void> \| unknown[] \| void` | -         | Called on every keystroke, e.g. to drive async/remote option loading                              |
+| loading             | `boolean`                                                      | `false`               | Shows a loading state in the dropdown                                                             |
+| disabled            | `boolean`                                                      | `false`               | Disables the control                                                                               |
+| disabledOptions     | `string[]`                                                     | `[]`                  | Option values to render as disabled (in addition to each option's own `disabled` flag)             |
+| showClearButton     | `boolean`                                                      | `false`               | Shows a clear-all button once a value is selected                                                 |
+| maxVisibleOptions   | `number`                                                        | `3`                   | Multi-select: number of chips shown before collapsing the rest into a `+N` indicator               |
+| prefixIcon          | `IconComponent`                                                 | -                     | Icon rendered at the start of the control                                                         |
+| usePortal           | `boolean`                                                       | `false`               | Renders the dropdown in a portal instead of inline, so it can escape clipping/`overflow` ancestors |
+| mountDocument       | `ShadowRoot \| Document`                                        | `document`            | Document/shadow root to mount the portal and bind outside-click listeners to                      |
+| label / description | `ReactNode`                                                    | -                     | Field label and helper text                                                                       |
+| placeholder         | `string`                                                        | `"Search..."`         | Placeholder text                                                                                   |
+| noResultsMessage / allSelectedMessage | `string`                                     | -                     | Empty-state copy for the dropdown                                                                  |
+| errorMessage / invalid / required | `string` / `boolean` / `boolean`     | -                     | Validation display, matching `Input`/`Textarea`                                                   |
+| className / containerClassName / inputClassName / listClassName | `string`     | -                     | Class overrides for the control, its container, the search input, and the dropdown list           |
+| id / name           | `string`                                                        | auto-generated        | Passed through to the underlying input                                                            |
 
 ### DropdownMenu
 
@@ -122,22 +159,25 @@ A styled re-export of [Radix UI's Dropdown Menu](https://www.radix-ui.com/primit
 | onClose             | `() => void`  | -                  | Called on close (backdrop click / X)                        |
 | title               | `string`      | -                  | Header title (required)                                     |
 | subtitle            | `string`      | -                  | Header subtitle                                             |
+| headerActions       | `ReactNode`   | -                  | Extra content rendered in the header, next to the close button |
 | width               | `string`      | responsive default | Tailwind width classes                                      |
+| contentPadding      | `string`      | `"fwr:p-4"`        | Tailwind padding classes for the body/content area           |
 | disableOutsideClick | `boolean`     | `false`            | Prevents closing on backdrop click                          |
-| zIndex              | `number`      | auto (stacked)     | ⚠️ Currently has no effect - z-index is always assigned by `ModalManager` on open, overwriting this prop. See note below. |
+| zIndex              | `number`      | `ModalManager.baseZIndex` | Minimum z-index for this modal; `ModalManager` stacks it above whatever is currently the highest open modal, so the effective z-index is `max(highest open modal + 10, zIndex)` |
 | mountContainer      | `HTMLElement` | `document.body`    | Portal mount target                                         |
 
-`CenterModal` is the same component centered instead of docked to the right. Stacking order for multiple open modals is handled automatically by `ModalManager` (each modal registers on open and unregisters on close/unmount), which is why the `zIndex` prop is not currently honored.
+`CenterModal` is the same component centered instead of docked to the right. Stacking order for multiple open modals is handled automatically by `ModalManager` (each modal registers on open and unregisters on close/unmount).
 
 ### ConfirmationDialog
 
-Provider + hook for imperative confirm/delete dialogs:
+Provider + hook for imperative confirm/delete dialogs. `ConfirmationDialog` must be rendered once inside the provider - it's what actually displays the dialog when `confirm()`/`confirmDelete()` are called:
 
 ```tsx
-import { ConfirmationProvider, ConfirmationType, useConfirmation } from "@fw-components/react";
+import { ConfirmationDialog, ConfirmationProvider, ConfirmationType, useConfirmation } from "@fw-components/react";
 
 // once, near the root
 <ConfirmationProvider>
+  <ConfirmationDialog />
   <App />
 </ConfirmationProvider>;
 
@@ -147,6 +187,8 @@ const { confirm, confirmDelete } = useConfirmation();
 const ok = await confirm("Are you sure?", "Confirm action", "Continue", ConfirmationType.WARNING);
 const okDelete = await confirmDelete("This cannot be undone.", "Delete item?");
 ```
+
+`confirm(message, title?, label?, type?, icon?)` resolves `true`/`false` based on the user's choice. `type` is one of `ConfirmationType.INFO` (default), `WARNING`, `SEVERE`, or `SUCCESS`, each with its own icon/color treatment; `confirmDelete(message, title?)` is a shortcut for a `SEVERE` confirmation with a trash icon and a "Delete" label.
 
 ### Skeleton / Spinner
 
@@ -160,6 +202,7 @@ Simple loading placeholders; both accept a `className` to override sizing/color.
 ## Development
 
 ```sh
-npm run build   # tsc build to dist/, then compiles styles/index.css via the Tailwind CLI into dist/styles.css and dist/styles.js
-npm run dev     # tsc --watch (components only; re-run `npm run build` to pick up style changes)
+npm run build   # vite build: emits dist/index.js + dist/index.d.ts (types) and compiles styles/index.css into dist/styles.css and dist/styles.js
+npm run dev     # vite build --watch
+npm run clean   # rm -rf dist
 ```

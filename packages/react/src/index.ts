@@ -34,3 +34,5 @@ export type { Option, SelectOption, SelectRef, SelectProps } from "./components/
 export { default as Skeleton } from "./components/Skeleton";
 
 export { default as Spinner } from "./components/Spinner";
+
+export { setOptions } from "./utils/formatting";
