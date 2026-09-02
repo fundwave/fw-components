@@ -1,6 +1,6 @@
 {
   "packages": ["packages/*"],
-  "version": "2.5.2-react-ui.2",
+  "version": "2.5.2-react-ui.3",
   "command": {
     "version": {
       "message": "chore(release): publish %s \n [skip ci]"
