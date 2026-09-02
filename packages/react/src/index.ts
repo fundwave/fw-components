@@ -35,4 +35,7 @@ export { default as Skeleton } from "./components/Skeleton";
 
 export { default as Spinner } from "./components/Spinner";
 
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, TooltipIconButton } from "./components/ToolTip";
+export type { TooltipContentProps, TooltipIconButtonProps } from "./components/ToolTip";
+
 export { setOptions } from "./utils/formatting";

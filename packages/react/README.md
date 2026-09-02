@@ -199,6 +199,33 @@ const okDelete = await confirmDelete("This cannot be undone.", "Delete item?");
 
 Simple loading placeholders; both accept a `className` to override sizing/color.
 
+### Tooltip
+
+A styled re-export of [Radix UI's Tooltip](https://www.radix-ui.com/primitives/docs/components/tooltip) primitives (`Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`), plus a `TooltipIconButton` convenience wrapper around `Button`:
+
+```tsx
+import { Tooltip, TooltipContent, TooltipTrigger } from "@fw-components/react";
+
+<Tooltip>
+  <TooltipTrigger asChild>
+    <button>Hover me</button>
+  </TooltipTrigger>
+  <TooltipContent side="top">Helpful text</TooltipContent>
+</Tooltip>;
+```
+
+`Tooltip` works standalone (no setup needed) - if it doesn't find an ancestor `TooltipProvider`, it wraps itself in one with `delayDuration={0}`. Wrap your app (or a subtree) in your own `<TooltipProvider delayDuration={500}>` to share one delay and Radix's hover-skip grouping across every `Tooltip` beneath it; nested `Tooltip`s detect it and won't shadow it. `TooltipContent` renders above any open `RightSideModal`/`CenterModal` automatically, and accepts an optional `mountDocument` (`ShadowRoot | Document`, same as `Select`) for portalling into a shadow root, plus all of Radix's `Content` props (`side`, `sideOffset`, `align`, etc.).
+
+```tsx
+import { Trash2 } from "lucide-react";
+import { TooltipIconButton } from "@fw-components/react";
+
+<TooltipIconButton tooltip="Delete" icon={Trash2} onClick={handleDelete} />;
+<TooltipIconButton tooltip="Only admins can delete this" icon={Trash2} disabled />;
+```
+
+`TooltipIconButton` renders an icon-only `Button` (`mode="icon"`, `variant="ghost"`) wrapped in a `Tooltip`, using `tooltip` as both the button's accessible `title` and the tooltip text. It accepts every `Button` prop except `title`, plus `tooltip` (required) and `side` (default `"top"`). The tooltip still shows on hover/focus when `disabled` is set, so it can explain *why* the action is unavailable.
+
 ## Development
 
 ```sh
