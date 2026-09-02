@@ -224,7 +224,7 @@ import { TooltipIconButton } from "@fw-components/react";
 <TooltipIconButton tooltip="Only admins can delete this" icon={Trash2} disabled />;
 ```
 
-`TooltipIconButton` renders an icon-only `Button` (`mode="icon"`, `variant="ghost"`) wrapped in a `Tooltip`, using `tooltip` as both the button's accessible `title` and the tooltip text. It accepts every `Button` prop except `title`, plus `tooltip` (required) and `side` (default `"top"`). The tooltip still shows on hover/focus when `disabled` is set, so it can explain *why* the action is unavailable.
+`TooltipIconButton` renders an icon-only `Button` (`mode="icon"`, `variant="ghost"`) wrapped in a `Tooltip`. It accepts every `Button` prop, including `title` for accessibility, plus `tooltip` (required, `ReactNode | string`) and `side` (default `"top"`). When `tooltip` is a string and no `title` is provided, it is also used as the button's accessible title.
 
 ## Development
 

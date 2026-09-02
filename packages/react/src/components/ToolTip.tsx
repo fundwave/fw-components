@@ -60,19 +60,19 @@ function TooltipContent({ className, sideOffset = 4, mountContainer, style, chil
 }
 
 interface TooltipIconButtonProps extends Omit<React.ComponentPropsWithRef<typeof Button>, "title"> {
-  tooltip: string;
+  tooltip: string | React.ReactNode;
+  title?: string;
   side?: "top" | "bottom" | "left" | "right";
   icon?: IconComponent;
 }
 
-const TooltipIconButton = React.forwardRef<React.ElementRef<typeof Button>, TooltipIconButtonProps>(({ tooltip, side = "top", icon, disabled, className, ...props }, ref) => {
-  const button = <Button mode="icon" icon={icon} ref={ref} variant="ghost" size="md" disabled={disabled} {...props} title={tooltip} className={cn("fwr:p-1", disabled && "fwr:pointer-events-none", className)} />;
+const TooltipIconButton = React.forwardRef<React.ElementRef<typeof Button>, TooltipIconButtonProps>(({ tooltip, title, side = "top", icon, disabled, className, ...props }, ref) => {
+  const accessibleTitle = title ? title : typeof tooltip === "string" ? tooltip : undefined;
+  const button = <Button mode="icon" icon={icon} ref={ref} variant="ghost" size="md" disabled={disabled} {...props} title={accessibleTitle} className={cn("fwr:p-1", disabled && "fwr:pointer-events-none", className)} />;
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        {/* Native `disabled` buttons never fire pointer/focus events, so the tooltip explaining
-            *why* it's disabled would never show without this hoverable wrapper. */}
         {disabled ? (
           <span className="fwr:inline-flex" tabIndex={0}>
             {button}
