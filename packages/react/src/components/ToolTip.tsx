@@ -32,18 +32,17 @@ function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimiti
 }
 
 interface TooltipContentProps extends React.ComponentProps<typeof TooltipPrimitive.Content> {
-  mountDocument?: ShadowRoot | Document;
+  mountContainer?: HTMLElement;
 }
 
-function TooltipContent({ className, sideOffset = 4, mountDocument, style, children, ...props }: TooltipContentProps) {
-  const container = mountDocument instanceof ShadowRoot ? mountDocument : (mountDocument ?? (typeof document !== "undefined" ? document : undefined))?.body;
+function TooltipContent({ className, sideOffset = 4, mountContainer, style, children, ...props }: TooltipContentProps) {
 
   // Sits above the highest currently-open RightSideModal/CenterModal (ModalManager.baseZIndex
   // and beyond), otherwise a tooltip triggered from within a modal renders behind it.
   const zIndex = Math.max(50, ModalManager.getMaxZIndex() + 10);
 
   return (
-    <TooltipPrimitive.Portal container={container}>
+    <TooltipPrimitive.Portal container={mountContainer}>
       <TooltipPrimitive.Content
         sideOffset={sideOffset}
         style={{ zIndex, ...style }}
