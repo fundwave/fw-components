@@ -1,0 +1,37 @@
+@import "tailwindcss" prefix(fwr);
+@source "../src";
+
+@theme {
+  --color-light: var(--fwr-light-color, #ffffff);
+  --color-border: var(--fwr-border-color, #eeeeee);
+  --color-input: var(--fwr-input-color, #eeeeee);
+  --color-ring: var(--fwr-ring-color, #5795eb);
+
+  --color-background: var(--fwr-background-color, #ffffff);
+  --color-foreground: var(--fwr-background-contrast-color, #515151);
+
+  --color-primary: var(--fwr-primary-color, #2e7ae7);
+  --color-primary-foreground: var(--fwr-primary-contrast-color, #f8fafc);
+
+  --color-secondary: var(--fwr-secondary-color, #515151);
+  --color-secondary-foreground: var(--fwr-secondary-contrast-color, #f8fafc);
+
+  --color-destructive: var(--fwr-error-color, #d50000);
+  --color-destructive-foreground: var(--fwr-error-contrast-color, #f8fafc);
+
+  --color-muted: var(--fwr-muted-color, #f8f8f8);
+  --color-muted-foreground: var(--fwr-muted-contrast-color, #515151);
+
+  --color-accent: var(--fwr-accent-color, #f8f8f8);
+  --color-accent-foreground: var(--fwr-accent-contrast-color, #515151);
+
+  --color-popover: var(--fwr-popover-color, #ffffff);
+  --color-popover-foreground: var(--fwr-popover-contrast-color, #515151);
+
+  --color-card: var(--fwr-card-color, #ffffff);
+  --color-card-foreground: var(--fwr-card-contrast-color, #515151);
+
+  --radius-lg: var(--fwr-border-radius, 0.5rem);
+  --radius-md: calc(var(--fwr-border-radius, 0.5rem) - 2px);
+  --radius-sm: calc(var(--fwr-border-radius, 0.5rem) - 4px);
+}
