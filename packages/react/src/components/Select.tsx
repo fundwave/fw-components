@@ -678,7 +678,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
           </li>
         ) : (
           <>
-            {getEmptyMessage() && filteredOptions.length === 0 && !allowAddNew ? (
+            {!!getEmptyMessage() ? (
               <li className="fwr:relative fwr:cursor-default fwr:select-none fwr:py-2 fwr:px-3 fwr:text-neutral-500">{getEmptyMessage()}</li>
             ) : (
               filteredOptions.map((option, index) => {
