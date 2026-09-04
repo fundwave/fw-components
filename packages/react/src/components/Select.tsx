@@ -4,8 +4,9 @@ import { createPortal } from "react-dom";
 
 import Spinner from "./Spinner";
 
-import type { IconComponent } from "../types";
 import { cn } from "../utils/tailwind";
+
+import type { IconComponent } from "../types";
 
 export interface Option {
   value: string;
@@ -27,6 +28,7 @@ interface SelectPropsBase<T> {
   placeholder?: string;
   errorMessage?: string;
   noResultsMessage?: string;
+  addNewMessage?: string;
   allSelectedMessage?: string;
   required?: boolean;
   loading?: boolean;
@@ -126,6 +128,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     errorMessage,
     loading = false,
     noResultsMessage = "No results found",
+    addNewMessage = "Type to add new",
     allSelectedMessage = "All options selected",
     disabled = false,
     disabledOptions = [],
@@ -297,14 +300,18 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
     const handleResize = () => handleScroll();
 
     const scrollParents = getScrollParents(containerRef.current);
-    scrollParents.forEach((parent) => { parent.addEventListener("scroll", handleScroll, { passive: true }) });
+    scrollParents.forEach((parent) => {
+      parent.addEventListener("scroll", handleScroll, { passive: true });
+    });
     window.addEventListener("resize", handleResize);
 
     return () => {
       if (rafId) {
         cancelAnimationFrame(rafId);
       }
-      scrollParents.forEach((parent) => { parent.removeEventListener("scroll", handleScroll) });
+      scrollParents.forEach((parent) => {
+        parent.removeEventListener("scroll", handleScroll);
+      });
       window.removeEventListener("resize", handleResize);
     };
   }, [isOpen, props.usePortal, updateDropdownPosition]);
@@ -522,6 +529,7 @@ const Select = forwardRef(function Select<T = Option>(props: SelectProps<T>, ref
 
   const getEmptyMessage = () => {
     if (loading) return "Loading options...";
+    if (filteredOptions.length === 0 && !searchTerm && (allowAddNew || allowCustomValue)) return addNewMessage;
     if (filteredOptions.length === 0 && searchTerm && !allowAddNew && !allowCustomValue) return noResultsMessage;
     if (filteredOptions.length === 0 && !searchTerm) return noResultsMessage;
     return null;

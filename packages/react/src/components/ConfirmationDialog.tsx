@@ -79,6 +79,7 @@ const ConfirmationDialog: React.FC = () => {
           <div className="fwr:bg-muted fwr:px-4 fwr:py-3 fwr:sm:px-6 fwr:sm:flex fwr:sm:flex-row-reverse">
             <button
               type="button"
+              tabIndex={1}
               onClick={onConfirm}
               className={`fwr:w-full fwr:inline-flex fwr:justify-center fwr:rounded-md fwr:border fwr:border-transparent fwr:shadow-sm fwr:px-4 fwr:py-2 fwr:text-base fwr:font-medium fwr:focus:outline-none fwr:focus:ring-2 fwr:focus:ring-offset-2 fwr:sm:ml-3 fwr:sm:w-auto fwr:sm:text-sm ${getButtonClass()}`}
             >
@@ -86,6 +87,7 @@ const ConfirmationDialog: React.FC = () => {
             </button>
             <button
               type="button"
+              tabIndex={1}
               onClick={onCancel}
               className="fwr:mt-3 fwr:w-full fwr:inline-flex fwr:justify-center fwr:rounded-md fwr:border fwr:border-border fwr:shadow-sm fwr:px-4 fwr:py-2 fwr:bg-background fwr:text-base fwr:font-medium fwr:text-foreground fwr:hover:bg-muted fwr:focus:outline-none fwr:focus:ring-2 fwr:focus:ring-offset-2 fwr:focus:ring-primary fwr:sm:mt-0 fwr:sm:ml-3 fwr:sm:w-auto fwr:sm:text-sm"
             >
