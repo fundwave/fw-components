@@ -27,7 +27,7 @@ const FileItem = ({ file, onDownload, onRemove, disabled = false, className }: F
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const isMounted = React.useRef(true);
-  const Icon = getFileIcon(file.type);
+  const { icon: Icon, colorClass } = getFileIcon(file.type);
   const isInteractive = !loading && !disabled;
   const isDownloadable = !!onDownload && isInteractive;
   const size = formatFileSize(file.size);
@@ -76,7 +76,11 @@ const FileItem = ({ file, onDownload, onRemove, disabled = false, className }: F
         className
       )}
     >
-      {loading ? <Spinner className="fwr:w-4 fwr:h-4 fwr:shrink-0 fwr:text-primary" /> : <Icon className="fwr:w-4 fwr:h-4 fwr:shrink-0 fwr:text-muted-foreground" />}
+      {loading ? (
+        <Spinner className="fwr:w-4 fwr:h-4 fwr:shrink-0 fwr:text-primary" />
+      ) : (
+        <Icon className={cn("fwr:w-4 fwr:h-4 fwr:shrink-0", disabled ? "fwr:text-muted-foreground" : colorClass)} />
+      )}
       <div
         className={cn("fwr:flex-1 fwr:min-w-0", isDownloadable ? "fwr:cursor-pointer fwr:hover:text-primary" : "")}
         onClick={handleDownload}
