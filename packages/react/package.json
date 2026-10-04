@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/react",
-  "version": "2.6.1-file-uploader.0",
+  "version": "2.6.1-file-uploader.1",
   "description": "Fundwave's React UI component library",
   "type": "module",
   "main": "dist/index.js",
