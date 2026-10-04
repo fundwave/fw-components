@@ -69,18 +69,18 @@ function Example() {
 <Button title="Save" theme="primary" variant="filled" size="md" onClick={handleClick} />
 ```
 
-| Prop     | Type                                                     | Default   | Description                                                               |
-| -------- | -------------------------------------------------------- | --------- | ------------------------------------------------------------------------- |
-| title        | `ReactNode`                                              | -                                   | Button label/content (required)                                           |
-| onClick      | `(e?) => Promise<void> \| void`                          | -                                   | Click handler; button auto-disables and shows a spinner while it resolves |
-| variant      | `"filled" \| "outlined" \| "ghost" \| "plain" \| "link"` | `filled` (`ghost` when `mode="icon"`) | Visual style                                                             |
-| theme        | `"primary" \| "secondary" \| "danger"`                   | `primary`                           | Color theme                                                               |
-| size         | `"sm" \| "md" \| "lg" \| "base"`                         | `md`                                | Button size                                                               |
-| mode         | `"text" \| "icon"`                                       | `text`                              | Icon-only vs. text button                                                 |
-| icon         | `LucideIcon`                                             | -                                   | Icon component (used with `mode="icon"` or alongside text)                |
-| iconPosition | `"prefix" \| "suffix"`                                   | `prefix`                            | Where `icon` renders relative to `title` (ignored when `mode="icon"`)     |
-| group        | `string`                                                 | -                                   | Groups buttons so they share a single pending/loading state               |
-| disabled     | `boolean`                                                | `false`                             | Disables the button                                                       |
+| Prop         | Type                                                     | Default                               | Description                                                               |
+| ------------ | -------------------------------------------------------- | ------------------------------------- | ------------------------------------------------------------------------- |
+| title        | `ReactNode`                                              | -                                     | Button label/content (required)                                           |
+| onClick      | `(e?) => Promise<void> \| void`                          | -                                     | Click handler; button auto-disables and shows a spinner while it resolves |
+| variant      | `"filled" \| "outlined" \| "ghost" \| "plain" \| "link"` | `filled` (`ghost` when `mode="icon"`) | Visual style                                                              |
+| theme        | `"primary" \| "secondary" \| "danger"`                   | `primary`                             | Color theme                                                               |
+| size         | `"sm" \| "md" \| "lg" \| "base"`                         | `md`                                  | Button size                                                               |
+| mode         | `"text" \| "icon"`                                       | `text`                                | Icon-only vs. text button                                                 |
+| icon         | `LucideIcon`                                             | -                                     | Icon component (used with `mode="icon"` or alongside text)                |
+| iconPosition | `"prefix" \| "suffix"`                                   | `prefix`                              | Where `icon` renders relative to `title` (ignored when `mode="icon"`)     |
+| group        | `string`                                                 | -                                     | Groups buttons so they share a single pending/loading state               |
+| disabled     | `boolean`                                                | `false`                               | Disables the button                                                       |
 
 ### Input / Textarea / Checkbox
 
@@ -113,33 +113,67 @@ setOptions({ mantissa: 0, negative: "sign" });
 
 Generic single/multi-select with search, custom option rendering, and portal-rendered dropdown. `value`/`onChange` work with plain option `value` strings (a single string, or an array when `isMulti`) rather than full option objects. `Option` shape is `{ value: string; label: string; disabled?: boolean }` by default, or pass your own type via the generic parameter along with `labelKey`/`valueKey`. Forwards a `ref` exposing `validate(): boolean`.
 
-| Prop               | Type                                                          | Default              | Description                                                                                     |
-| ------------------ | -------------------------------------------------------------- | -------------------- | ------------------------------------------------------------------------------------------------ |
-| options             | `T[]`                                                          | `[]`                 | Option list                                                                                       |
-| value               | `string \| string[]`                                           | -                     | Selected value(s) (required); array when `isMulti`                                                |
-| onChange            | `(value: string \| string[]) => void`                          | -                     | Change handler (required)                                                                         |
-| isMulti             | `boolean`                                                      | `false`               | Enables multi-select with chip display                                                            |
-| searchable          | `boolean`                                                      | `true`                | Shows a text input to filter options                                                              |
-| filterFunction      | `(option: T, searchTerm: string) => boolean`                   | label `includes` match | Custom search matching                                                                          |
-| labelKey / valueKey | `keyof T`                                                       | `"label"` / `"value"` | Keys to read label/value from when using a custom option type                                     |
-| renderOption        | `(option: T) => ReactNode`                                     | -                     | Custom rendering for each option row                                                              |
-| onAddNew            | `(value: string) => Promise<void> \| void`                     | -                     | Enables an inline "Add \"…\"" option that creates a new entry from the search term                |
-| allowCustomValue    | `boolean`                                                      | `false`               | Lets the typed search term itself become the (single-select) value when the dropdown closes       |
-| onSearchChange      | `(searchTerm: string) => Promise<unknown[] \| void> \| unknown[] \| void` | -         | Called on every keystroke, e.g. to drive async/remote option loading                              |
-| loading             | `boolean`                                                      | `false`               | Shows a loading state in the dropdown                                                             |
-| disabled            | `boolean`                                                      | `false`               | Disables the control                                                                               |
-| disabledOptions     | `string[]`                                                     | `[]`                  | Option values to render as disabled (in addition to each option's own `disabled` flag)             |
-| showClearButton     | `boolean`                                                      | `false`               | Shows a clear-all button once a value is selected                                                 |
-| maxVisibleOptions   | `number`                                                        | `3`                   | Multi-select: number of chips shown before collapsing the rest into a `+N` indicator               |
-| prefixIcon          | `IconComponent`                                                 | -                     | Icon rendered at the start of the control                                                         |
-| usePortal           | `boolean`                                                       | `false`               | Renders the dropdown in a portal instead of inline, so it can escape clipping/`overflow` ancestors |
-| mountDocument       | `ShadowRoot \| Document`                                        | `document`            | Document/shadow root to mount the portal and bind outside-click listeners to                      |
-| label / description | `ReactNode`                                                    | -                     | Field label and helper text                                                                       |
-| placeholder         | `string`                                                        | `"Search..."`         | Placeholder text                                                                                   |
-| noResultsMessage / allSelectedMessage | `string`                                     | -                     | Empty-state copy for the dropdown                                                                  |
-| errorMessage / invalid / required | `string` / `boolean` / `boolean`     | -                     | Validation display, matching `Input`/`Textarea`                                                   |
-| className / containerClassName / inputClassName / listClassName | `string`     | -                     | Class overrides for the control, its container, the search input, and the dropdown list           |
-| id / name           | `string`                                                        | auto-generated        | Passed through to the underlying input                                                            |
+| Prop                                                            | Type                                                                      | Default                | Description                                                                                        |
+| --------------------------------------------------------------- | ------------------------------------------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------- |
+| options                                                         | `T[]`                                                                     | `[]`                   | Option list                                                                                        |
+| value                                                           | `string \| string[]`                                                      | -                      | Selected value(s) (required); array when `isMulti`                                                 |
+| onChange                                                        | `(value: string \| string[]) => void`                                     | -                      | Change handler (required)                                                                          |
+| isMulti                                                         | `boolean`                                                                 | `false`                | Enables multi-select with chip display                                                             |
+| searchable                                                      | `boolean`                                                                 | `true`                 | Shows a text input to filter options                                                               |
+| filterFunction                                                  | `(option: T, searchTerm: string) => boolean`                              | label `includes` match | Custom search matching                                                                             |
+| labelKey / valueKey                                             | `keyof T`                                                                 | `"label"` / `"value"`  | Keys to read label/value from when using a custom option type                                      |
+| renderOption                                                    | `(option: T) => ReactNode`                                                | -                      | Custom rendering for each option row                                                               |
+| onAddNew                                                        | `(value: string) => Promise<void> \| void`                                | -                      | Enables an inline "Add \"…\"" option that creates a new entry from the search term                 |
+| allowCustomValue                                                | `boolean`                                                                 | `false`                | Lets the typed search term itself become the (single-select) value when the dropdown closes        |
+| onSearchChange                                                  | `(searchTerm: string) => Promise<unknown[] \| void> \| unknown[] \| void` | -                      | Called on every keystroke, e.g. to drive async/remote option loading                               |
+| loading                                                         | `boolean`                                                                 | `false`                | Shows a loading state in the dropdown                                                              |
+| disabled                                                        | `boolean`                                                                 | `false`                | Disables the control                                                                               |
+| disabledOptions                                                 | `string[]`                                                                | `[]`                   | Option values to render as disabled (in addition to each option's own `disabled` flag)             |
+| showClearButton                                                 | `boolean`                                                                 | `false`                | Shows a clear-all button once a value is selected                                                  |
+| maxVisibleOptions                                               | `number`                                                                  | `3`                    | Multi-select: number of chips shown before collapsing the rest into a `+N` indicator               |
+| prefixIcon                                                      | `IconComponent`                                                           | -                      | Icon rendered at the start of the control                                                          |
+| usePortal                                                       | `boolean`                                                                 | `false`                | Renders the dropdown in a portal instead of inline, so it can escape clipping/`overflow` ancestors |
+| mountDocument                                                   | `ShadowRoot \| Document`                                                  | `document`             | Document/shadow root to mount the portal and bind outside-click listeners to                       |
+| label / description                                             | `ReactNode`                                                               | -                      | Field label and helper text                                                                        |
+| placeholder                                                     | `string`                                                                  | `"Search..."`          | Placeholder text                                                                                   |
+| noResultsMessage / allSelectedMessage                           | `string`                                                                  | -                      | Empty-state copy for the dropdown                                                                  |
+| errorMessage / invalid / required                               | `string` / `boolean` / `boolean`                                          | -                      | Validation display, matching `Input`/`Textarea`                                                    |
+| className / containerClassName / inputClassName / listClassName | `string`                                                                  | -                      | Class overrides for the control, its container, the search input, and the dropdown list            |
+| id / name                                                       | `string`                                                                  | auto-generated         | Passed through to the underlying input                                                             |
+
+### FileUpload / FileItem
+
+```tsx
+import { FileUpload, FileItem } from "@fw-components/react";
+
+<FileUpload label="Statement" fileType="pdf" maxSize={5 * 1024 * 1024} value={file} onChange={setFile} onUpload={upload} onRemove={remove} required />
+
+<FileItem file={{ name: "report.pdf", type: "application/pdf", size: 20480 }} onDownload={fetchBlob} onRemove={remove} />
+```
+
+`FileUpload` is a single-file uploader with drag-and-drop and click-to-browse. Once a file is selected it renders as a `FileItem`. It forwards a `ref` exposing `validate(): boolean` (checks `required`), like `Input`.
+
+| Prop                                                    | Type                                            | Default                            | Description                                                                                  |
+| ------------------------------------------------------- | ----------------------------------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------- |
+| value / onChange                                        | `File \| null` / `(file: File \| null) => void` | -                                  | Selected file; `onChange` fires with the file, or `null` on removal                          |
+| onUpload                                                | `(file: File) => Promise<void> \| void`         | -                                  | Runs before `onChange`; if it throws, the error message is shown and the file isn't selected |
+| onRemove                                                | `(file: File) => Promise<void> \| void`         | -                                  | Runs on remove; if it throws, the file is kept and the error is shown                        |
+| fileType                                                | `"any" \| "image" \| "document" \| "pdf"`       | `"any"`                            | Restricts the file picker and shows a format hint                                            |
+| accept                                                  | `string`                                        | -                                  | Overrides the `accept` derived from `fileType`                                               |
+| maxSize                                                 | `number`                                        | -                                  | Maximum file size in bytes                                                                   |
+| variant                                                 | `"default" \| "button"`                         | `"default"`                        | Dashed drop area, or a plain button                                                          |
+| placeholder                                             | `string`                                        | `"Drop or click to upload a file"` | Prompt text                                                                                  |
+| label / description / errorMessage / invalid / required | -                                               | -                                  | Validation display, matching `Input`                                                         |
+| disabled / className                                    | `boolean` / `string`                            | -                                  |                                                                                              |
+
+`FileItem` renders a file row: a type-based icon, the name and size, click-to-download, and an optional remove button.
+
+| Prop                 | Type                                              | Default | Description                                                               |
+| -------------------- | ------------------------------------------------- | ------- | ------------------------------------------------------------------------- |
+| file                 | `{ name: string; type?: string; size?: number }`  | -       | File to display (a browser `File` also works); required                   |
+| onDownload           | `(file) => Promise<Blob \| void> \| Blob \| void` | -       | Returns the contents to save on click; omit to make the row non-clickable |
+| onRemove             | `(file) => Promise<void> \| void`                 | -       | Shows a remove button; if it throws, the error is shown in the row        |
+| disabled / className | `boolean` / `string`                              | -       |                                                                           |
 
 ### DropdownMenu
 
@@ -153,18 +187,18 @@ A styled re-export of [Radix UI's Dropdown Menu](https://www.radix-ui.com/primit
 </RightSideModal>
 ```
 
-| Prop                | Type          | Default            | Description                                                 |
-| ------------------- | ------------- | ------------------ | ----------------------------------------------------------- |
-| isOpen              | `boolean`     | -                  | Controls visibility (required)                              |
-| onClose             | `() => void`  | -                  | Called on close (backdrop click / X)                        |
-| title               | `string`      | -                  | Header title (required)                                     |
-| subtitle            | `string`      | -                  | Header subtitle                                             |
-| headerActions       | `ReactNode`   | -                  | Extra content rendered in the header, next to the close button |
-| width               | `string`      | responsive default | Tailwind width classes                                      |
-| contentPadding      | `string`      | `"fwr:p-4"`        | Tailwind padding classes for the body/content area           |
-| disableOutsideClick | `boolean`     | `false`            | Prevents closing on backdrop click                          |
+| Prop                | Type          | Default                   | Description                                                                                                                                                                     |
+| ------------------- | ------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| isOpen              | `boolean`     | -                         | Controls visibility (required)                                                                                                                                                  |
+| onClose             | `() => void`  | -                         | Called on close (backdrop click / X)                                                                                                                                            |
+| title               | `string`      | -                         | Header title (required)                                                                                                                                                         |
+| subtitle            | `string`      | -                         | Header subtitle                                                                                                                                                                 |
+| headerActions       | `ReactNode`   | -                         | Extra content rendered in the header, next to the close button                                                                                                                  |
+| width               | `string`      | responsive default        | Tailwind width classes                                                                                                                                                          |
+| contentPadding      | `string`      | `"fwr:p-4"`               | Tailwind padding classes for the body/content area                                                                                                                              |
+| disableOutsideClick | `boolean`     | `false`                   | Prevents closing on backdrop click                                                                                                                                              |
 | zIndex              | `number`      | `ModalManager.baseZIndex` | Minimum z-index for this modal; `ModalManager` stacks it above whatever is currently the highest open modal, so the effective z-index is `max(highest open modal + 10, zIndex)` |
-| mountContainer      | `HTMLElement` | `document.body`    | Portal mount target                                         |
+| mountContainer      | `HTMLElement` | `document.body`           | Portal mount target                                                                                                                                                             |
 
 `CenterModal` is the same component centered instead of docked to the right. Stacking order for multiple open modals is handled automatically by `ModalManager` (each modal registers on open and unregisters on close/unmount).
 
@@ -217,8 +251,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@fw-components/react";
 `Tooltip` works standalone (no setup needed) - if it doesn't find an ancestor `TooltipProvider`, it wraps itself in one with `delayDuration={0}`. Wrap your app (or a subtree) in your own `<TooltipProvider delayDuration={500}>` to share one delay and Radix's hover-skip grouping across every `Tooltip` beneath it; nested `Tooltip`s detect it and won't shadow it. `TooltipContent` renders above any open `RightSideModal`/`CenterModal` automatically, and accepts an optional `mountDocument` (`ShadowRoot | Document`, same as `Select`) for portalling into a shadow root, plus all of Radix's `Content` props (`side`, `sideOffset`, `align`, etc.).
 
 ```tsx
-import { Trash2 } from "lucide-react";
 import { TooltipIconButton } from "@fw-components/react";
+import { Trash2 } from "lucide-react";
 
 <TooltipIconButton tooltip="Delete" icon={Trash2} onClick={handleDelete} />;
 <TooltipIconButton tooltip="Only admins can delete this" icon={Trash2} disabled />;
