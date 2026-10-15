@@ -47,7 +47,7 @@ export function getElementsFromSelector(selector: string = "", context: Document
 export function getSelectorForShadowRootJsPath(jsPath: string = "") {
   if (!jsPath.includes("document") || !jsPath.includes("querySelector")) return null;
 
-  return Array.from(jsPath.matchAll(/\"([^\"]*)\"/g))
+  return Array.from(jsPath.matchAll(/"([^"]*)"/g))
     .map(([_, selector]) => selector)
     .join(` ${SHADOW_ROOT_IDENTIFIER} `);
 }
@@ -64,7 +64,7 @@ export function matchPathPattern(path: string | string[], pattern: string | stri
   if (!Array.isArray(path)) path = path.split("/").filter(Boolean);
   if (!Array.isArray(pattern)) pattern = pattern.split("/").filter(Boolean);
 
-  for (let [index, patternDir] of pattern.entries()) {
+  for (const [index, patternDir] of pattern.entries()) {
     if (patternDir === "**") return true;
     else if (patternDir === "*") {
       if (Boolean(pattern[index + 1])) continue;
@@ -88,10 +88,13 @@ export function getNodeTree(selector: string, context: Document | ShadowRoot | E
   const selectorsWithinShadowRoots = selector.split(SHADOW_ROOT_IDENTIFIER);
 
   selectorsWithinShadowRoots.forEach((path) => {
-    if (!path.includes(MULTIPLE_TARGETS_IDENTIFIER)) return result.push({ path, needsMultiple: false });
+    if (!path.includes(MULTIPLE_TARGETS_IDENTIFIER)) {
+      result.push({ path, needsMultiple: false });
+      return;
+    }
 
     const selectorsWithinMultipleParents = path.split(MULTIPLE_TARGETS_IDENTIFIER);
-    result.push(...selectorsWithinMultipleParents.map((path) => ({ path: path.replace(/^\s*/, "").replace(/^\s*\>*\s*/, ""), needsMultiple: true })).filter((path) => path.path));
+    result.push(...selectorsWithinMultipleParents.map((path) => ({ path: path.replace(/^\s*/, "").replace(/^\s*>*\s*/, ""), needsMultiple: true })).filter((path) => path.path));
   });
 
   const nodeTreeContext = { destinations: null as Array<Element> | null, context: [context], parents: [] as Array<ShadowRoot | Element> };

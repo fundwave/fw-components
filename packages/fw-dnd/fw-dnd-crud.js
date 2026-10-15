@@ -1,13 +1,15 @@
-import { LitElement, html } from "lit";
+import "./fw-dnd.js";
+
 import "@polymer/iron-icons";
 import "@polymer/paper-button";
+import "@polymer/paper-icon-button";
 import "@polymer/paper-input/paper-input.js";
 import "@polymer/paper-input/paper-textarea.js";
-import "@polymer/paper-icon-button";
-import { BoxInputStyles } from "@fw-components/styles/input-styles.js";
-import { PrimaryButtonStyles, ButtonSpinnerStyles } from "@fw-components/styles/button-styles.js";
+import { html, LitElement } from "lit";
+
 import { CustomDndStyles, HeaderRowStyle, ItemRowStyle } from "./styles/index.js";
-import "./fw-dnd.js";
+import { ButtonSpinnerStyles, PrimaryButtonStyles } from "@fw-components/styles/button-styles.js";
+import { BoxInputStyles } from "@fw-components/styles/input-styles.js";
 
 export class dndCrudList extends LitElement {
   static get properties() {
@@ -27,7 +29,7 @@ export class dndCrudList extends LitElement {
       _newItemPrimaryAttribute: Boolean,
       _newItemSecondaryAttribute: Boolean,
       _editItemFieldVisible: Boolean,
-      _activeItemEditsDetails: Boolean,
+      _activeItemEditsDetails: Boolean
     };
   }
 
@@ -233,19 +235,19 @@ export class dndCrudList extends LitElement {
 
     this._removeItemFromActiveEdits(itemId);
 
-    let updateEvent = new CustomEvent("item-updated", {
+    const updateEvent = new CustomEvent("item-updated", {
       detail: { data: { ...updatedDetails } },
       bubbles: true,
-      composed: true,
+      composed: true
     });
     if (this.editable) this.dispatchEvent(updateEvent);
   }
 
   deleteItem(item) {
-    let deleteEvent = new CustomEvent("item-deleted", {
+    const deleteEvent = new CustomEvent("item-deleted", {
       detail: { data: { ...item } },
       bubbles: true,
-      composed: true,
+      composed: true
     });
     if (this.editable) this.dispatchEvent(deleteEvent);
   }
@@ -255,7 +257,7 @@ export class dndCrudList extends LitElement {
       this._displayErrorMessage(this.shadowRoot.querySelector("#add-primary-input"), "Required");
       return;
     }
-    let newItemDetails = { [this.primaryAttribute]: this._newItemPrimaryAttribute.trim() };
+    const newItemDetails = { [this.primaryAttribute]: this._newItemPrimaryAttribute.trim() };
     if (this.secondaryAttribute && this._newItemSecondaryAttribute.trim()) newItemDetails[this.secondaryAttribute] = this._newItemSecondaryAttribute.trim();
     if (this.positionAttribute) newItemDetails[this.positionAttribute] = (this.list.at(0)?.[this.positionAttribute] || 0) - this.stepSize;
 
@@ -263,10 +265,10 @@ export class dndCrudList extends LitElement {
       this._displayErrorMessage(this.shadowRoot.querySelector("#add-primary-input"), "Already Exists");
       return;
     }
-    let addEvent = new CustomEvent("item-added", {
+    const addEvent = new CustomEvent("item-added", {
       detail: { data: { ...newItemDetails } },
       bubbles: true,
-      composed: true,
+      composed: true
     });
     this._clearAddNewItemProperties();
     if (this.editable) this.dispatchEvent(addEvent);
@@ -274,8 +276,8 @@ export class dndCrudList extends LitElement {
 
   reorderItem(reorderEventDetails) {
     if (!this.editable || !this.positionAttribute) return;
-    let newIndex = reorderEventDetails.newIndex;
-    let updatedItem = { ...reorderEventDetails.draggedItem };
+    const newIndex = reorderEventDetails.newIndex;
+    const updatedItem = { ...reorderEventDetails.draggedItem };
     if (newIndex == 0) {
       updatedItem[this.positionAttribute] = this.list[newIndex][this.positionAttribute] - this.stepSize;
     } else if (newIndex == this.list?.length - 1) {
@@ -286,10 +288,10 @@ export class dndCrudList extends LitElement {
           ? (this.list[newIndex][this.positionAttribute] + this.list[newIndex + 1][this.positionAttribute]) / 2
           : (this.list[newIndex][this.positionAttribute] + this.list[newIndex - 1][this.positionAttribute]) / 2;
     }
-    let positionUpdateEvent = new CustomEvent("item-updated", {
+    const positionUpdateEvent = new CustomEvent("item-updated", {
       detail: { data: { ...updatedItem } },
       bubbles: true,
-      composed: true,
+      composed: true
     });
     if (this.editable) this.dispatchEvent(positionUpdateEvent);
   }
@@ -323,7 +325,7 @@ export class dndCrudList extends LitElement {
       this._activeItemEditsDetails[itemIndex][editedField] = newValue;
       return;
     }
-    let editedItem = { [this.idAttribute]: itemId, [editedField]: newValue };
+    const editedItem = { [this.idAttribute]: itemId, [editedField]: newValue };
     this._activeItemEditsDetails.push(editedItem);
   }
 

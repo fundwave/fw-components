@@ -1,6 +1,13 @@
-import { getNodeTree, matchPathPattern } from "./utils/index.js";
-import { fetchEvents } from "./stores/index.js";
 import { IEvent, TrackerContext } from "./interfaces/index.js";
+import { fetchEvents } from "./stores/index.js";
+
+import { getNodeTree, matchPathPattern } from "./utils/index.js";
+
+declare global {
+  interface Window {
+    fwTrackersRegistered?: boolean;
+  }
+}
 
 export class Trackers {
   observer: MutationObserver;
@@ -27,7 +34,7 @@ export class Trackers {
    * @param {IEvent[]} events (optional) - array of events to perform the tracking for
    **/
   async initialize(events?: IEvent[]) {
-    if ((window as any).fwTrackersRegistered) return;
+    if (window.fwTrackersRegistered) return;
 
     if (!events?.length && !this.store) {
       console.error("Malformed configuration. Please provide store config or list of events");
@@ -46,7 +53,7 @@ export class Trackers {
       this.registerTrackers();
       this.observer.observe(document, { subtree: true, attributes: true, childList: true });
 
-      (window as any).fwTrackersRegistered = true;
+      window.fwTrackersRegistered = true;
     } catch (error) {
       console.warn("Error while registering event-trackers", error);
       throw error;
@@ -69,7 +76,10 @@ export class Trackers {
       const elements = tree.destinations;
       this.#debug("Attempting registration of trackers @ ", { tree, config: eventConfig });
 
-      if (!elements?.length) tree.parents.reverse().forEach((root) => this.observeNode(root));
+      if (!elements?.length)
+        tree.parents.reverse().forEach((root) => {
+          this.observeNode(root);
+        });
       if (!tree.parents.length) this.#debug("No shadow-roots retrieved for observation", { eventConfig });
 
       if (!elements?.length || !eventConfig.title) return;
@@ -82,7 +92,7 @@ export class Trackers {
       const eventsToTrack = (eventConfig.type || "").split(",").filter(Boolean) || [];
       if (!Boolean(eventsToTrack.length)) eventsToTrack.push("click");
 
-      eventsToTrack.forEach((eventType: string) =>
+      eventsToTrack.forEach((eventType: string) => {
         elements.forEach((element) => {
           element.addEventListener(eventType, (event) => {
             try {
@@ -97,8 +107,8 @@ export class Trackers {
 
           element.setAttribute("fw-events-registered", "true");
           this.#debug("Tracker registered @ ", { element, eventConfig });
-        })
-      );
+        });
+      });
     });
   }
 
@@ -120,7 +130,7 @@ export class Trackers {
   /*
    * dumps logs to console when in debug mode
    */
-  #debug(...params: any[]) {
+  #debug(...params: unknown[]) {
     if (this.debug) console.log(...params);
   }
 }

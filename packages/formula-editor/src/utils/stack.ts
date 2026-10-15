@@ -20,5 +20,4 @@ export class Stack<Type> {
   size(): number {
     return this._elements.length;
   }
-
 }

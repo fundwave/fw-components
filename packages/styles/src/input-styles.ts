@@ -34,7 +34,8 @@ export const SelectInputStyles = html`
     sl-option::part(base):hover {
       background-color: var(--secondary-color-l3);
     }
-    sl-option[aria-selected="true"]::part(base), sl-option[selected]::part(base) {
+    sl-option[aria-selected="true"]::part(base),
+    sl-option[selected]::part(base) {
       background-color: var(--primary-color-l1) !important;
       color: var(--light-color) !important;
     }
@@ -60,9 +61,9 @@ const InputStyles = html`
       paper-input,
       paper-dropdown-menu,
       paper-textarea {
-        --paper-input-container : {
+        --paper-input-container: {
           padding: 0px;
-        }
+        };
       }
     </style>
   </custom-style>
@@ -389,7 +390,5 @@ export const SmallInputStyles = html`
 `;
 
 export const AllInputStyles = html`
-  ${InputStyles} ${BoxInputStyles} ${CheckboxStyles} ${LargeInputStyles}
-  ${PlainInputStyles} ${SmallInputStyles} ${UnderlinedInputStyles}
-  ${DropdownStyles}
+  ${InputStyles} ${BoxInputStyles} ${CheckboxStyles} ${LargeInputStyles} ${PlainInputStyles} ${SmallInputStyles} ${UnderlinedInputStyles} ${DropdownStyles}
 `;

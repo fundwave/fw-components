@@ -1,4 +1,4 @@
-import { LitElement, html, css } from "lit";
+import { css, html, LitElement } from "lit";
 
 class DnDList extends LitElement {
   static get styles() {
@@ -8,7 +8,7 @@ class DnDList extends LitElement {
         display: block;
         height: 100%;
       }
-      
+
       :host([layout="grid"]) .droppable-container {
         display: flex;
         flex-wrap: wrap;
@@ -25,7 +25,7 @@ class DnDList extends LitElement {
       startContainer: String,
       list: Array,
       loading: Boolean,
-      layout: { type: String, reflect: true }, // 'horizontal', 'vertical', or 'grid'
+      layout: { type: String, reflect: true } // 'horizontal', 'vertical', or 'grid'
     };
   }
 
@@ -97,7 +97,7 @@ class DnDList extends LitElement {
     setTimeout(() => {
       this.dragStartElement.classList.add("dragging");
     }, 0);
-    
+
     // Reset row tracking on drag start
     this._currentRowIndex = -1;
   }
@@ -114,8 +114,8 @@ class DnDList extends LitElement {
     const oldIndex = this.list.findIndex((item) => item === draggedItem);
     if (oldIndex === newIndex) return;
     this.loading = true;
-    let itemReorderEvent = new CustomEvent("item-reordered", { detail: { draggedItem: draggedItem, newIndex: newIndex }, bubbles: true, composed: true });
-    let event = new CustomEvent("list-updated", { detail: { data: updatedList }, bubbles: true, composed: true });
+    const itemReorderEvent = new CustomEvent("item-reordered", { detail: { draggedItem: draggedItem, newIndex: newIndex }, bubbles: true, composed: true });
+    const event = new CustomEvent("list-updated", { detail: { data: updatedList }, bubbles: true, composed: true });
     this.list = updatedList;
     this.dispatchEvent(event);
     this.dispatchEvent(itemReorderEvent);
@@ -130,7 +130,7 @@ class DnDList extends LitElement {
     let count = 0;
     for (let i = 0; i < listArray.length; i++) {
       if (listArray[i].className === "draggable-item") {
-        var id = listArray[i].id;
+        const id = listArray[i].id;
         if (id === this.dragStartElement.id) {
           draggedItem = this.list[id];
           newIndex = count;
@@ -144,7 +144,7 @@ class DnDList extends LitElement {
 
   reorderListItems(e) {
     e.preventDefault();
-    
+
     // Calculate movement direction
     if (this._lastMousePosition.x !== 0 || this._lastMousePosition.y !== 0) {
       this._movementDirection = {
@@ -152,13 +152,13 @@ class DnDList extends LitElement {
         y: e.clientY - this._lastMousePosition.y
       };
     }
-    
+
     // Update last mouse position
     this._lastMousePosition = { x: e.clientX, y: e.clientY };
-    
+
     // Store the event for throttled processing
     this._lastDragEvent = e;
-    
+
     // Throttle the drag event processing to prevent too frequent updates
     if (!this._dragOverThrottleId) {
       this._dragOverThrottleId = setTimeout(() => {
@@ -167,48 +167,48 @@ class DnDList extends LitElement {
       }, 150); // Increased to 150ms throttle for more stability
     }
   }
-  
+
   _processDragEvent() {
     if (!this._lastDragEvent) return;
-    
+
     const e = this._lastDragEvent;
     const droppableContainer = this.shadowRoot.querySelector(".droppable-container");
     const draggingItem = this.shadowRoot.querySelector(".dragging");
-    
+
     if (!draggingItem) return;
-    
-    let siblings = [...droppableContainer.querySelectorAll(".draggable-item:not(.dragging)")];
-    
+
+    const siblings = [...droppableContainer.querySelectorAll(".draggable-item:not(.dragging)")];
+
     if (siblings.length === 0) return;
-    
+
     // Determine the dominant axis based on layout
     const isHorizontalDominant = this.layout === "horizontal";
     const isGridLayout = this.layout === "grid" || (!isHorizontalDominant && this.layout !== "vertical");
-    
+
     let nextSibling;
-    
+
     // Calculate the dominant movement direction
     const absX = Math.abs(this._movementDirection.x);
     const absY = Math.abs(this._movementDirection.y);
     const isMovingHorizontally = absX > absY;
-    
+
     if (isGridLayout) {
       // For grid layout, we need to handle both horizontal and vertical movement
-      
+
       // First, group items by rows
       const rows = this._groupItemsByRow(siblings);
-      
+
       if (rows.length > 0) {
         // Find which row the cursor is in
         let cursorRowIndex = -1;
-        
+
         for (let i = 0; i < rows.length; i++) {
           const row = rows[i];
           if (row.length > 0) {
             // Calculate the row's vertical bounds
-            const rowTop = Math.min(...row.map(item => item.getBoundingClientRect().top));
-            const rowBottom = Math.max(...row.map(item => item.getBoundingClientRect().bottom));
-            
+            const rowTop = Math.min(...row.map((item) => item.getBoundingClientRect().top));
+            const rowBottom = Math.max(...row.map((item) => item.getBoundingClientRect().bottom));
+
             // Check if cursor is in this row
             if (e.clientY >= rowTop && e.clientY <= rowBottom) {
               cursorRowIndex = i;
@@ -216,22 +216,22 @@ class DnDList extends LitElement {
             }
           }
         }
-        
+
         // If cursor is not in any row, find the closest row
         if (cursorRowIndex === -1) {
           let closestDistance = Number.MAX_VALUE;
-          
+
           for (let i = 0; i < rows.length; i++) {
             const row = rows[i];
             if (row.length > 0) {
               // Calculate the row's center Y position
-              const rowTop = Math.min(...row.map(item => item.getBoundingClientRect().top));
-              const rowBottom = Math.max(...row.map(item => item.getBoundingClientRect().bottom));
+              const rowTop = Math.min(...row.map((item) => item.getBoundingClientRect().top));
+              const rowBottom = Math.max(...row.map((item) => item.getBoundingClientRect().bottom));
               const rowCenterY = (rowTop + rowBottom) / 2;
-              
+
               // Calculate distance to cursor
               const distance = Math.abs(e.clientY - rowCenterY);
-              
+
               if (distance < closestDistance) {
                 closestDistance = distance;
                 cursorRowIndex = i;
@@ -239,24 +239,24 @@ class DnDList extends LitElement {
             }
           }
         }
-        
+
         // Now that we have the row, find the position within the row
         if (cursorRowIndex >= 0 && cursorRowIndex < rows.length) {
           const currentRow = rows[cursorRowIndex];
-          
+
           // Sort the row by X position
           currentRow.sort((a, b) => {
             const rectA = a.getBoundingClientRect();
             const rectB = b.getBoundingClientRect();
             return rectA.left - rectB.left;
           });
-          
+
           // Find the position within the row based on X coordinate
-          nextSibling = currentRow.find(sibling => {
+          nextSibling = currentRow.find((sibling) => {
             const rect = sibling.getBoundingClientRect();
-            return e.clientX < rect.left + (rect.width * 0.5);
+            return e.clientX < rect.left + rect.width * 0.5;
           });
-          
+
           // If we're at the end of a row, check if we should move to the next row
           if (!nextSibling && cursorRowIndex < rows.length - 1) {
             const nextRow = rows[cursorRowIndex + 1];
@@ -267,11 +267,11 @@ class DnDList extends LitElement {
                 const rectB = b.getBoundingClientRect();
                 return rectA.left - rectB.left;
               });
-              
+
               // If cursor is closer to the next row than the current row
-              const currentRowBottom = Math.max(...currentRow.map(item => item.getBoundingClientRect().bottom));
-              const nextRowTop = Math.min(...nextRow.map(item => item.getBoundingClientRect().top));
-              
+              const currentRowBottom = Math.max(...currentRow.map((item) => item.getBoundingClientRect().bottom));
+              const nextRowTop = Math.min(...nextRow.map((item) => item.getBoundingClientRect().top));
+
               if (e.clientY > (currentRowBottom + nextRowTop) / 2) {
                 nextSibling = nextRow[0]; // Insert at the beginning of the next row
               }
@@ -279,57 +279,57 @@ class DnDList extends LitElement {
           }
         }
       }
-      
+
       // If we still don't have a nextSibling, fall back to simple Y-coordinate based positioning
       if (!nextSibling) {
-        nextSibling = siblings.find(sibling => {
+        nextSibling = siblings.find((sibling) => {
           const rect = sibling.getBoundingClientRect();
-          return e.clientY < rect.top + (rect.height * 0.5);
+          return e.clientY < rect.top + rect.height * 0.5;
         });
       }
     } else if (isHorizontalDominant) {
       // For horizontal layout, prioritize X-axis
-      nextSibling = siblings.find(sibling => {
+      nextSibling = siblings.find((sibling) => {
         const rect = sibling.getBoundingClientRect();
-        return e.clientX < rect.left + (rect.width * 0.5);
+        return e.clientX < rect.left + rect.width * 0.5;
       });
     } else {
       // For vertical layout, prioritize Y-axis
-      nextSibling = siblings.find(sibling => {
+      nextSibling = siblings.find((sibling) => {
         const rect = sibling.getBoundingClientRect();
-        return e.clientY < rect.top + (rect.height * 0.5);
+        return e.clientY < rect.top + rect.height * 0.5;
       });
     }
-    
+
     // Create a position identifier to check if we need to update the DOM
     const newPosition = nextSibling ? nextSibling.id : "end";
-    
+
     // Only update if position changed to prevent unnecessary DOM operations
     if (this._lastInsertPosition !== newPosition) {
       this._lastInsertPosition = newPosition;
       droppableContainer.insertBefore(draggingItem, nextSibling);
     }
   }
-  
+
   // Helper method to group items by rows based on their vertical position
   _groupItemsByRow(items) {
     if (items.length === 0) return [];
-    
+
     // Sort items by Y position
     const sortedByY = [...items].sort((a, b) => {
       const rectA = a.getBoundingClientRect();
       const rectB = b.getBoundingClientRect();
       return rectA.top - rectB.top;
     });
-    
+
     const rows = [];
     let currentRow = [sortedByY[0]];
     const rowTolerance = 10; // Pixels tolerance for considering items in the same row
-    
+
     for (let i = 1; i < sortedByY.length; i++) {
       const currentRect = sortedByY[i].getBoundingClientRect();
-      const prevRect = sortedByY[i-1].getBoundingClientRect();
-      
+      const prevRect = sortedByY[i - 1].getBoundingClientRect();
+
       // If Y position is similar, add to the same row
       if (Math.abs(currentRect.top - prevRect.top) < rowTolerance) {
         currentRow.push(sortedByY[i]);
@@ -339,12 +339,12 @@ class DnDList extends LitElement {
         currentRow = [sortedByY[i]];
       }
     }
-    
+
     // Add the last row
     if (currentRow.length > 0) {
       rows.push(currentRow);
     }
-    
+
     return rows;
   }
 }

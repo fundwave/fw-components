@@ -4,7 +4,7 @@ import { playwrightLauncher } from "@web/test-runner-playwright";
 const browsers = {
   chromium: playwrightLauncher({ product: "chromium" }),
   firefox: playwrightLauncher({ product: "firefox" }),
-  webkit: playwrightLauncher({ product: "webkit" }),
+  webkit: playwrightLauncher({ product: "webkit" })
 };
 
 const configObj = {
@@ -12,7 +12,7 @@ const configObj = {
   preserveSymlinks: true,
   nodeResolve: true,
   browsers: Object.values(browsers),
-  plugins: [legacyPlugin()],
+  plugins: [legacyPlugin()]
 };
 
 export default configObj;

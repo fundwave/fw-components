@@ -1,7 +1,7 @@
 export enum Expectation {
   VARIABLE,
   OPERATOR,
-  UNDEFINED,
+  UNDEFINED
 }
 
 export class Formula {

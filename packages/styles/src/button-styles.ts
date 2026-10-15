@@ -1,4 +1,4 @@
-import { html } from 'lit';
+import { html } from "lit";
 
 export const UnderlinedButtonStyles = html`
   <style>
@@ -64,8 +64,9 @@ export const TextButtonStyles = html`
       font-weight: bold;
     }
 
-    .primary-text-button[disabled], .secondary-text-button[disabled] {
-        opacity: 0.5;
+    .primary-text-button[disabled],
+    .secondary-text-button[disabled] {
+      opacity: 0.5;
     }
   </style>
 `;
@@ -102,8 +103,9 @@ export const PrimaryButtonStyles = html`
     .primary-colored:hover {
       box-shadow: 0 1px 2px 1px var(--primary-color, #205081);
     }
-    .primary-outlined[disabled], .primary-colored[disabled] {
-        opacity: 0.5;
+    .primary-outlined[disabled],
+    .primary-colored[disabled] {
+      opacity: 0.5;
     }
   </style>
 `;
@@ -145,8 +147,9 @@ export const SecondaryButtonStyles = html`
       box-shadow: 0 1px 2px 1px var(--secondary-color, #515151);
     }
 
-    .secondary-outlined[disabled], .secondary-colored[disabled] {
-        opacity: 0.5;
+    .secondary-outlined[disabled],
+    .secondary-colored[disabled] {
+      opacity: 0.5;
     }
   </style>
 `;
@@ -188,8 +191,9 @@ export const AlertButtonStyles = html`
       box-shadow: 0 1px 2px 1px var(--error-color, #d50000);
     }
 
-    .alert-outlined[disabled], .alert-colored[disabled] {
-        opacity: 0.5;
+    .alert-outlined[disabled],
+    .alert-colored[disabled] {
+      opacity: 0.5;
     }
   </style>
 `;
@@ -197,14 +201,19 @@ export const AlertButtonStyles = html`
 export const ToggleButtonStyles = html`
   <style>
     .toggle-group {
-      display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
-    .toggle-group .toggle:first-child{
-      border-top-left-radius: 5px; border-bottom-left-radius: 5px;
+    .toggle-group .toggle:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
     }
-    .toggle-group .toggle:last-child{
-      border-top-right-radius: 5px; border-bottom-right-radius: 5px;
+    .toggle-group .toggle:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
     }
 
     .toggle {
@@ -236,12 +245,12 @@ export const ToggleButtonStyles = html`
       color: var(--light-color, #fff);
     }
 
-    .toggle iron-icon{
+    .toggle iron-icon {
       --iron-icon-height: var(--body-font-size, 16px);
       margin-right: 5px;
     }
 
-    .toggle mwc-icon{
+    .toggle mwc-icon {
       --mdc-icon-size: var(--body-font-size, 16px);
       margin-right: 5px;
     }
@@ -260,8 +269,9 @@ export const FabStyles = html`
       right: 2%;
     }
 
-    paper-fab[disabled], .fab[disabled] {
-        opacity: 0.5;
+    paper-fab[disabled],
+    .fab[disabled] {
+      opacity: 0.5;
     }
 
     .fab {
@@ -298,12 +308,12 @@ export const FabStyles = html`
     }
 
     .rectangular-fab {
-      height:  var(--rectangular-fab-height, 50px);
+      height: var(--rectangular-fab-height, 50px);
       width: var(--rectangular-fab-width, 120px);
-      border-radius:  var(--rectangular-fab-height, 50px);
+      border-radius: var(--rectangular-fab-height, 50px);
       padding: var(--rectangular-fab-padding, 0px);
       max-height: var(--rectangular-fab-max-height, 50px);
-      z-index:  var(--rectangular-fab-z-index, 1);
+      z-index: var(--rectangular-fab-z-index, 1);
     }
     .small-fab {
       height: 50px;
@@ -365,7 +375,7 @@ export const SmallButtonStyles = html`
       font-size: var(--tertiary-font-size) !important;
     }
     @media all and (max-width: 767px) {
-      .small-button{
+      .small-button {
         height: 20px !important;
       }
     }

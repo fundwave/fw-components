@@ -1,9 +1,6 @@
 {
-  "packages": [
-    "packages/*"
-  ],
-  "useWorkspaces": true,
-  "version": "2.3.3",
+  "packages": ["packages/*"],
+  "version": "2.6.0",
   "command": {
     "version": {
       "message": "chore(release): publish %s \n [skip ci]"

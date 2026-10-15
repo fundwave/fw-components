@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if test -f .git/hooks/pre-push; then
+  bash .git/hooks/pre-push
+fi
