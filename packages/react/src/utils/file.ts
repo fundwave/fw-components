@@ -35,9 +35,11 @@ export const getFileIcon = (type: string | undefined): { icon: IconComponent; co
   if (type.startsWith("video/")) return { icon: Film, colorClass: "fwr:text-purple-500" };
   if (type.startsWith("audio/")) return { icon: Music, colorClass: "fwr:text-green-500" };
   if (type.includes("pdf")) return { icon: FileText, colorClass: "fwr:text-yellow-500" };
+  if (type.includes("word") || type.includes("doc") || type.includes("docx")) return { icon: FileText, colorClass: "fwr:text-blue-500" };
   if (type.includes("zip") || type.includes("rar") || type.includes("tar") || type.includes("gz")) return { icon: Archive, colorClass: "fwr:text-gray-500" };
   if (type.includes("html") || type.includes("css") || type.includes("javascript") || type.includes("json")) return { icon: Code, colorClass: "fwr:text-gray-500" };
-  if (type.includes("csv") || type.includes("excel") || type.includes("spreadsheet")) return { icon: Database, colorClass: "fwr:text-green-500" };
+  if (type.includes("csv") || type.includes("excel") || type.includes("spreadsheet") || type.includes("xls") || type.includes("xlsx"))
+    return { icon: Database, colorClass: "fwr:text-green-500" };
   return { icon: FileIcon, colorClass: "fwr:text-gray-500" };
 };
 
