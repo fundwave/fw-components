@@ -4,7 +4,7 @@ import { AlertCircle, Upload, X } from "lucide-react";
 import Button from "./Button";
 import Spinner from "./Spinner";
 
-import { downloadBlob, formatFileSize, getFileIcon } from "../utils/file";
+import { downloadBlob, fileMatchesAccept, formatFileSize, getFileIcon } from "../utils/file";
 import { cn } from "../utils/tailwind";
 
 export interface FileItemData {
@@ -97,7 +97,13 @@ const FileItem = ({ file, onDownload, onRemove, disabled = false, className }: F
         <p className="fwr:truncate" title={file.name}>
           {file.name}
         </p>
-        {error ? <p className="fwr:text-xs fwr:text-destructive">{error}</p> : size && <p className="fwr:text-xs fwr:text-muted-foreground">{size}</p>}
+        {error ? (
+          <p className="fwr:text-xs fwr:text-destructive" role="alert">
+            {error}
+          </p>
+        ) : (
+          size && <p className="fwr:text-xs fwr:text-muted-foreground">{size}</p>
+        )}
       </div>
       {onRemove && <Button mode="icon" size="sm" theme="danger" title="Remove file" icon={X} onClick={handleRemove} disabled={disabled || loading} />}
     </div>
@@ -138,7 +144,7 @@ interface BaseFileUploadProps {
   accept?: string;
   /** Maximum allowed size per file in bytes. */
   maxSize?: number;
-  variant?: "default" | "button";
+  variant?: "dropArea" | "button";
   errorMessage?: string;
   invalid?: boolean;
   required?: boolean;
@@ -251,7 +257,7 @@ const FileUpload = React.forwardRef<FileUploadRef, FileUploadProps>((props, ref)
     fileType = "any",
     accept,
     maxSize,
-    variant = "default",
+    variant = "dropArea",
     errorMessage,
     invalid: invalidProp,
     required,
@@ -325,6 +331,10 @@ const FileUpload = React.forwardRef<FileUploadRef, FileUploadProps>((props, ref)
       if (maxFiles !== undefined && next.length >= maxFiles) {
         errors.push(`You can upload at most ${maxFiles} file${maxFiles === 1 ? "" : "s"}`);
         break;
+      }
+      if (!fileMatchesAccept(selectedFile, resolvedAccept)) {
+        errors.push(`${selectedFile.name}: file type is not supported`);
+        continue;
       }
       if (maxSize && selectedFile.size > maxSize) {
         errors.push(`${selectedFile.name}: file size must be under ${formatFileSize(maxSize)}`);
@@ -429,7 +439,11 @@ const FileUpload = React.forwardRef<FileUploadRef, FileUploadProps>((props, ref)
           </div>
         )}
       </FileDropZone>
-      {showError && displayedError && <span className="fwr:text-xs fwr:text-destructive fwr:mt-1 fwr:block">{displayedError}</span>}
+      {showError && displayedError && (
+        <span className="fwr:text-xs fwr:text-destructive fwr:mt-1 fwr:block" role="alert">
+          {displayedError}
+        </span>
+      )}
     </div>
   );
 });

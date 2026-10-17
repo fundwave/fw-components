@@ -3,11 +3,30 @@ import { Archive, Code, Database, File as FileIcon, FileText, Film, Image, Music
 import type { IconComponent } from "../types";
 
 export const formatFileSize = (bytes: number | undefined): string => {
-  if (!bytes) return "";
+  if (bytes === undefined) return "";
+  if (bytes === 0) return "0 Bytes";
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
   const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1);
   return `${Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2))} ${sizes[i]}`;
+};
+
+export const fileMatchesAccept = (file: File, accept: string | undefined): boolean => {
+  if (!accept) return true;
+  const acceptors = accept
+    .split(",")
+    .map((s) => s.trim().toLowerCase())
+    .filter(Boolean);
+  if (acceptors.length === 0) return true;
+
+  const fileName = file.name.toLowerCase();
+  const fileType = (file.type || "").toLowerCase();
+
+  return acceptors.some((acceptor) => {
+    if (acceptor.startsWith(".")) return fileName.endsWith(acceptor);
+    if (acceptor.endsWith("/*")) return fileType.startsWith(acceptor.slice(0, -1));
+    return fileType === acceptor;
+  });
 };
 
 export const getFileIcon = (type: string | undefined): { icon: IconComponent; colorClass: string } => {
