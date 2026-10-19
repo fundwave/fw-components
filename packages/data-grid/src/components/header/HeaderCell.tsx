@@ -104,7 +104,7 @@ export const HeaderCell = <TData,>({
             <SortIndicator isSorted={isSorted} isHovered={isHovered} />
           )}
 
-          <span className="font-medium truncate">{headerContent}</span>
+          <div className="font-medium truncate min-w-0">{headerContent}</div>
 
           {meta?.align !== "right" && canSort && (
             <SortIndicator isSorted={isSorted} isHovered={isHovered} />
