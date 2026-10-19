@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditingState } from "../types";
 
 interface UseEditingOptions {
@@ -53,6 +53,9 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   // Store the original values for dirty comparison
   const originalValues = useRef<Record<string, unknown>>({});
 
+  const editingStateRef = useRef(editingState);
+  editingStateRef.current = editingState;
+
   const startEditing = useCallback((rowId: string, columnId: string, currentValue: unknown) => {
     const key = cellKey(rowId, columnId);
     originalValues.current[key] = currentValue;
@@ -88,7 +91,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
     async (rowId: string, columnId: string): Promise<boolean> => {
       const key = cellKey(rowId, columnId);
 
-      const draftValue = editingState.drafts[key];
+      const draftValue = editingStateRef.current.drafts[key];
       const previousValue = originalValues.current[key];
 
       // Skip if unchanged
@@ -148,8 +151,9 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   );
 
   const cancelEdit = useCallback(() => {
-    if (editingState.editingCell) {
-      const key = cellKey(editingState.editingCell.rowId, editingState.editingCell.columnId);
+    const editingCell = editingStateRef.current.editingCell;
+    if (editingCell) {
+      const key = cellKey(editingCell.rowId, editingCell.columnId);
       setEditingState((prev) => {
         const newDrafts = { ...prev.drafts };
         delete newDrafts[key];
@@ -169,6 +173,18 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
       });
     }
   }, [editingState.editingCell]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && editingStateRef.current.editingCell) {
+        cancelEdit();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [cancelEdit]);
 
   const isEditing = useCallback(
     (rowId: string, columnId: string) => {
