@@ -158,7 +158,7 @@ export const DataRow = <TData,>({
             <td
               key={cell.id}
               className={cn(
-                "px-3 py-2 text-sm",
+                "px-3 py-2 text-sm overflow-hidden",
                 pinnedStyles ? "bg-white hover:bg-gray-50" : "",
                 cellSelected && "bg-blue-50",
                 cellActive && "ring-2 ring-blue-500 ring-inset",

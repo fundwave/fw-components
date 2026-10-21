@@ -404,7 +404,7 @@ export const DataGrid = <TData extends object>({
       >
         <table
           className="w-full border-collapse"
-          style={{ width: tableWidth }}
+          style={{ width: tableWidth, tableLayout: columnResizingEnabled ? "fixed" : undefined }}
           role="grid"
         >
           <thead className="sticky top-0 z-20 bg-gray-50">
