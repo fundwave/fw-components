@@ -133,10 +133,25 @@ export const DataRow = <TData,>({
                 : undefined
           ) as ReactNode;
 
-          const cellContent = flexRender(columnDef.cell, {
-            ...cell.getContext(),
-            getValue: () => (formattedValue ?? value) as never,
-          });
+          // TanStack's default cell renderer (used when `columnDef.cell` is omitted) reads
+          // `renderValue()`, which is bound to the cell's real, unformatted value — not the
+          // `getValue` override below. So the default renderer needs the formatted content
+          // supplied directly; only an explicit `cell` renderer benefits from the override.
+          const defaultCellContent: ReactNode =
+            formattedValue !== undefined
+              ? formattedValue
+              : value === null || value === undefined
+                ? null
+                : typeof value === "object"
+                  ? JSON.stringify(value)
+                  : (value as ReactNode);
+
+          const cellContent = columnDef.cell
+            ? flexRender(columnDef.cell, {
+                ...cell.getContext(),
+                getValue: () => (formattedValue ?? value) as never,
+              })
+            : defaultCellContent;
 
           // Matches DataGrid's `columnResizing !== false` default (resizing is on unless
           // explicitly disabled), so sizes stay consistent with the table's layout mode.
