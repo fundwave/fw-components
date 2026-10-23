@@ -176,7 +176,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
 
     case "boolean":
       return (
-        <div className="flex items-center justify-center -my-1 h-8">
+        <div className="relative flex items-center justify-center -my-1 h-8">
           <label className="relative inline-flex items-center cursor-pointer">
             <input
               type="checkbox"
@@ -200,6 +200,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               "peer-checked:after:translate-x-full"
             )} />
           </label>
+          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
         </div>
       );
 
