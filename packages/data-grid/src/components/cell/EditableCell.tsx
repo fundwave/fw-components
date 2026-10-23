@@ -40,6 +40,8 @@ export interface EditableCellProps<TData = unknown> {
   draftValue?: unknown;
   /** Validation error */
   error?: string | null;
+  /** Whether losing focus should commit the edit (default true) */
+  commitOnBlur?: boolean;
 }
 
 /**
@@ -64,6 +66,7 @@ export const EditableCell = <TData,>({
   onCancel,
   draftValue,
   error,
+  commitOnBlur = true,
 }: EditableCellProps<TData>) => {
   if (!editable) {
     return <>{displayValue}</>;
@@ -100,6 +103,7 @@ export const EditableCell = <TData,>({
         onCommit={() => onCommit(rowId, columnId)}
         onCancel={onCancel}
         error={error}
+        commitOnBlur={commitOnBlur}
       />
     );
   }

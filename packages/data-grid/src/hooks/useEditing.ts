@@ -6,8 +6,6 @@ interface UseEditingOptions {
   onCellEdit?: (rowId: string, columnId: string, value: unknown, previousValue: unknown) => void | Promise<void>;
   /** Validate before committing */
   validateCell?: (value: unknown, rowId: string, columnId: string) => string | null | Promise<string | null>;
-  /** Whether to commit the edit on blur */
-  commitOnBlur?: boolean;
 }
 
 interface UseEditingReturn {
@@ -41,7 +39,7 @@ const cellKey = (rowId: string, columnId: string) => `${rowId}:${columnId}`;
  * so virtualized rows can unmount without losing edits.
  */
 export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
-  const { onCellEdit, validateCell, commitOnBlur: _commitOnBlur } = options;
+  const { onCellEdit, validateCell } = options;
 
   const [editingState, setEditingState] = useState<EditingState>({
     editingCell: null,

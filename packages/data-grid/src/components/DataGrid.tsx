@@ -293,7 +293,6 @@ export const DataGrid = <TData extends object>({
           return validateCell ? validateCell(value, row, columnId) : null;
         }
       : undefined,
-    commitOnBlur,
   });
 
   // ============================================================================
@@ -364,6 +363,7 @@ export const DataGrid = <TData extends object>({
       onUpdateDraft={editing.updateDraft}
       onCommitEdit={(rowId, columnId) => { editing.commitEdit(rowId, columnId); }}
       onCancelEdit={editing.cancelEdit}
+      commitOnBlur={commitOnBlur}
       rangeSelectionEnabled={rangeSelectionEnabled}
       onCellMouseDown={rangeSelectionEnabled ? rangeSelection.handleCellMouseDown : undefined}
       onCellMouseEnter={rangeSelectionEnabled ? rangeSelection.handleCellMouseEnter : undefined}

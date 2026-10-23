@@ -25,6 +25,7 @@ export interface DataRowProps<TData> {
   onUpdateDraft?: (rowId: string, columnId: string, value: unknown) => void;
   onCommitEdit?: (rowId: string, columnId: string) => void;
   onCancelEdit?: () => void;
+  commitOnBlur?: boolean;
   // Range selection props
   rangeSelectionEnabled?: boolean;
   onCellMouseDown?: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
@@ -62,6 +63,7 @@ export const DataRow = <TData,>({
   onUpdateDraft,
   onCommitEdit,
   onCancelEdit,
+  commitOnBlur,
   rangeSelectionEnabled,
   onCellMouseDown,
   onCellMouseEnter,
@@ -225,6 +227,7 @@ export const DataRow = <TData,>({
                     onCancel={onCancelEdit!}
                     draftValue={getDraft?.(rowId, columnId)}
                     error={getError?.(rowId, columnId)}
+                    commitOnBlur={commitOnBlur}
                   />
                 ) : (
                   cellContent

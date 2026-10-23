@@ -15,6 +15,8 @@ export interface CellEditorProps {
   onCancel: () => void;
   error?: string | null;
   autoFocus?: boolean;
+  /** Whether losing focus should commit the edit (default true) */
+  commitOnBlur?: boolean;
 }
 
 // ============================================================================
@@ -34,7 +36,10 @@ export const CellEditor: React.FC<CellEditorProps> = ({
   onCancel,
   error,
   autoFocus = true,
+  commitOnBlur = true,
 }) => {
+  const handleBlur = commitOnBlur ? onCommit : undefined;
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -66,7 +71,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             value={String(value ?? "")}
             onChange={(e) => onChange(e.target.value)}
             onKeyDown={handleKeyDown}
-            onBlur={onCommit}
+            onBlur={handleBlur}
             autoFocus={autoFocus}
             onClick={(e) => e.stopPropagation()}
           />
@@ -86,7 +91,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               onChange(v === "" ? null : parseFloat(v));
             }}
             onKeyDown={handleKeyDown}
-            onBlur={onCommit}
+            onBlur={handleBlur}
             autoFocus={autoFocus}
             step="any"
             onClick={(e) => e.stopPropagation()}
@@ -104,7 +109,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             value={value ? String(value).split("T")[0] : ""}
             onChange={(e) => onChange(e.target.value || null)}
             onKeyDown={handleKeyDown}
-            onBlur={onCommit}
+            onBlur={handleBlur}
             autoFocus={autoFocus}
             onClick={(e) => e.stopPropagation()}
           />
@@ -128,7 +133,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               setTimeout(onCommit, 0);
             }}
             onKeyDown={handleKeyDown}
-            onBlur={onCommit}
+            onBlur={handleBlur}
             autoFocus={autoFocus}
             onClick={(e) => e.stopPropagation()}
           >
