@@ -221,7 +221,7 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
-      const { activeCell } = selectionRef.current;
+      const { activeCell, ranges } = selectionRef.current;
       if (!activeCell) return;
 
       const isShift = event.shiftKey;
@@ -237,24 +237,36 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
         return;
       }
 
+      // Tab is left to native browser focus traversal: cells aren't individually
+      // focusable here, so intercepting it would trap focus inside the grid with no
+      // way to tab out.
+      if (event.key === "Tab") return;
+
+      const lastRange = ranges[ranges.length - 1];
+      const isExtending = isShift && !!lastRange;
+      // When extending a selection, each arrow press should move from the current range
+      // endpoint (not always from the anchor) so repeated presses keep growing/shrinking
+      // the range instead of recomputing the same one-cell-from-anchor endpoint each time.
+      const movingFrom = isExtending ? lastRange.end : activeCell;
+
       let newActive: CellPosition | null = null;
 
       switch (event.key) {
         case "ArrowUp":
           event.preventDefault();
-          newActive = clamp({ rowIndex: activeCell.rowIndex - 1, columnIndex: activeCell.columnIndex });
+          newActive = clamp({ rowIndex: movingFrom.rowIndex - 1, columnIndex: movingFrom.columnIndex });
           break;
         case "ArrowDown":
           event.preventDefault();
-          newActive = clamp({ rowIndex: activeCell.rowIndex + 1, columnIndex: activeCell.columnIndex });
+          newActive = clamp({ rowIndex: movingFrom.rowIndex + 1, columnIndex: movingFrom.columnIndex });
           break;
         case "ArrowLeft":
           event.preventDefault();
-          newActive = clamp({ rowIndex: activeCell.rowIndex, columnIndex: getNextColumn(activeCell.columnIndex, -1) });
+          newActive = clamp({ rowIndex: movingFrom.rowIndex, columnIndex: getNextColumn(movingFrom.columnIndex, -1) });
           break;
         case "ArrowRight":
           event.preventDefault();
-          newActive = clamp({ rowIndex: activeCell.rowIndex, columnIndex: getNextColumn(activeCell.columnIndex, 1) });
+          newActive = clamp({ rowIndex: movingFrom.rowIndex, columnIndex: getNextColumn(movingFrom.columnIndex, 1) });
           break;
         case "Home":
           event.preventDefault();
@@ -272,25 +284,17 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
             newActive = { rowIndex: activeCell.rowIndex, columnIndex: columnCount - 1 };
           }
           break;
-        case "Tab":
-          event.preventDefault();
-          if (isShift) {
-            newActive = clamp({ rowIndex: activeCell.rowIndex, columnIndex: getNextColumn(activeCell.columnIndex, -1) });
-          } else {
-            newActive = clamp({ rowIndex: activeCell.rowIndex, columnIndex: getNextColumn(activeCell.columnIndex, 1) });
-          }
-          break;
         default:
           return;
       }
 
       if (!newActive) return;
 
-      if (isShift && event.key !== "Tab") {
-        // Extend selection
+      if (isShift) {
+        // Extend selection, keeping the original active cell as the anchor.
         updateState((prev) => {
-          const lastRange = prev.ranges[prev.ranges.length - 1];
-          if (!lastRange) {
+          const prevLastRange = prev.ranges[prev.ranges.length - 1];
+          if (!prevLastRange) {
             return {
               ...prev,
               activeCell: newActive!,
@@ -301,7 +305,7 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
             ...prev,
             ranges: [
               ...prev.ranges.slice(0, -1),
-              { start: lastRange.start, end: newActive! },
+              { start: prevLastRange.start, end: newActive! },
             ],
           };
         });
