@@ -215,9 +215,11 @@ export const DataGrid = <TData extends object>({
     columns,
     getRowId: userGetRowId
       ? (row: TData, index: number) => userGetRowId(row, index)
-      : (row: TData, index: number) => {
+      : (row: TData, index: number, parent?: Row<TData>) => {
           if ("id" in row && typeof row.id === "string") return row.id;
-          return String(index);
+          // Index alone collides across sibling groups (root row 0 and its first child
+          // both land on "0"); prefix with the parent's id to keep subrow ids unique.
+          return parent ? `${parent.id}.${index}` : String(index);
         },
     getCoreRowModel: getCoreRowModel(),
 
