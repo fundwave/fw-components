@@ -84,6 +84,7 @@ export const HeaderCell = <TData,>({
         minWidth: meta?.minWidth,
         maxWidth: meta?.maxWidth,
       }}
+      colSpan={header.colSpan}
       aria-sort={ariaSort}
     >
       <div className="flex flex-col">
