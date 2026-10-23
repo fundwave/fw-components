@@ -278,10 +278,17 @@ export const DataGrid = <TData extends object>({
           onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
         }
       : undefined,
-    validateCell: validateCell
+    validateCell: editingEnabled
       ? async (value, rowId, columnId) => {
           const row = table.getRow(rowId, true).original as TData;
-          return validateCell(value, row, columnId);
+          // Column-level `meta.validate` is public API and must run even when no
+          // grid-level `validateCell` is supplied.
+          const columnValidate = table.getColumn(columnId)?.columnDef.meta?.validate;
+          if (columnValidate) {
+            const columnError = await columnValidate(value, row);
+            if (columnError) return columnError;
+          }
+          return validateCell ? validateCell(value, row, columnId) : null;
         }
       : undefined,
     commitOnBlur,
