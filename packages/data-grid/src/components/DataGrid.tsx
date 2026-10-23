@@ -272,7 +272,9 @@ export const DataGrid = <TData extends object>({
     enablePinning: columnPinningEnabled,
 
     // State
+    initialState,
     state: {
+      ...state,
       globalFilter,
       sorting,
       expanded,
