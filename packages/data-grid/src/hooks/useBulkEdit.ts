@@ -28,8 +28,17 @@ interface UseBulkEditReturn<TData> {
   startBulkEdit: (columnId: string) => void;
   /** Update the bulk edit value */
   updateBulkValue: (value: unknown) => void;
-  /** Commit the bulk edit to all selected rows */
-  commitBulkEdit: (selectedRowIds: string[], rows: TData[]) => Promise<boolean>;
+  /**
+   * Commit the bulk edit to all selected rows. Pass `override` to commit a column/value
+   * atomically in the same call — relying on state set via `startBulkEdit`/`updateBulkValue`
+   * right before calling this reads stale (pre-render) state, since React hasn't
+   * re-rendered yet when they're called back-to-back.
+   */
+  commitBulkEdit: (
+    selectedRowIds: string[],
+    rows: TData[],
+    override?: { columnId: string; value: unknown }
+  ) => Promise<boolean>;
   /** Cancel bulk editing */
   cancelBulkEdit: () => void;
   /** Whether bulk edit is active */
@@ -73,8 +82,13 @@ export function useBulkEdit<TData = unknown>(
   }, []);
 
   const commitBulkEdit = useCallback(
-    async (selectedRowIds: string[], rows: TData[]): Promise<boolean> => {
-      const { columnId, value } = bulkEditState;
+    async (
+      selectedRowIds: string[],
+      rows: TData[],
+      override?: { columnId: string; value: unknown }
+    ): Promise<boolean> => {
+      const columnId = override?.columnId ?? bulkEditState.columnId;
+      const value = override ? override.value : bulkEditState.value;
       if (!columnId || selectedRowIds.length === 0) return false;
 
       // Validate

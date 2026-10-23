@@ -239,11 +239,11 @@ export default function App() {
       alert("Select rows first (using checkboxes)");
       return;
     }
-    bulkEdit.startBulkEdit("status");
-    bulkEdit.updateBulkValue("Realized");
     const rowIds = selectedRows.map((r) => r.id);
     const rows = selectedRows.map((r) => r.original);
-    bulkEdit.commitBulkEdit(rowIds, rows);
+    // Commit atomically with an explicit column/value — calling startBulkEdit/updateBulkValue
+    // then immediately committing would read stale pre-render state.
+    bulkEdit.commitBulkEdit(rowIds, rows, { columnId: "status", value: "Realized" });
   };
 
   // Stats
