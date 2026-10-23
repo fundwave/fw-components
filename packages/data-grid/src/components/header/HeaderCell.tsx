@@ -50,13 +50,17 @@ export const HeaderCell = <TData,>({
 
   const [isHovered, setIsHovered] = useState(false);
 
+  // TanStack's own handler reads `event.shiftKey` to decide multi-sort, honoring the
+  // table's `enableMultiSort` option — calling `toggleSorting()` directly ignores Shift.
+  const toggleSortingHandler = column.getToggleSortingHandler();
+
   const handleSortClick = (event: React.KeyboardEvent | React.MouseEvent) => {
     if (!canSort) return;
     const isEnterOrSpace = "key" in event && (event.key === "Enter" || event.key === " ");
     const isMouseClick = "button" in event;
     if (isEnterOrSpace || isMouseClick) {
       event.preventDefault();
-      column.toggleSorting();
+      toggleSortingHandler?.(event);
       onInteraction?.(`Sorted Column ${isSorted ? "Descending" : "Ascending"}`, { type: "sorting" });
     }
   };
