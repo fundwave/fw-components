@@ -78,12 +78,17 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         newDirtyCells.delete(key);
       }
 
-      return {
+      const next = {
         ...prev,
         drafts: { ...prev.drafts, [key]: value },
         dirtyCells: newDirtyCells,
         errors: { ...prev.errors, [key]: "" },
       };
+      // Sync the ref immediately so a commit called right after this (e.g. the
+      // `onChange(newValue); onCommit();` pattern) reads the new draft instead of a
+      // stale pre-render value.
+      editingStateRef.current = next;
+      return next;
     });
   }, []);
 
