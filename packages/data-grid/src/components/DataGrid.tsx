@@ -269,12 +269,14 @@ export const DataGrid = <TData extends object>({
 
   const editing = useEditing({
     onCellEdit: editingEnabled
-      ? (rowId, columnId, value, previousValue) => {
+      ? async (rowId, columnId, value, previousValue) => {
           // table.getRow (not a manual data.find re-implementation) resolves the same
           // identities and hierarchy the grid itself uses, including custom getRowId
           // and nested rows.
           const row = table.getRow(rowId, true).original as TData;
-          onCellEdit?.({ rowId, columnId, value, previousValue, row });
+          await onCellEdit?.({ rowId, columnId, value, previousValue, row });
+          // Reported only after the save succeeds — a rejected save shouldn't be tracked
+          // as a successful edit interaction.
           onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
         }
       : undefined,
