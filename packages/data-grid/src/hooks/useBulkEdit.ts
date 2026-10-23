@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import type { BulkEditEvent } from "../types";
 
 interface UseBulkEditOptions<TData> {
@@ -63,7 +63,13 @@ export function useBulkEdit<TData = unknown>(
     isSaving: false,
   });
 
+  // Bumped on every new commit attempt and whenever the session is explicitly
+  // superseded (start/cancel), so an older in-flight save can tell it's stale before
+  // applying its result and clobbering a newer session's state.
+  const sessionRef = useRef(0);
+
   const startBulkEdit = useCallback((columnId: string) => {
+    sessionRef.current += 1;
     setBulkEditState({
       isActive: true,
       columnId,
@@ -91,16 +97,26 @@ export function useBulkEdit<TData = unknown>(
       const value = override ? override.value : bulkEditState.value;
       if (!columnId || selectedRowIds.length === 0) return false;
 
+      const version = ++sessionRef.current;
+
       // Validate
       if (validateBulkEdit) {
-        const error = await validateBulkEdit(value, columnId);
+        let error: string | null;
+        try {
+          error = await validateBulkEdit(value, columnId);
+        } catch {
+          error = "Validation failed";
+        }
+        // A newer session (another commit, or start/cancel) has superseded this one —
+        // don't let a late validation result touch state it no longer owns.
+        if (sessionRef.current !== version) return false;
         if (error) {
           setBulkEditState((prev) => ({ ...prev, error }));
           return false;
         }
       }
 
-      setBulkEditState((prev) => ({ ...prev, isSaving: true }));
+      setBulkEditState((prev) => (sessionRef.current === version ? { ...prev, isSaving: true } : prev));
 
       try {
         await onBulkEdit?.({
@@ -109,6 +125,8 @@ export function useBulkEdit<TData = unknown>(
           value,
           rows,
         });
+
+        if (sessionRef.current !== version) return true;
 
         setBulkEditState({
           isActive: false,
@@ -120,6 +138,7 @@ export function useBulkEdit<TData = unknown>(
 
         return true;
       } catch {
+        if (sessionRef.current !== version) return false;
         setBulkEditState((prev) => ({
           ...prev,
           error: "Failed to save bulk edit",
@@ -132,6 +151,7 @@ export function useBulkEdit<TData = unknown>(
   );
 
   const cancelBulkEdit = useCallback(() => {
+    sessionRef.current += 1;
     setBulkEditState({
       isActive: false,
       columnId: null,
