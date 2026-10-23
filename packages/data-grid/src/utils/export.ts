@@ -100,7 +100,10 @@ export async function exportGridData<TData>(
   if (options.rows) {
     rows = options.rows;
   } else if (selectedOnly) {
-    tableRows = table.getSelectedRowModel().rows;
+    // `.rows` only holds the selected model's top-level entries; for hierarchical data a
+    // selected child whose parent isn't selected (or a selected child under a selected
+    // parent) can be missing from it. `.flatRows` has every selected row individually.
+    tableRows = table.getSelectedRowModel().flatRows;
     rows = tableRows.map((r) => r.original);
   } else {
     tableRows = table.getRowModel().rows;
