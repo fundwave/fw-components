@@ -36,7 +36,7 @@ export interface ExportOptions<TData = unknown> {
   includeHeaders?: boolean;
   /** Custom export handler — if provided, receives the prepared data instead of downloading */
   onExport?: (data: ExportData) => void | Promise<void>;
-  /** Date format for formatting dates in export */
+  /** Default date format for date-type columns. An explicit column `formatOptions.dateFormat` takes precedence over this. */
   dateFormat?: string;
 }
 
@@ -87,6 +87,7 @@ export async function exportGridData<TData>(
     selectedOnly = false,
     includeHeaders = true,
     onExport,
+    dateFormat,
   } = options;
 
   // Determine columns to export
@@ -116,7 +117,7 @@ export async function exportGridData<TData>(
     const tableRow = tableRows?.[index];
     return exportColumns.map((col) => {
       const value = getColumnValue(row, col, index, tableRow);
-      return formatExportValue(value, col);
+      return formatExportValue(value, col, dateFormat);
     });
   });
 
@@ -192,7 +193,11 @@ function getColumnValue<TData>(
   return getByPath(row as unknown as Record<string, unknown>, col.id);
 }
 
-function formatExportValue(value: unknown, col: ExportColumn): string | number | boolean | null {
+function formatExportValue(
+  value: unknown,
+  col: ExportColumn,
+  exportDateFormat?: string
+): string | number | boolean | null {
   if (value === null || value === undefined) return null;
 
   // Keep numbers as numbers for Excel compatibility
@@ -208,7 +213,14 @@ function formatExportValue(value: unknown, col: ExportColumn): string | number |
       return value;
     }
 
-    const formatted = formatValue(value, col.formatType, col.formatOptions);
+    // `ExportOptions.dateFormat` is the export-wide default; an explicit column-level
+    // `formatOptions.dateFormat` is more specific and wins.
+    const formatOptions =
+      col.formatType === "date" && exportDateFormat
+        ? { dateFormat: exportDateFormat, ...col.formatOptions }
+        : col.formatOptions;
+
+    const formatted = formatValue(value, col.formatType, formatOptions);
     // Try to keep numeric formatted values as numbers (only safe for unscaled formats)
     if ((col.formatType === "number" || col.formatType === "decimal") && !isScaled) {
       const num = parseFloat(formatted.replace(/[^0-9.-]/g, ""));
