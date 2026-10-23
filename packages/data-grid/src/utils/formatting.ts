@@ -239,15 +239,17 @@ export const formatAndTrimValue = (
   if (typeof value === "number" || (typeof value === "string" && !isNaN(Number(value)))) {
     const numValue = typeof value === "number" ? value : Number(value);
     const isSmallNumber = Math.abs(numValue) < 10000;
-    const numberFormat = isSmallNumber ? "000s" : (formatOptions?.numberFormat || "000s");
-    const decimals = numberFormat === "000s" && !isSmallNumber ? 0 : 2;
+    const autoNumberFormat = isSmallNumber ? "000s" : (formatOptions?.numberFormat || "000s");
+    const autoDecimals = autoNumberFormat === "000s" && !isSmallNumber ? 0 : 2;
     const hasDecimals = numValue % 1 !== 0;
 
+    // Auto values come first so an explicit `numberFormat`/`decimals`/`trim` in
+    // formatOptions always wins over the magnitude-based guess.
     return formatValue(value, valueType, {
+      numberFormat: autoNumberFormat,
+      decimals: autoDecimals,
+      trim: !autoDecimals || !hasDecimals,
       ...formatOptions,
-      numberFormat,
-      decimals,
-      trim: !decimals || !hasDecimals,
     });
   }
 
