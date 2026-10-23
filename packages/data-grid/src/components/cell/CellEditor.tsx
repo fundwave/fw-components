@@ -3,6 +3,27 @@ import type { SelectOption } from "../../types";
 import { cn } from "../../utils/styling";
 
 // ============================================================================
+// HELPERS
+// ============================================================================
+
+/**
+ * Normalize a value into the `YYYY-MM-DD` calendar date an `<input type="date">` expects.
+ * `String(dateInstance)` produces a full human-readable timestamp, not an ISO date, so a
+ * `Date` value needs its own local calendar fields rather than a blind string split.
+ */
+function toDateInputValue(value: unknown): string {
+  if (!value) return "";
+  if (value instanceof Date) {
+    if (isNaN(value.getTime())) return "";
+    const year = value.getFullYear();
+    const month = String(value.getMonth() + 1).padStart(2, "0");
+    const day = String(value.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+  return String(value).split("T")[0];
+}
+
+// ============================================================================
 // CELL EDITOR TYPES
 // ============================================================================
 
@@ -106,7 +127,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
           <input
             type="date"
             className={baseInputClass}
-            value={value ? String(value).split("T")[0] : ""}
+            value={toDateInputValue(value)}
             onChange={(e) => onChange(e.target.value || null)}
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
