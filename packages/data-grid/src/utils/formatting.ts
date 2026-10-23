@@ -204,7 +204,13 @@ export const formatValue = (
     case "date":
       if (typeof val === "string") {
         const d = new Date(val);
-        return !isNaN(d.getTime()) ? formatDate(d, dateFormat, formatAsUTC) : placeholder;
+        if (isNaN(d.getTime())) return placeholder;
+        // A date-only string ("2024-01-01") is parsed as UTC midnight. Formatting that in
+        // the viewer's local timezone can shift it to the previous calendar day in
+        // negative UTC offsets, so always format date-only input as UTC to preserve the
+        // calendar date; timestamps keep honoring `formatAsUTC`.
+        const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(val);
+        return formatDate(d, dateFormat, isDateOnly ? true : formatAsUTC);
       }
       return String(val);
 
