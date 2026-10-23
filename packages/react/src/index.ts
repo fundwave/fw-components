@@ -22,6 +22,9 @@ export {
   DropdownMenuRadioGroup
 } from "./components/DropdownMenu";
 
+export { FileItem, FileUpload, FileDropZone } from "./components/File";
+export type { FileItemData, FileItemProps, FileUploadProps, FileUploadRef } from "./components/File";
+
 export { Input, Textarea, Checkbox, default as InputDefault } from "./components/Input";
 export type { InputRef, InputProps, TextareaRef, CheckboxRef } from "./components/Input";
 
