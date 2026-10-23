@@ -92,15 +92,19 @@ export const DataGrid = <TData extends object>({
   const columnPinningEnabled = features.columnPinning !== false;
   const virtualizationEnabled = features.virtualization !== false;
 
-  // Row selection config
-  const rowSelectionEnabled = features.rowSelection !== undefined && features.rowSelection !== false;
-  const rowSelectionConfig: RowSelectionConfig = typeof features.rowSelection === "object"
-    ? features.rowSelection
-    : { enabled: rowSelectionEnabled };
+  // Row selection config — an object config's `enabled` flag is the source of truth, so
+  // `{ enabled: false }` actually turns the feature off instead of being treated as truthy.
+  const rowSelectionConfig: RowSelectionConfig =
+    typeof features.rowSelection === "object"
+      ? features.rowSelection
+      : { enabled: features.rowSelection === true };
+  const rowSelectionEnabled = rowSelectionConfig.enabled;
 
-  // Editing config
-  const editingEnabled = features.editing !== undefined && features.editing !== false;
-  const editingConfig = typeof features.editing === "object" ? features.editing : { enabled: editingEnabled };
+  // Editing config — same `enabled`-is-authoritative rule as row selection above.
+  const editingConfig = typeof features.editing === "object"
+    ? features.editing
+    : { enabled: features.editing === true };
+  const editingEnabled = editingConfig.enabled;
   const commitOnBlur = editingConfig.commitOnBlur !== false;
 
   // Range selection config
