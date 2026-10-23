@@ -69,13 +69,17 @@ export const EditableCell = <TData,>({
     return <>{displayValue}</>;
   }
 
+  // Fall back to the raw value only when there's no draft at all — a draft of `null`
+  // (e.g. a cleared number/date field) is a real pending value, not a missing one.
+  const effectiveValue = draftValue !== undefined ? draftValue : rawValue;
+
   if (isEditing) {
     // Custom edit renderer takes priority
     if (customEditCell) {
       return (
         <>
           {customEditCell({
-            value: draftValue ?? rawValue,
+            value: effectiveValue,
             row,
             columnId,
             onChange: (v) => onUpdateDraft(rowId, columnId, v),
@@ -90,7 +94,7 @@ export const EditableCell = <TData,>({
     return (
       <CellEditor
         type={editType === "custom" ? "text" : editType}
-        value={draftValue ?? rawValue}
+        value={effectiveValue}
         options={editOptions}
         onChange={(v) => onUpdateDraft(rowId, columnId, v)}
         onCommit={() => onCommit(rowId, columnId)}
