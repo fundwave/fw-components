@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // ============================================================================
 // TYPES
@@ -203,8 +203,17 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
   );
 
   const handleMouseUp = useCallback(() => {
-    updateState((prev) => ({ ...prev, isSelecting: false }));
+    updateState((prev) => (prev.isSelecting ? { ...prev, isSelecting: false } : prev));
   }, [updateState]);
+
+  // A drag that ends outside the grid only fires `mouseup` on the document, not on the
+  // grid wrapper. Without this, releasing the mouse there leaves `isSelecting` stuck true,
+  // so moving back over cells keeps extending the range with no button pressed.
+  useEffect(() => {
+    if (!selectionState.isSelecting) return;
+    document.addEventListener("mouseup", handleMouseUp);
+    return () => document.removeEventListener("mouseup", handleMouseUp);
+  }, [selectionState.isSelecting, handleMouseUp]);
 
   // ============================================================================
   // KEYBOARD HANDLER
