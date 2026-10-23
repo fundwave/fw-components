@@ -38,6 +38,8 @@ export interface CellEditorProps {
   autoFocus?: boolean;
   /** Whether losing focus should commit the edit (default true) */
   commitOnBlur?: boolean;
+  /** Accessible name for the input, since it replaces the read-mode cell's own label */
+  label?: string;
 }
 
 // ============================================================================
@@ -58,6 +60,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
   error,
   autoFocus = true,
   commitOnBlur = true,
+  label,
 }) => {
   const handleBlur = commitOnBlur ? onCommit : undefined;
 
@@ -94,6 +97,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             autoFocus={autoFocus}
+            aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
           {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
@@ -114,6 +118,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             autoFocus={autoFocus}
+            aria-label={label}
             step="any"
             onClick={(e) => e.stopPropagation()}
           />
@@ -132,6 +137,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             autoFocus={autoFocus}
+            aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
           {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
@@ -156,6 +162,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             onKeyDown={handleKeyDown}
             onBlur={handleBlur}
             autoFocus={autoFocus}
+            aria-label={label}
             onClick={(e) => e.stopPropagation()}
           >
             <option value="" disabled>Select...</option>
@@ -189,6 +196,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               }}
               onKeyDown={handleKeyDown}
               autoFocus={autoFocus}
+            aria-label={label}
               onClick={(e) => e.stopPropagation()}
             />
             <div className={cn(

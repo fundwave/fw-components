@@ -165,6 +165,7 @@ export const DataRow = <TData,>({
 
           // Editing state
           const columnId = column.id;
+          const columnLabel = typeof columnDef.header === "string" ? columnDef.header : undefined;
           const rowId = row.id;
           const isEditable = editingEnabled && columnMeta?.editable === true;
           const isCellEditing = isEditable && isEditingCell?.(rowId, columnId);
@@ -217,6 +218,7 @@ export const DataRow = <TData,>({
                     row={row}
                     rowId={rowId}
                     columnId={columnId}
+                    columnLabel={columnLabel}
                     editable={true}
                     editType={columnMeta?.editType}
                     editOptions={columnMeta?.editOptions}

@@ -20,6 +20,8 @@ export interface EditableCellProps<TData = unknown> {
   rowId: string;
   /** Column ID */
   columnId: string;
+  /** Human-readable column label, used as the editor's accessible name */
+  columnLabel?: string;
   /** Whether the column is editable */
   editable: boolean;
   /** Editor type */
@@ -56,6 +58,7 @@ export const EditableCell = <TData,>({
   row,
   rowId,
   columnId,
+  columnLabel,
   editable,
   editType = "text",
   editOptions,
@@ -104,6 +107,7 @@ export const EditableCell = <TData,>({
         onCancel={onCancel}
         error={error}
         commitOnBlur={commitOnBlur}
+        label={columnLabel || columnId}
       />
     );
   }
