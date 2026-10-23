@@ -1,5 +1,6 @@
 import {
   type ColumnDef,
+  type ColumnPinningState,
   type FilterFn,
   type Row,
   getCoreRowModel,
@@ -128,6 +129,19 @@ export const DataGrid = <TData extends object>({
     rowSelection,
     setRowSelection,
   } = useDataGridState({ state, onStateChange, initialState });
+
+  // Merge the selection column's configured pinning side into the committed pinning state,
+  // since pinning is purely state-driven in TanStack (there's no per-column-def pin field).
+  const effectiveColumnPinning: ColumnPinningState = useMemo(() => {
+    if (!rowSelectionEnabled || !rowSelectionConfig.pinned) return columnPinning;
+    const side = rowSelectionConfig.pinned;
+    const otherSide = side === "left" ? "right" : "left";
+    return {
+      ...columnPinning,
+      [side]: Array.from(new Set([...(columnPinning[side] ?? []), "__selection"])),
+      [otherSide]: (columnPinning[otherSide] ?? []).filter((id) => id !== "__selection"),
+    };
+  }, [columnPinning, rowSelectionEnabled, rowSelectionConfig.pinned]);
 
   // ============================================================================
   // EDITING
@@ -263,7 +277,7 @@ export const DataGrid = <TData extends object>({
       sorting,
       expanded,
       columnSizing,
-      columnPinning,
+      columnPinning: effectiveColumnPinning,
       rowSelection,
     },
 
