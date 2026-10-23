@@ -144,39 +144,6 @@ export const DataGrid = <TData extends object>({
   }, [columnPinning, rowSelectionEnabled, rowSelectionConfig.pinned]);
 
   // ============================================================================
-  // EDITING
-  // ============================================================================
-
-  const editing = useEditing({
-    onCellEdit: editingEnabled
-      ? (rowId, columnId, value, previousValue) => {
-          const row = data.find((_, idx) => {
-            const id = userGetRowId ? userGetRowId(data[idx], idx) : String(idx);
-            return id === rowId;
-          });
-          onCellEdit?.({
-            rowId,
-            columnId,
-            value,
-            previousValue,
-            row: row as TData,
-          });
-          onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
-        }
-      : undefined,
-    validateCell: validateCell
-      ? async (value, rowId, columnId) => {
-          const row = data.find((_, idx) => {
-            const id = userGetRowId ? userGetRowId(data[idx], idx) : String(idx);
-            return id === rowId;
-          });
-          return validateCell(value, row as TData, columnId);
-        }
-      : undefined,
-    commitOnBlur,
-  });
-
-  // ============================================================================
   // COLUMNS (with selection column prepended if enabled)
   // ============================================================================
 
@@ -295,6 +262,30 @@ export const DataGrid = <TData extends object>({
   useEffect(() => {
     if (onTableReady) onTableReady(table);
   }, [table, onTableReady]);
+
+  // ============================================================================
+  // EDITING
+  // ============================================================================
+
+  const editing = useEditing({
+    onCellEdit: editingEnabled
+      ? (rowId, columnId, value, previousValue) => {
+          // table.getRow (not a manual data.find re-implementation) resolves the same
+          // identities and hierarchy the grid itself uses, including custom getRowId
+          // and nested rows.
+          const row = table.getRow(rowId, true).original as TData;
+          onCellEdit?.({ rowId, columnId, value, previousValue, row });
+          onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
+        }
+      : undefined,
+    validateCell: validateCell
+      ? async (value, rowId, columnId) => {
+          const row = table.getRow(rowId, true).original as TData;
+          return validateCell(value, row, columnId);
+        }
+      : undefined,
+    commitOnBlur,
+  });
 
   // ============================================================================
   // VIRTUALIZATION
