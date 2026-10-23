@@ -358,7 +358,7 @@ export default function App() {
               columnResizing: true,
               columnPinning: true,
               rowSelection: { enabled: true, pinned: "left", width: 36 },
-              editing: { enabled: true, mode: "cell", commitOnBlur: true },
+              editing: { enabled: true, commitOnBlur: true },
               rangeSelection: true,
             }}
             state={{ globalFilter }}

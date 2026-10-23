@@ -320,7 +320,6 @@ Available format types: `currency`, `percentage`, `decimal`, `number`, `text`, `
 | `onStateChange` | `TableStateHandlers` | State change callbacks |
 | `initialState` | `Partial<TableState>` | Initial state values |
 | `onCellEdit` | `(event) => void` | Cell edit commit handler |
-| `onBulkEdit` | `(event) => void` | Bulk edit commit handler |
 | `validateCell` | `(value, row, colId) => string \| null` | Cell validation |
 | `onTableReady` | `(table) => void` | TanStack Table instance callback |
 | `onRowClick` | `(row) => void` | Row click handler |

@@ -64,7 +64,6 @@ export const DataGrid = <TData extends object>({
   globalFilterConfig = {},
 
   onCellEdit,
-  onBulkEdit: _onBulkEdit,
   validateCell,
 
   onTableReady,

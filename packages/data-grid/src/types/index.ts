@@ -164,12 +164,8 @@ export interface RowSelectionConfig {
 
 export interface EditingConfig {
   enabled: boolean;
-  /** Edit mode: "cell" edits one at a time, "bulk" enables multi-row editing */
-  mode?: "cell" | "bulk";
   /** Whether to commit on blur */
   commitOnBlur?: boolean;
-  /** Whether to show a save/cancel toolbar during bulk edit */
-  showBulkToolbar?: boolean;
 }
 
 export interface VirtualizationConfig {
@@ -266,8 +262,6 @@ export interface DataGridProps<TData = Record<string, unknown>> {
   // --- Editing Callbacks ---
   /** Called when a single cell value is committed */
   onCellEdit?: (event: CellEditEvent<TData>) => void | Promise<void>;
-  /** Called when bulk edit is committed */
-  onBulkEdit?: (event: BulkEditEvent<TData>) => void | Promise<void>;
   /** Validate a cell value before committing */
   validateCell?: (value: unknown, row: TData, columnId: string) => string | null | Promise<string | null>;
 
