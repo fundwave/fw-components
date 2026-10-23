@@ -116,7 +116,10 @@ export const DataRow = <TData,>({
         className={rowClasses}
         onClick={handleRowClick}
         onKeyDown={handleRowClick}
-        role={onRowClick ? "button" : undefined}
+        // Deliberately no role="button" override here — a <tr> already carries the
+        // "row" role the grid relies on for navigation, and replacing it strips the
+        // row/cell relationships assistive tech needs. The click/keydown handlers above
+        // still make the row actionable without changing its semantics.
         tabIndex={onRowClick ? 0 : undefined}
         data-index={dataIndex}
         data-row-id={row.id}
