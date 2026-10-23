@@ -177,19 +177,29 @@ export default function App() {
   });
 
   // Cell edit handler
-  const handleCellEdit = useCallback((event: CellEditEvent<Asset>) => {
-    setData((prev) =>
-      prev.map((asset) =>
-        asset.id === event.rowId
-          ? { ...asset, [event.columnId]: event.value }
-          : asset
-      )
-    );
-    setEditLog((prev) => [
-      `Edit: ${event.rowId} → ${event.columnId} = ${JSON.stringify(event.value)}`,
-      ...prev.slice(0, 9),
-    ]);
-  }, []);
+  // When the edited row is part of a multi-row selection, apply the new value to every
+  // selected row — not just the one that was clicked.
+  const handleCellEdit = useCallback(
+    (event: CellEditEvent<Asset>) => {
+      const selectedIds = tableInstance?.getSelectedRowModel().rows.map((r) => r.id) ?? [];
+      const isBulkTarget = selectedIds.length > 1 && selectedIds.includes(event.rowId);
+      const targetIds = isBulkTarget ? selectedIds : [event.rowId];
+
+      setData((prev) =>
+        prev.map((asset) =>
+          targetIds.includes(asset.id) ? { ...asset, [event.columnId]: event.value } : asset
+        )
+      );
+
+      setEditLog((prev) => [
+        isBulkTarget
+          ? `Bulk edit (via cell): ${targetIds.length} rows, ${event.columnId} = ${JSON.stringify(event.value)}`
+          : `Edit: ${event.rowId} → ${event.columnId} = ${JSON.stringify(event.value)}`,
+        ...prev.slice(0, 9),
+      ]);
+    },
+    [tableInstance]
+  );
 
   // Validation
   const validateCell = useCallback((value: unknown, _row: Asset, columnId: string) => {
