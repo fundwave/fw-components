@@ -325,10 +325,15 @@ export const DataGrid = <TData extends object>({
   // RANGE SELECTION (integrated)
   // ============================================================================
 
+  const visibleLeafColumns = table.getVisibleLeafColumns();
+  const selectionColumnIndex = rowSelectionEnabled
+    ? visibleLeafColumns.findIndex((col) => col.id === "__selection")
+    : -1;
+
   const rangeSelection = useRangeSelection({
     rowCount: rows.length,
-    columnCount: columns.length,
-    skipColumns: rowSelectionEnabled ? [0] : [], // skip checkbox column
+    columnCount: visibleLeafColumns.length,
+    skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
   });
 
   // ============================================================================
