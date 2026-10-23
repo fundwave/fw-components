@@ -33,6 +33,8 @@ export interface DataRowProps<TData> {
   isActiveCell?: (rowIndex: number, columnIndex: number) => boolean;
   /** The row's visual index in the displayed list (for range selection) */
   rowVisualIndex?: number;
+  /** Ref callback to report this row's measured height to the virtualizer */
+  measureRef?: (el: HTMLTableRowElement | null) => void;
 }
 
 /**
@@ -66,6 +68,7 @@ export const DataRow = <TData,>({
   isCellSelected,
   isActiveCell,
   rowVisualIndex,
+  measureRef,
 }: DataRowProps<TData>) => {
   const originalRow = row.original;
   const canExpand = row.getCanExpand();
@@ -107,6 +110,7 @@ export const DataRow = <TData,>({
   return (
     <>
       <tr
+        ref={measureRef}
         className={rowClasses}
         onClick={handleRowClick}
         onKeyDown={handleRowClick}

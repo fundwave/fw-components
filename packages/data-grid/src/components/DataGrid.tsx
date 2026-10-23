@@ -335,7 +335,12 @@ export const DataGrid = <TData extends object>({
   // RENDER HELPERS
   // ============================================================================
 
-  const renderRow = (row: Row<TData>, dataIndex?: number, rowVisualIndex?: number) => (
+  const renderRow = (
+    row: Row<TData>,
+    dataIndex?: number,
+    rowVisualIndex?: number,
+    measureRef?: (el: HTMLTableRowElement | null) => void
+  ) => (
     <DataRow
       key={row.id}
       row={row}
@@ -360,6 +365,7 @@ export const DataGrid = <TData extends object>({
       isCellSelected={rangeSelectionEnabled ? rangeSelection.isCellSelected : undefined}
       isActiveCell={rangeSelectionEnabled ? rangeSelection.isActiveCell : undefined}
       rowVisualIndex={rowVisualIndex}
+      measureRef={measureRef}
     />
   );
 
@@ -380,7 +386,7 @@ export const DataGrid = <TData extends object>({
           )}
           {virtualRows.map((virtualRow) => {
             const row = rows[virtualRow.index] as Row<TData>;
-            return renderRow(row, virtualRow.index, virtualRow.index);
+            return renderRow(row, virtualRow.index, virtualRow.index, rowVirtualizer.measureElement);
           })}
           {paddingBottom > 0 && (
             <tr style={{ height: `${paddingBottom}px` }}>
