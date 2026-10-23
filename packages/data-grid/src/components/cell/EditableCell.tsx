@@ -1,3 +1,4 @@
+import type { Row } from "@tanstack/react-table";
 import React from "react";
 import type { CellEditType, EditCellRenderProps, SelectOption } from "../../types";
 import { CellEditor } from "./CellEditor";
@@ -13,8 +14,8 @@ export interface EditableCellProps<TData = unknown> {
   displayValue: React.ReactNode;
   /** The raw cell value for editing */
   rawValue: unknown;
-  /** Row object */
-  row: TData;
+  /** TanStack row instance, forwarded to custom edit cell renderers */
+  row: Row<TData>;
   /** Row ID */
   rowId: string;
   /** Column ID */
@@ -75,7 +76,7 @@ export const EditableCell = <TData,>({
         <>
           {customEditCell({
             value: draftValue ?? rawValue,
-            row: row as unknown as import("@tanstack/react-table").Row<TData>,
+            row,
             columnId,
             onChange: (v) => onUpdateDraft(rowId, columnId, v),
             onCommit: () => onCommit(rowId, columnId),
