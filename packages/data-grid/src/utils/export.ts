@@ -198,9 +198,16 @@ function formatExportValue(value: unknown, col: ExportColumn): string | number |
 
   // Format if formatType is specified
   if (col.formatType) {
+    const isScaled = col.formatOptions?.numberFormat === "Millions";
+    // Scaled formats (e.g. "1.5M") lose their unit once parsed back to a plain number
+    // (1,500,000 -> 1.5M -> 1.5). Export the unscaled raw number instead of the formatted text.
+    if ((col.formatType === "number" || col.formatType === "decimal") && typeof value === "number" && isScaled) {
+      return value;
+    }
+
     const formatted = formatValue(value, col.formatType, col.formatOptions);
-    // Try to keep numeric formatted values as numbers
-    if (col.formatType === "number" || col.formatType === "decimal") {
+    // Try to keep numeric formatted values as numbers (only safe for unscaled formats)
+    if ((col.formatType === "number" || col.formatType === "decimal") && !isScaled) {
       const num = parseFloat(formatted.replace(/[^0-9.-]/g, ""));
       if (!isNaN(num)) return num;
     }
