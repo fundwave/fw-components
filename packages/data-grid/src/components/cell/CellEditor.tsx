@@ -119,7 +119,11 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             className={cn(baseInputClass, "appearance-none cursor-pointer pr-7")}
             value={String(value ?? "")}
             onChange={(e) => {
-              onChange(e.target.value);
+              // The DOM always reports a string; resolve back to the option's declared
+              // value so a numeric `SelectOption.value` doesn't silently turn into a string.
+              const raw = e.target.value;
+              const matched = options.find((opt) => String(opt.value) === raw);
+              onChange(matched ? matched.value : raw);
               // Auto-commit for select
               setTimeout(onCommit, 0);
             }}
