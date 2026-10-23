@@ -51,8 +51,10 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   // Store the original values for dirty comparison
   const originalValues = useRef<Record<string, unknown>>({});
 
+  // Mirrors `editingState` synchronously (updated inside the setState updater itself,
+  // not just after render) so a commit that runs immediately after updateDraft/startEditing
+  // in the same tick always reads the latest draft instead of a stale pre-render value.
   const editingStateRef = useRef(editingState);
-  editingStateRef.current = editingState;
 
   // Per-cell edit-session counter. An in-flight async commit captures the version for its
   // cell at the start; if a newer session for that same cell has begun by the time it
@@ -65,12 +67,16 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
     originalValues.current[key] = currentValue;
     sessionVersion.current[key] = (sessionVersion.current[key] ?? 0) + 1;
 
-    setEditingState((prev) => ({
-      ...prev,
-      editingCell: { rowId, columnId },
-      drafts: { ...prev.drafts, [key]: currentValue },
-      errors: { ...prev.errors, [key]: "" },
-    }));
+    setEditingState((prev) => {
+      const next: EditingState = {
+        ...prev,
+        editingCell: { rowId, columnId },
+        drafts: { ...prev.drafts, [key]: currentValue },
+        errors: { ...prev.errors, [key]: "" },
+      };
+      editingStateRef.current = next;
+      return next;
+    });
   }, []);
 
   const updateDraft = useCallback((rowId: string, columnId: string, value: unknown) => {
@@ -83,7 +89,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         newDirtyCells.delete(key);
       }
 
-      const next = {
+      const next: EditingState = {
         ...prev,
         drafts: { ...prev.drafts, [key]: value },
         dirtyCells: newDirtyCells,
@@ -109,7 +115,9 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
       if (draftValue === previousValue) {
         setEditingState((prev) => {
           if (prev.editingCell?.rowId !== rowId || prev.editingCell?.columnId !== columnId) return prev;
-          return { ...prev, editingCell: null };
+          const next: EditingState = { ...prev, editingCell: null };
+          editingStateRef.current = next;
+          return next;
         });
         return true;
       }
@@ -121,10 +129,11 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         // without touching state that no longer belongs to this commit.
         if (sessionVersion.current[key] !== version) return false;
         if (error) {
-          setEditingState((prev) => ({
-            ...prev,
-            errors: { ...prev.errors, [key]: error },
-          }));
+          setEditingState((prev) => {
+            const next: EditingState = { ...prev, errors: { ...prev.errors, [key]: error } };
+            editingStateRef.current = next;
+            return next;
+          });
           return false;
         }
       }
@@ -145,7 +154,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
           newDirtyCells.delete(key);
           delete originalValues.current[key];
 
-          return {
+          const next: EditingState = {
             ...prev,
             // Only close the editor if this cell is still the active one — an older
             // commit resolving after the user moved to another cell must not close it.
@@ -157,15 +166,18 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
             errors: newErrors,
             dirtyCells: newDirtyCells,
           };
+          editingStateRef.current = next;
+          return next;
         });
 
         return true;
       } catch {
         if (sessionVersion.current[key] !== version) return false;
-        setEditingState((prev) => ({
-          ...prev,
-          errors: { ...prev.errors, [key]: "Failed to save" },
-        }));
+        setEditingState((prev) => {
+          const next: EditingState = { ...prev, errors: { ...prev.errors, [key]: "Failed to save" } };
+          editingStateRef.current = next;
+          return next;
+        });
         return false;
       }
     },
@@ -188,13 +200,15 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         newDirtyCells.delete(key);
         delete originalValues.current[key];
 
-        return {
+        const next: EditingState = {
           ...prev,
           editingCell: null,
           drafts: newDrafts,
           errors: newErrors,
           dirtyCells: newDirtyCells,
         };
+        editingStateRef.current = next;
+        return next;
       });
     }
   }, []);
@@ -245,12 +259,14 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   const reset = useCallback(() => {
     originalValues.current = {};
     sessionVersion.current = {};
-    setEditingState({
+    const next: EditingState = {
       editingCell: null,
       drafts: {},
       errors: {},
       dirtyCells: new Set(),
-    });
+    };
+    editingStateRef.current = next;
+    setEditingState(next);
   }, []);
 
   return {
