@@ -19,17 +19,15 @@ export function useControlledState<T>(
   const setValue = useCallback<OnChangeFn<T>>(
     (updater) => {
       if (!isControlled) {
-        setUncontrolledState((prev) => {
-          const next = typeof updater === "function" ? (updater as (prev: T) => T)(prev) : updater;
-          onChange?.(next);
-          return next;
-        });
-      } else {
-        const next = typeof updater === "function" ? (updater as (prev: T) => T)(value) : updater;
-        onChange?.(next);
+        setUncontrolledState((prev) =>
+          typeof updater === "function" ? (updater as (prev: T) => T)(prev) : updater
+        );
       }
+      // Notify outside the state updater (which must stay pure) and forward the
+      // original updater so callers can resolve it against their own state.
+      onChange?.(updater);
     },
-    [isControlled, onChange, value]
+    [isControlled, onChange]
   );
 
   return [value, setValue];
