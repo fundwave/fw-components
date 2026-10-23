@@ -1,4 +1,4 @@
-import type { Table } from "@tanstack/react-table";
+import type { Row, Table } from "@tanstack/react-table";
 import type { FormatOptions, ValueFormatType } from "../types";
 import { formatValue } from "../utils/formatting";
 
@@ -11,8 +11,8 @@ export interface ExportColumn {
   id: string;
   /** Display header */
   header: string;
-  /** Value accessor (column key or function) */
-  accessor?: string | ((row: Record<string, unknown>) => unknown);
+  /** Value accessor — a (optionally dotted) object path, or a function receiving the row and its index */
+  accessor?: string | ((row: Record<string, unknown>, index: number) => unknown);
   /** Format type for value formatting */
   formatType?: ValueFormatType;
   /** Format options */
@@ -92,21 +92,27 @@ export async function exportGridData<TData>(
   // Determine columns to export
   const exportColumns: ExportColumn[] = customColumns || getColumnsFromTable(table);
 
-  // Determine rows to export
+  // Determine rows to export. Table-sourced rows keep their TanStack `Row` alongside the
+  // original so values can be resolved through the column's actual accessorFn/accessorKey
+  // (including computed accessors and dotted paths) rather than re-guessed here.
   let rows: TData[];
+  let tableRows: Row<TData>[] | undefined;
   if (options.rows) {
     rows = options.rows;
   } else if (selectedOnly) {
-    rows = table.getSelectedRowModel().rows.map((r) => r.original);
+    tableRows = table.getSelectedRowModel().rows;
+    rows = tableRows.map((r) => r.original);
   } else {
-    rows = table.getRowModel().rows.map((r) => r.original);
+    tableRows = table.getRowModel().rows;
+    rows = tableRows.map((r) => r.original);
   }
 
   // Build export data
   const headers = exportColumns.map((col) => col.header);
-  const dataRows = rows.map((row) => {
+  const dataRows = rows.map((row, index) => {
+    const tableRow = tableRows?.[index];
     return exportColumns.map((col) => {
-      const value = getColumnValue(row, col);
+      const value = getColumnValue(row, col, index, tableRow);
       return formatExportValue(value, col);
     });
   });
@@ -144,10 +150,12 @@ function getColumnsFromTable<TData>(table: Table<TData>): ExportColumn[] {
         ? col.columnDef.header
         : col.id;
 
+      // No explicit `accessor` here — getColumnValue falls back to the TanStack row's own
+      // getValue(), which resolves the column's real accessorFn/accessorKey (computed
+      // accessors and dotted keys included) instead of a re-guessed object property.
       return {
         id: col.id,
         header,
-        accessor: (col.columnDef as { accessorKey?: string }).accessorKey || col.id,
         formatType: meta.formatType,
         formatOptions: meta.formatOptions,
         width: meta.width ? Number(meta.width) : undefined,
@@ -155,12 +163,30 @@ function getColumnsFromTable<TData>(table: Table<TData>): ExportColumn[] {
     });
 }
 
-function getColumnValue<TData>(row: TData, col: ExportColumn): unknown {
+function getByPath(obj: Record<string, unknown>, path: string): unknown {
+  if (!path.includes(".")) return obj[path];
+  return path.split(".").reduce<unknown>((acc, key) => {
+    if (acc && typeof acc === "object") return (acc as Record<string, unknown>)[key];
+    return undefined;
+  }, obj);
+}
+
+function getColumnValue<TData>(
+  row: TData,
+  col: ExportColumn,
+  index: number,
+  tableRow?: Row<TData>
+): unknown {
   if (typeof col.accessor === "function") {
-    return col.accessor(row as unknown as Record<string, unknown>);
+    return col.accessor(row as unknown as Record<string, unknown>, index);
   }
-  const key = col.accessor || col.id;
-  return (row as Record<string, unknown>)[key];
+  if (col.accessor) {
+    return getByPath(row as unknown as Record<string, unknown>, col.accessor);
+  }
+  if (tableRow) {
+    return tableRow.getValue(col.id);
+  }
+  return getByPath(row as unknown as Record<string, unknown>, col.id);
 }
 
 function formatExportValue(value: unknown, col: ExportColumn): string | number | boolean | null {
