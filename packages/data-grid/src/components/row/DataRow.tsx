@@ -230,6 +230,7 @@ export const DataRow = <TData,>({
                     draftValue={getDraft?.(rowId, columnId)}
                     error={getError?.(rowId, columnId)}
                     commitOnBlur={commitOnBlur}
+                    rangeSelectionEnabled={rangeSelectionEnabled}
                   />
                 ) : (
                   cellContent

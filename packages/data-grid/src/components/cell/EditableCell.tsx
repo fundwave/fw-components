@@ -44,6 +44,9 @@ export interface EditableCellProps<TData = unknown> {
   error?: string | null;
   /** Whether losing focus should commit the edit (default true) */
   commitOnBlur?: boolean;
+  /** Whether Excel-like range selection is active — a modified click should extend the
+   * range instead of also opening the editor */
+  rangeSelectionEnabled?: boolean;
 }
 
 /**
@@ -70,6 +73,7 @@ export const EditableCell = <TData,>({
   draftValue,
   error,
   commitOnBlur = true,
+  rangeSelectionEnabled,
 }: EditableCellProps<TData>) => {
   if (!editable) {
     return <>{displayValue}</>;
@@ -117,6 +121,10 @@ export const EditableCell = <TData,>({
     <div
       className="cursor-pointer hover:bg-blue-50/60 rounded px-1 -mx-1 min-h-[1.5rem] flex items-center w-full group"
       onClick={(e) => {
+        // A modified click under active range selection is extending/adding to the
+        // range (handled by the cell's mousedown handler) — opening the editor on top
+        // of it would steal keyboard input from the range-selection gesture.
+        if (rangeSelectionEnabled && (e.shiftKey || e.ctrlKey || e.metaKey)) return;
         e.stopPropagation();
         onStartEdit(rowId, columnId, rawValue);
       }}
