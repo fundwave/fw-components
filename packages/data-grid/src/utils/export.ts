@@ -292,7 +292,10 @@ function sanitizeCSVFormula(value: string): string {
 
 function escapeCSVRow(values: string[]): string {
   return values.map((val) => {
-    if (val.includes(",") || val.includes('"') || val.includes("\n")) {
+    // `\r` must be quoted too — some CSV readers treat a bare CR as a record separator,
+    // so an unquoted field containing one (e.g. "safe\r=1+1") can be split into a new
+    // record whose content was never run through the formula sanitizer.
+    if (val.includes(",") || val.includes('"') || val.includes("\n") || val.includes("\r")) {
       return `"${val.replace(/"/g, '""')}"`;
     }
     return val;
