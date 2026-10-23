@@ -56,9 +56,16 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   const editingStateRef = useRef(editingState);
   editingStateRef.current = editingState;
 
+  // Per-cell edit-session counter. An in-flight async commit captures the version for its
+  // cell at the start; if a newer session for that same cell has begun by the time it
+  // resolves (the user reopened it, or started editing another cell), the commit's
+  // completion must not clobber the newer session's draft/editingCell state.
+  const sessionVersion = useRef<Record<string, number>>({});
+
   const startEditing = useCallback((rowId: string, columnId: string, currentValue: unknown) => {
     const key = cellKey(rowId, columnId);
     originalValues.current[key] = currentValue;
+    sessionVersion.current[key] = (sessionVersion.current[key] ?? 0) + 1;
 
     setEditingState((prev) => ({
       ...prev,
@@ -95,22 +102,26 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   const commitEdit = useCallback(
     async (rowId: string, columnId: string): Promise<boolean> => {
       const key = cellKey(rowId, columnId);
+      const version = sessionVersion.current[key] ?? 0;
 
       const draftValue = editingStateRef.current.drafts[key];
       const previousValue = originalValues.current[key];
 
       // Skip if unchanged
       if (draftValue === previousValue) {
-        setEditingState((prev) => ({
-          ...prev,
-          editingCell: null,
-        }));
+        setEditingState((prev) => {
+          if (prev.editingCell?.rowId !== rowId || prev.editingCell?.columnId !== columnId) return prev;
+          return { ...prev, editingCell: null };
+        });
         return true;
       }
 
       // Validate
       if (validateCell) {
         const error = await validateCell(draftValue, rowId, columnId);
+        // A newer session for this cell started while validation was in flight — bail out
+        // without touching state that no longer belongs to this commit.
+        if (sessionVersion.current[key] !== version) return false;
         if (error) {
           setEditingState((prev) => ({
             ...prev,
@@ -124,6 +135,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
       try {
         await onCellEdit?.(rowId, columnId, draftValue, previousValue);
 
+        if (sessionVersion.current[key] !== version) return true;
+
         // Clear editing state for this cell
         setEditingState((prev) => {
           const newDrafts = { ...prev.drafts };
@@ -136,7 +149,12 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
           return {
             ...prev,
-            editingCell: null,
+            // Only close the editor if this cell is still the active one — an older
+            // commit resolving after the user moved to another cell must not close it.
+            editingCell:
+              prev.editingCell?.rowId === rowId && prev.editingCell?.columnId === columnId
+                ? null
+                : prev.editingCell,
             drafts: newDrafts,
             errors: newErrors,
             dirtyCells: newDirtyCells,
@@ -145,6 +163,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
         return true;
       } catch {
+        if (sessionVersion.current[key] !== version) return false;
         setEditingState((prev) => ({
           ...prev,
           errors: { ...prev.errors, [key]: "Failed to save" },
@@ -152,13 +171,16 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         return false;
       }
     },
-    [editingState.drafts, onCellEdit, validateCell]
+    [onCellEdit, validateCell]
   );
 
   const cancelEdit = useCallback(() => {
     const editingCell = editingStateRef.current.editingCell;
     if (editingCell) {
       const key = cellKey(editingCell.rowId, editingCell.columnId);
+      // Invalidate any in-flight commit for this cell so it can't resurrect the
+      // cancelled draft after the fact.
+      sessionVersion.current[key] = (sessionVersion.current[key] ?? 0) + 1;
       setEditingState((prev) => {
         const newDrafts = { ...prev.drafts };
         delete newDrafts[key];
@@ -177,7 +199,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         };
       });
     }
-  }, [editingState.editingCell]);
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -224,6 +246,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
   const reset = useCallback(() => {
     originalValues.current = {};
+    sessionVersion.current = {};
     setEditingState({
       editingCell: null,
       drafts: {},
