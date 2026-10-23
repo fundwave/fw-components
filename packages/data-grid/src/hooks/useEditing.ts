@@ -62,10 +62,13 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   // completion must not clobber the newer session's draft/editingCell state.
   const sessionVersion = useRef<Record<string, number>>({});
 
-  // In-flight commit per cell. Enter followed by a blur on the still-mounted editor (or
-  // select's auto-commit overlapping a blur) can call commitEdit twice for the same draft
-  // before the first resolves — return the same promise instead of firing a second save.
-  const pendingCommits = useRef<Record<string, Promise<boolean>>>({});
+  // In-flight commit per cell, tagged with the edit session it belongs to. Enter followed
+  // by a blur on the still-mounted editor (or select's auto-commit overlapping a blur) can
+  // call commitEdit twice for the same draft before the first resolves — dedupe those by
+  // returning the same promise. But if the cell was cancelled/reopened in between (a new
+  // session), a prior session's pending commit must not be handed back as if it covers the
+  // new draft — the version tag lets us tell the two apart.
+  const pendingCommits = useRef<Record<string, { version: number; promise: Promise<boolean> }>>({});
 
   const startEditing = useCallback((rowId: string, columnId: string, currentValue: unknown) => {
     const key = cellKey(rowId, columnId);
@@ -111,13 +114,14 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   const commitEdit = useCallback(
     (rowId: string, columnId: string): Promise<boolean> => {
       const key = cellKey(rowId, columnId);
+      const version = sessionVersion.current[key] ?? 0;
 
+      // Only dedupe against a pending commit from the SAME session — a pending commit
+      // left over from before a cancel/reopen belongs to a draft that no longer exists.
       const pending = pendingCommits.current[key];
-      if (pending) return pending;
+      if (pending && pending.version === version) return pending.promise;
 
       const promise = (async (): Promise<boolean> => {
-        const version = sessionVersion.current[key] ?? 0;
-
         const draftValue = editingStateRef.current.drafts[key];
         const previousValue = originalValues.current[key];
 
@@ -197,9 +201,11 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         }
       })();
 
-      pendingCommits.current[key] = promise;
+      pendingCommits.current[key] = { version, promise };
       promise.finally(() => {
-        if (pendingCommits.current[key] === promise) delete pendingCommits.current[key];
+        // Only clear the entry if it's still ours — a newer session's commit may have
+        // already replaced it, and that one must not be deleted out from under it.
+        if (pendingCommits.current[key]?.promise === promise) delete pendingCommits.current[key];
       });
       return promise;
     },
