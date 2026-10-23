@@ -138,7 +138,9 @@ export const DataRow = <TData,>({
             getValue: () => (formattedValue ?? value) as never,
           });
 
-          const cellWidth = features?.columnResizing ? column.getSize() : columnMeta?.width;
+          // Matches DataGrid's `columnResizing !== false` default (resizing is on unless
+          // explicitly disabled), so sizes stay consistent with the table's layout mode.
+          const cellWidth = features?.columnResizing !== false ? column.getSize() : columnMeta?.width;
 
           // Editing state
           const columnId = column.id;

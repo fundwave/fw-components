@@ -34,7 +34,9 @@ export const HeaderCell = <TData,>({
 
   const canSort = column.getCanSort() && features?.sorting !== false;
   const isSorted = column.getIsSorted();
-  const canResize = column.getCanResize() && features?.columnResizing === true;
+  // Matches DataGrid's `columnResizing !== false` default (resizing is on unless
+  // explicitly disabled) so handles appear whenever the table is actually in fixed layout.
+  const canResize = column.getCanResize() && features?.columnResizing !== false;
 
   const headerContent = flexRender(columnDef.header, header.getContext());
   const pinningStyles = getColumnPinningStyles(column);
