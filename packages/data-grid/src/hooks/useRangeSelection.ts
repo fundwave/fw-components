@@ -116,11 +116,16 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
 
   const updateState = useCallback(
     (updater: (prev: RangeSelectionState) => RangeSelectionState) => {
-      setSelectionState((prev) => {
-        const next = updater(prev);
-        onSelectionChange?.(next);
-        return next;
-      });
+      // Compute against the ref (always current) rather than inside React's setState
+      // updater, which must stay pure — React can replay it in StrictMode, and calling
+      // onSelectionChange there can both duplicate notifications and update parent state
+      // during render.
+      const prev = selectionRef.current;
+      const next = updater(prev);
+      if (next === prev) return;
+      selectionRef.current = next;
+      setSelectionState(next);
+      onSelectionChange?.(next);
     },
     [onSelectionChange]
   );
