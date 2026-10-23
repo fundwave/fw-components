@@ -375,7 +375,12 @@ export const DataGrid = <TData extends object>({
   );
 
   const renderRows = () => {
-    if (virtualizationEnabled && scrollElement) {
+    if (virtualizationEnabled) {
+      // On first mount `scrollElement` is still null (set via effect after mount) — wait
+      // for it instead of falling through to rendering every row, which would mount the
+      // entire dataset once and immediately tear most of it down on the next render.
+      if (!scrollElement) return null;
+
       const paddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
       const paddingBottom =
         virtualRows.length > 0
