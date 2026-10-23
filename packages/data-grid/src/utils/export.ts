@@ -227,11 +227,20 @@ function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
   const rows: string[] = [];
 
   if (includeHeaders) {
-    rows.push(escapeCSVRow(data.headers));
+    rows.push(escapeCSVRow(data.headers.map(sanitizeCSVFormula)));
   }
 
   for (const row of data.rows) {
-    rows.push(escapeCSVRow(row.map((cell) => (cell === null ? "" : String(cell)))));
+    rows.push(
+      escapeCSVRow(
+        row.map((cell) => {
+          if (cell === null) return "";
+          // Only strings can carry an injected formula — numbers/booleans are left as-is
+          // so genuine negative numbers aren't turned into text.
+          return typeof cell === "string" ? sanitizeCSVFormula(cell) : String(cell);
+        })
+      )
+    );
   }
 
   const csv = rows.join("\n");
@@ -250,6 +259,20 @@ function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   }, 100);
+}
+
+// Leading characters that spreadsheet applications treat as the start of a formula.
+const CSV_FORMULA_TRIGGERS = ["=", "+", "-", "@", "\t", "\r"];
+
+/**
+ * Neutralize spreadsheet formula injection (e.g. a cell value of `=1+1`) by prefixing
+ * it with a single quote, which Excel/Sheets render literally instead of evaluating.
+ */
+function sanitizeCSVFormula(value: string): string {
+  if (value.length > 0 && CSV_FORMULA_TRIGGERS.includes(value[0])) {
+    return `'${value}`;
+  }
+  return value;
 }
 
 function escapeCSVRow(values: string[]): string {
