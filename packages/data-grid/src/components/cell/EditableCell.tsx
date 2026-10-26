@@ -3,57 +3,30 @@ import React from "react";
 import type { CellEditType, EditCellRenderProps, SelectOption } from "../../types";
 import { CellEditor } from "./CellEditor";
 
-// ============================================================================
-// EDITABLE CELL WRAPPER
-// ============================================================================
-
 export interface EditableCellProps<TData = unknown> {
-  /** Whether this cell is currently in edit mode */
   isEditing: boolean;
-  /** The current display value */
   displayValue: React.ReactNode;
-  /** The raw cell value for editing */
   rawValue: unknown;
-  /** TanStack row instance, forwarded to custom edit cell renderers */
   row: Row<TData>;
-  /** Row ID */
   rowId: string;
-  /** Column ID */
   columnId: string;
   /** Human-readable column label, used as the editor's accessible name */
   columnLabel?: string;
-  /** Whether the column is editable */
   editable: boolean;
-  /** Editor type */
   editType?: CellEditType;
-  /** Options for select editor */
   editOptions?: SelectOption[];
-  /** Custom edit cell renderer */
   customEditCell?: (props: EditCellRenderProps<TData>) => React.ReactNode;
-  /** Start editing this cell */
   onStartEdit: (rowId: string, columnId: string, currentValue: unknown) => void;
-  /** Update draft value */
   onUpdateDraft: (rowId: string, columnId: string, value: unknown) => void;
-  /** Commit the edit */
   onCommit: (rowId: string, columnId: string) => void;
-  /** Cancel the edit */
   onCancel: () => void;
-  /** Draft value */
   draftValue?: unknown;
-  /** Validation error */
   error?: string | null;
-  /** Whether losing focus should commit the edit (default true) */
   commitOnBlur?: boolean;
-  /** Whether Excel-like range selection is active — a modified click should extend the
-   * range instead of also opening the editor */
+  /** When active, a modified click extends the range instead of opening the editor */
   rangeSelectionEnabled?: boolean;
 }
 
-/**
- * Wraps cell content with editing capabilities.
- * In read mode: shows formatted content with click-to-edit hint.
- * In edit mode: shows the appropriate editor.
- */
 export const EditableCell = <TData,>({
   isEditing,
   displayValue,
@@ -79,12 +52,11 @@ export const EditableCell = <TData,>({
     return <>{displayValue}</>;
   }
 
-  // Fall back to the raw value only when there's no draft at all — a draft of `null`
-  // (e.g. a cleared number/date field) is a real pending value, not a missing one.
+  // Only fall back to rawValue when there's no draft — a draft of `null` (a cleared
+  // field) is a real value, not missing.
   const effectiveValue = draftValue !== undefined ? draftValue : rawValue;
 
   if (isEditing) {
-    // Custom edit renderer takes priority
     if (customEditCell) {
       return (
         <>
@@ -116,14 +88,12 @@ export const EditableCell = <TData,>({
     );
   }
 
-  // Read mode: show display value with subtle edit affordance
   return (
     <div
       className="cursor-pointer hover:bg-blue-50/60 rounded px-1 -mx-1 min-h-[1.5rem] flex items-center w-full group"
       onClick={(e) => {
-        // A modified click under active range selection is extending/adding to the
-        // range (handled by the cell's mousedown handler) — opening the editor on top
-        // of it would steal keyboard input from the range-selection gesture.
+        // A modified click here is extending the range (handled by mousedown) — opening
+        // the editor too would steal its keyboard input.
         if (rangeSelectionEnabled && (e.shiftKey || e.ctrlKey || e.metaKey)) return;
         e.stopPropagation();
         onStartEdit(rowId, columnId, rawValue);

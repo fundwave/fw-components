@@ -6,9 +6,6 @@ export interface ExpandToggleProps {
   disabled?: boolean;
 }
 
-/**
- * Toggle button for expanding/collapsing rows
- */
 export const ExpandToggle: React.FC<ExpandToggleProps> = ({ isExpanded, onClick, disabled = false }) => {
   const handleKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
     if (disabled) return;

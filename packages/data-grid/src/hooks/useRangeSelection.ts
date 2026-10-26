@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 export interface CellPosition {
   rowIndex: number;
   columnIndex: number;
@@ -15,61 +11,35 @@ export interface CellRange {
 }
 
 export interface RangeSelectionState {
-  /** Currently active/focused cell */
   activeCell: CellPosition | null;
-  /** Selected ranges (supports multi-range with Ctrl) */
   ranges: CellRange[];
-  /** Whether user is currently dragging/extending a selection */
   isSelecting: boolean;
 }
 
 export interface UseRangeSelectionOptions {
-  /** Total row count */
   rowCount: number;
-  /** Total column count */
   columnCount: number;
-  /** Columns to skip during selection (e.g., checkbox column) */
   skipColumns?: number[];
-  /** Called when selection changes */
   onSelectionChange?: (state: RangeSelectionState) => void;
 }
 
 export interface UseRangeSelectionReturn {
-  /** Current selection state */
   selectionState: RangeSelectionState;
-  /** Handle cell mouse down (start selection) */
   handleCellMouseDown: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
-  /** Handle cell mouse enter (extend selection while dragging) */
   handleCellMouseEnter: (rowIndex: number, columnIndex: number) => void;
-  /** Handle mouse up (end selection) */
   handleMouseUp: () => void;
-  /** Handle keyboard navigation and selection */
   handleKeyDown: (event: React.KeyboardEvent) => void;
-  /** Check if a cell is within any selected range */
   isCellSelected: (rowIndex: number, columnIndex: number) => boolean;
-  /** Check if an entire row is selected */
   isRowSelected: (rowIndex: number) => boolean;
-  /** Check if an entire column is selected */
   isColumnSelected: (columnIndex: number) => boolean;
-  /** Check if a cell is the active (focused) cell */
   isActiveCell: (rowIndex: number, columnIndex: number) => boolean;
-  /** Select all cells */
   selectAll: () => void;
-  /** Clear all selection */
   clearSelection: () => void;
-  /** Select an entire row */
   selectRow: (rowIndex: number, extend?: boolean) => void;
-  /** Select an entire column */
   selectColumn: (columnIndex: number, extend?: boolean) => void;
-  /** Get all selected cell positions */
   getSelectedCells: () => CellPosition[];
-  /** Get the bounding rectangle of the selection */
   getSelectionBounds: () => { minRow: number; maxRow: number; minCol: number; maxCol: number } | null;
 }
-
-// ============================================================================
-// HELPERS
-// ============================================================================
 
 function normalizRange(range: CellRange): { minRow: number; maxRow: number; minCol: number; maxCol: number } {
   return {
@@ -85,23 +55,6 @@ function isCellInRange(rowIndex: number, columnIndex: number, range: CellRange):
   return rowIndex >= minRow && rowIndex <= maxRow && columnIndex >= minCol && columnIndex <= maxCol;
 }
 
-// ============================================================================
-// HOOK
-// ============================================================================
-
-/**
- * Hook for Excel-like range selection.
- *
- * Supports:
- * - Click to select a single cell
- * - Shift+Click to extend selection from active cell
- * - Ctrl/Cmd+Click to add a new range (multi-select)
- * - Click+Drag to select a range
- * - Shift+Arrow keys to extend selection
- * - Ctrl+A to select all
- * - Row header click to select entire row
- * - Column header click to select entire column
- */
 export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSelectionReturn {
   const { rowCount, columnCount, skipColumns = [], onSelectionChange } = options;
 
@@ -116,10 +69,8 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
 
   const updateState = useCallback(
     (updater: (prev: RangeSelectionState) => RangeSelectionState) => {
-      // Compute against the ref (always current) rather than inside React's setState
-      // updater, which must stay pure — React can replay it in StrictMode, and calling
-      // onSelectionChange there can both duplicate notifications and update parent state
-      // during render.
+      // Computed against the ref, not inside the setState updater (must stay pure) —
+      // StrictMode replays it, which would duplicate onSelectionChange calls.
       const prev = selectionRef.current;
       const next = updater(prev);
       if (next === prev) return;
@@ -130,7 +81,6 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
     [onSelectionChange]
   );
 
-  // Clamp position within grid bounds
   const clamp = useCallback(
     (pos: CellPosition): CellPosition => ({
       rowIndex: Math.max(0, Math.min(pos.rowIndex, rowCount - 1)),
@@ -150,17 +100,12 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
     [columnCount, skipColumns]
   );
 
-  // ============================================================================
-  // MOUSE HANDLERS
-  // ============================================================================
-
   const handleCellMouseDown = useCallback(
     (rowIndex: number, columnIndex: number, event: React.MouseEvent) => {
       const isShift = event.shiftKey;
       const isCtrlOrMeta = event.ctrlKey || event.metaKey;
 
       if (isShift && selectionRef.current.activeCell) {
-        // Extend selection from active cell to clicked cell
         updateState((prev) => ({
           ...prev,
           ranges: [
@@ -170,14 +115,12 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
           isSelecting: true,
         }));
       } else if (isCtrlOrMeta) {
-        // Add new range (multi-select)
         updateState((prev) => ({
           activeCell: { rowIndex, columnIndex },
           ranges: [...prev.ranges, { start: { rowIndex, columnIndex }, end: { rowIndex, columnIndex } }],
           isSelecting: true,
         }));
       } else {
-        // New single selection
         updateState(() => ({
           activeCell: { rowIndex, columnIndex },
           ranges: [{ start: { rowIndex, columnIndex }, end: { rowIndex, columnIndex } }],
@@ -211,18 +154,13 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
     updateState((prev) => (prev.isSelecting ? { ...prev, isSelecting: false } : prev));
   }, [updateState]);
 
-  // A drag that ends outside the grid only fires `mouseup` on the document, not on the
-  // grid wrapper. Without this, releasing the mouse there leaves `isSelecting` stuck true,
-  // so moving back over cells keeps extending the range with no button pressed.
+  // A drag ending outside the grid only fires `mouseup` on the document — without this,
+  // `isSelecting` stays stuck true.
   useEffect(() => {
     if (!selectionState.isSelecting) return;
     document.addEventListener("mouseup", handleMouseUp);
     return () => document.removeEventListener("mouseup", handleMouseUp);
   }, [selectionState.isSelecting, handleMouseUp]);
-
-  // ============================================================================
-  // KEYBOARD HANDLER
-  // ============================================================================
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent) => {
@@ -232,7 +170,6 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
       const isShift = event.shiftKey;
       const isCtrlOrMeta = event.ctrlKey || event.metaKey;
 
-      // Ctrl+A: Select all
       if (isCtrlOrMeta && event.key === "a") {
         event.preventDefault();
         updateState((prev) => ({
@@ -242,16 +179,14 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
         return;
       }
 
-      // Tab is left to native browser focus traversal: cells aren't individually
-      // focusable here, so intercepting it would trap focus inside the grid with no
-      // way to tab out.
+      // Tab is left to native focus traversal — cells aren't individually focusable,
+      // so intercepting it would trap focus here.
       if (event.key === "Tab") return;
 
       const lastRange = ranges[ranges.length - 1];
       const isExtending = isShift && !!lastRange;
-      // When extending a selection, each arrow press should move from the current range
-      // endpoint (not always from the anchor) so repeated presses keep growing/shrinking
-      // the range instead of recomputing the same one-cell-from-anchor endpoint each time.
+      // Extending moves from the range's current endpoint, not the anchor, so repeated
+      // presses keep growing the range instead of resetting it.
       const movingFrom = isExtending ? lastRange.end : activeCell;
 
       let newActive: CellPosition | null = null;
@@ -296,7 +231,6 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
       if (!newActive) return;
 
       if (isShift) {
-        // Extend selection, keeping the original active cell as the anchor.
         updateState((prev) => {
           const prevLastRange = prev.ranges[prev.ranges.length - 1];
           if (!prevLastRange) {
@@ -315,7 +249,6 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
           };
         });
       } else {
-        // Move active cell (new single selection)
         updateState(() => ({
           activeCell: newActive!,
           ranges: [{ start: newActive!, end: newActive! }],
@@ -325,10 +258,6 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
     },
     [updateState, clamp, getNextColumn, rowCount, columnCount]
   );
-
-  // ============================================================================
-  // QUERY METHODS
-  // ============================================================================
 
   const isCellSelected = useCallback(
     (rowIndex: number, columnIndex: number): boolean => {

@@ -25,29 +25,6 @@ import { GridEmptyState } from "./states/GridEmptyState";
 import { GridErrorState } from "./states/GridErrorState";
 import { GridSkeleton } from "./states/GridSkeleton";
 
-/**
- * A high-performance, editable data grid built on TanStack Table with built-in virtualization.
- *
- * Features:
- * - Row virtualization for rendering thousands of rows efficiently
- * - Cell-level and bulk editing
- * - Column sorting, pinning, and resizing
- * - Global text search/filter
- * - Row expansion for hierarchical data
- * - Row selection with checkboxes
- * - Fully controlled or uncontrolled state
- *
- * @example
- * ```tsx
- * <DataGrid
- *   data={assets}
- *   columns={columns}
- *   getRowId={(row) => row.id}
- *   features={{ editing: true, rowSelection: true, virtualization: true }}
- *   onCellEdit={({ rowId, columnId, value }) => updateAsset(rowId, columnId, value)}
- * />
- * ```
- */
 export const DataGrid = <TData extends object>({
   columns: userColumns = [],
   data = [],
@@ -81,10 +58,6 @@ export const DataGrid = <TData extends object>({
   emptyState,
   errorMessage,
 }: DataGridProps<TData>) => {
-  // ============================================================================
-  // CONFIGURATION
-  // ============================================================================
-
   const globalFilteringEnabled = features.globalFilter !== false;
   const manualFiltering = typeof features.globalFilter === "object" && features.globalFilter.manual === true;
   const sortingEnabled = features.sorting !== false;
@@ -95,8 +68,8 @@ export const DataGrid = <TData extends object>({
   const columnPinningEnabled = features.columnPinning !== false;
   const virtualizationEnabled = features.virtualization !== false;
 
-  // Row selection config — an object config's `enabled` flag is the source of truth, so
-  // `{ enabled: false }` actually turns the feature off instead of being treated as truthy.
+  // An object config's `enabled` flag is authoritative — `{ enabled: false }` turns the
+  // feature off, not truthy-on.
   const rowSelectionConfig: RowSelectionConfig =
     typeof features.rowSelection === "object"
       ? features.rowSelection
@@ -110,12 +83,7 @@ export const DataGrid = <TData extends object>({
   const editingEnabled = editingConfig.enabled;
   const commitOnBlur = editingConfig.commitOnBlur !== false;
 
-  // Range selection config
   const rangeSelectionEnabled = features.rangeSelection === true;
-
-  // ============================================================================
-  // STATE MANAGEMENT
-  // ============================================================================
 
   const {
     globalFilter,
@@ -132,8 +100,8 @@ export const DataGrid = <TData extends object>({
     setRowSelection,
   } = useDataGridState({ state, onStateChange, initialState });
 
-  // Merge the selection column's configured pinning side into the committed pinning state,
-  // since pinning is purely state-driven in TanStack (there's no per-column-def pin field).
+  // Pinning is purely state-driven in TanStack (no per-column-def pin field), so the
+  // selection column's pin side is merged into state here.
   const effectiveColumnPinning: ColumnPinningState = useMemo(() => {
     if (!rowSelectionEnabled || !rowSelectionConfig.pinned) return columnPinning;
     const side = rowSelectionConfig.pinned;
@@ -144,10 +112,6 @@ export const DataGrid = <TData extends object>({
       [otherSide]: (columnPinning[otherSide] ?? []).filter((id) => id !== "__selection"),
     };
   }, [columnPinning, rowSelectionEnabled, rowSelectionConfig.pinned]);
-
-  // ============================================================================
-  // COLUMNS (with selection column prepended if enabled)
-  // ============================================================================
 
   const columns = useMemo(() => {
     const cols = [...userColumns] as ColumnDef<TData, unknown>[];
@@ -193,10 +157,6 @@ export const DataGrid = <TData extends object>({
     return cols;
   }, [userColumns, rowSelectionEnabled, rowSelectionConfig]);
 
-  // ============================================================================
-  // TABLE SETUP
-  // ============================================================================
-
   const indexedData = useMemo(() => buildSearchIndex(data), [data]);
 
   const table = useReactTable({
@@ -207,12 +167,11 @@ export const DataGrid = <TData extends object>({
       : (row: TData, index: number, parent?: Row<TData>) => {
           if ("id" in row && typeof row.id === "string") return row.id;
           // Index alone collides across sibling groups (root row 0 and its first child
-          // both land on "0"); prefix with the parent's id to keep subrow ids unique.
+          // both land on "0") — prefix with the parent id.
           return parent ? `${parent.id}.${index}` : String(index);
         },
     getCoreRowModel: getCoreRowModel(),
 
-    // Global Filtering
     globalFilterFn:
       globalFilterConfig.globalFilterFn ||
       (expandingEnabled ? (treeAwareGlobalFilterFn as FilterFn<TData>) : "includesString"),
@@ -220,13 +179,11 @@ export const DataGrid = <TData extends object>({
     manualFiltering,
     filterFromLeafRows: true,
 
-    // Sorting
     getSortedRowModel: sortingEnabled ? getSortedRowModel() : undefined,
     enableSorting: sortingEnabled,
     enableMultiSort: multiSort,
     manualSorting,
 
-    // Expanding
     getExpandedRowModel: expandingEnabled ? getExpandedRowModel() : undefined,
     getSubRows: expandConfig?.getSubRows
       ? expandConfig.getSubRows
@@ -234,15 +191,12 @@ export const DataGrid = <TData extends object>({
     getRowCanExpand: (row) => row.subRows?.length > 0 || !!expandConfig?.renderSubContent,
     enableExpanding: expandingEnabled,
 
-    // Row Selection
     enableRowSelection: rowSelectionEnabled && isRowSelectable ? (row) => isRowSelectable(row.original) : rowSelectionEnabled,
 
-    // Column Features
     enableColumnResizing: columnResizingEnabled,
     columnResizeMode: "onChange",
     enablePinning: columnPinningEnabled,
 
-    // State
     initialState,
     state: {
       ...state,
@@ -262,25 +216,19 @@ export const DataGrid = <TData extends object>({
     onRowSelectionChange: setRowSelection,
   });
 
-  // Expose table instance
   useEffect(() => {
     if (onTableReady) onTableReady(table);
   }, [table, onTableReady]);
 
-  // ============================================================================
-  // EDITING
-  // ============================================================================
-
   const editing = useEditing({
     onCellEdit: editingEnabled
       ? async (rowId, columnId, value, previousValue) => {
-          // table.getRow (not a manual data.find re-implementation) resolves the same
-          // identities and hierarchy the grid itself uses, including custom getRowId
-          // and nested rows.
+          // table.getRow resolves the same identities/hierarchy the grid uses (custom
+          // getRowId, nested rows) instead of re-implementing a lookup.
           const row = table.getRow(rowId, true).original as TData;
           await onCellEdit?.({ rowId, columnId, value, previousValue, row });
-          // Reported only after the save succeeds — a rejected save shouldn't be tracked
-          // as a successful edit interaction.
+          // Reported only after the save succeeds, so a rejected save isn't tracked as
+          // successful.
           onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
         }
       : undefined,
@@ -298,10 +246,6 @@ export const DataGrid = <TData extends object>({
         }
       : undefined,
   });
-
-  // ============================================================================
-  // VIRTUALIZATION
-  // ============================================================================
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
   const [scrollElement, setScrollElement] = useState<HTMLDivElement | null>(null);
@@ -324,10 +268,6 @@ export const DataGrid = <TData extends object>({
 
   const virtualRows = rowVirtualizer.getVirtualItems();
 
-  // ============================================================================
-  // RANGE SELECTION (integrated)
-  // ============================================================================
-
   const visibleLeafColumns = table.getVisibleLeafColumns();
   const selectionColumnIndex = rowSelectionEnabled
     ? visibleLeafColumns.findIndex((col) => col.id === "__selection")
@@ -338,10 +278,6 @@ export const DataGrid = <TData extends object>({
     columnCount: visibleLeafColumns.length,
     skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
   });
-
-  // ============================================================================
-  // RENDER HELPERS
-  // ============================================================================
 
   const renderRow = (
     row: Row<TData>,
@@ -381,9 +317,8 @@ export const DataGrid = <TData extends object>({
 
   const renderRows = () => {
     if (virtualizationEnabled) {
-      // On first mount `scrollElement` is still null (set via effect after mount) — wait
-      // for it instead of falling through to rendering every row, which would mount the
-      // entire dataset once and immediately tear most of it down on the next render.
+      // `scrollElement` is null until mount's effect runs — wait for it, or every row
+      // mounts once then immediately tears down.
       if (!scrollElement) return null;
 
       const paddingTop = virtualRows.length > 0 ? virtualRows[0].start : 0;
@@ -415,10 +350,6 @@ export const DataGrid = <TData extends object>({
     return rows.map((row, index) => renderRow(row, undefined, index));
   };
 
-  // ============================================================================
-  // RENDER
-  // ============================================================================
-
   const hasData = data.length > 0;
   const isSearchEmpty =
     globalFilteringEnabled && !!globalFilter && table.getRowModel().rows.length === 0;
@@ -433,14 +364,12 @@ export const DataGrid = <TData extends object>({
       onKeyDown={rangeSelectionEnabled ? rangeSelection.handleKeyDown : undefined}
       onMouseUp={rangeSelectionEnabled ? rangeSelection.handleMouseUp : undefined}
     >
-      {/* Loading progress bar */}
       {isLoading && (
         <div className="w-full h-1 bg-gray-100 overflow-hidden">
           <div className="h-full bg-blue-500 animate-pulse w-1/3" />
         </div>
       )}
 
-      {/* Table container with scroll */}
       <div
         ref={tableContainerRef}
         className={cn("overflow-auto", tableContainerClassName)}

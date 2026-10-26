@@ -9,10 +9,6 @@ export interface SelectionCheckboxProps {
   disabled?: boolean;
 }
 
-/**
- * Checkbox component for row selection.
- * Supports indeterminate state for "select all" header checkbox.
- */
 export const SelectionCheckbox: React.FC<SelectionCheckboxProps> = ({
   checked,
   indeterminate = false,

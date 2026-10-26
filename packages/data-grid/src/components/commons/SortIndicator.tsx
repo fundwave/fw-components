@@ -6,9 +6,6 @@ export interface SortIndicatorProps {
   isHovered: boolean;
 }
 
-/**
- * Visual sort direction indicator (arrow up/down)
- */
 export const SortIndicator: React.FC<SortIndicatorProps> = ({ isSorted, isHovered }) => {
   const arrowUp = (
     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>

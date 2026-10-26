@@ -8,9 +8,6 @@ export interface GridSkeletonProps {
   showExpand?: boolean;
 }
 
-/**
- * Skeleton loading state with animated placeholders.
- */
 export const GridSkeleton: React.FC<GridSkeletonProps> = ({ columns, rowCount = 5, showExpand = false }) => {
   return (
     <>

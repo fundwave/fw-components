@@ -16,7 +16,6 @@ export interface DataRowProps<TData> {
   showExpandToggle?: (row: TData) => boolean;
   dataIndex?: number;
   onInteraction?: OnInteractionCallback;
-  // Editing props
   editingEnabled?: boolean;
   isRowEditable?: (row: TData) => boolean;
   isEditingCell?: (rowId: string, columnId: string) => boolean;
@@ -27,26 +26,16 @@ export interface DataRowProps<TData> {
   onCommitEdit?: (rowId: string, columnId: string) => void;
   onCancelEdit?: () => void;
   commitOnBlur?: boolean;
-  // Range selection props
   rangeSelectionEnabled?: boolean;
   onCellMouseDown?: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
   onCellMouseEnter?: (rowIndex: number, columnIndex: number) => void;
   isCellSelected?: (rowIndex: number, columnIndex: number) => boolean;
   isActiveCell?: (rowIndex: number, columnIndex: number) => boolean;
-  /** The row's visual index in the displayed list (for range selection) */
   rowVisualIndex?: number;
-  /** Ref callback to report this row's measured height to the virtualizer */
+  /** Reports this row's measured height to the virtualizer */
   measureRef?: (el: HTMLTableRowElement | null) => void;
 }
 
-/**
- * A single data row in the grid. Handles:
- * - Nested/hierarchical rendering with expand toggle
- * - Column pinning
- * - Cell formatting
- * - Editable cells
- * - Row click interactions
- */
 export const DataRow = <TData,>({
   row,
   features,
@@ -92,7 +81,6 @@ export const DataRow = <TData,>({
 
   const handleRowClick = (event: React.KeyboardEvent<HTMLTableRowElement> | React.MouseEvent<HTMLTableRowElement>) => {
     if (!onRowClick) return;
-    // Don't handle clicks that originated from interactive elements (checkbox, button, input)
     const target = event.target as HTMLElement;
     if (target.tagName === "INPUT" || target.tagName === "BUTTON" || target.closest("input, button, [role=\"button\"]")) {
       return;
@@ -118,10 +106,8 @@ export const DataRow = <TData,>({
         className={rowClasses}
         onClick={handleRowClick}
         onKeyDown={handleRowClick}
-        // Deliberately no role="button" override here — a <tr> already carries the
-        // "row" role the grid relies on for navigation, and replacing it strips the
-        // row/cell relationships assistive tech needs. The click/keydown handlers above
-        // still make the row actionable without changing its semantics.
+        // No role="button" override — a <tr>'s native "row" role is needed for the
+        // grid's row/cell semantics; the handlers above still make it actionable.
         tabIndex={onRowClick ? 0 : undefined}
         data-index={dataIndex}
         data-row-id={row.id}
@@ -144,10 +130,9 @@ export const DataRow = <TData,>({
                 : undefined
           ) as ReactNode;
 
-          // TanStack's default cell renderer (used when `columnDef.cell` is omitted) reads
-          // `renderValue()`, which is bound to the cell's real, unformatted value — not the
-          // `getValue` override below. So the default renderer needs the formatted content
-          // supplied directly; only an explicit `cell` renderer benefits from the override.
+          // TanStack's default renderer (no `columnDef.cell`) reads `renderValue()`, bound
+          // to the real unformatted value, not the `getValue` override below — so it needs
+          // the formatted content supplied directly.
           const defaultCellContent: ReactNode =
             formattedValue !== undefined
               ? formattedValue
@@ -164,18 +149,16 @@ export const DataRow = <TData,>({
               })
             : defaultCellContent;
 
-          // Matches DataGrid's `columnResizing !== false` default (resizing is on unless
-          // explicitly disabled), so sizes stay consistent with the table's layout mode.
+          // Matches DataGrid's `columnResizing !== false` default so sizes stay
+          // consistent with the table's layout mode.
           const cellWidth = features?.columnResizing !== false ? column.getSize() : columnMeta?.width;
 
-          // Editing state
           const columnId = column.id;
           const columnLabel = typeof columnDef.header === "string" ? columnDef.header : undefined;
           const rowId = row.id;
           const isEditable = editingEnabled && columnMeta?.editable === true && (!isRowEditable || isRowEditable(row.original));
           const isCellEditing = isEditable && isEditingCell?.(rowId, columnId);
 
-          // Range selection state
           const cellSelected = rangeSelectionEnabled && rowVisualIndex !== undefined
             ? isCellSelected?.(rowVisualIndex, cellIndex)
             : false;
@@ -257,7 +240,7 @@ export const DataRow = <TData,>({
   );
 };
 
-// Type helper for EditableCell props extraction
+// Named the same as the imported component to extract its generic props type.
 type EditableCell<TData> = {
   props: {
     customEditCell?: (props: import("../../types").EditCellRenderProps<TData>) => ReactNode;

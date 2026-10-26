@@ -2,14 +2,9 @@ import React from "react";
 import type { SelectOption } from "../../types";
 import { cn } from "../../utils/styling";
 
-// ============================================================================
-// HELPERS
-// ============================================================================
-
 /**
- * Normalize a value into the `YYYY-MM-DD` calendar date an `<input type="date">` expects.
- * `String(dateInstance)` produces a full human-readable timestamp, not an ISO date, so a
- * `Date` value needs its own local calendar fields rather than a blind string split.
+ * Normalizes a value to the `YYYY-MM-DD` an `<input type="date">` expects.
+ * `String(dateInstance)` isn't ISO, so a `Date` needs its own local calendar fields.
  */
 function toDateInputValue(value: unknown): string {
   if (!value) return "";
@@ -23,10 +18,6 @@ function toDateInputValue(value: unknown): string {
   return String(value).split("T")[0];
 }
 
-// ============================================================================
-// CELL EDITOR TYPES
-// ============================================================================
-
 export interface CellEditorProps {
   type: "text" | "number" | "date" | "select" | "boolean";
   value: unknown;
@@ -36,20 +27,11 @@ export interface CellEditorProps {
   onCancel: () => void;
   error?: string | null;
   autoFocus?: boolean;
-  /** Whether losing focus should commit the edit (default true) */
   commitOnBlur?: boolean;
   /** Accessible name for the input, since it replaces the read-mode cell's own label */
   label?: string;
 }
 
-// ============================================================================
-// CELL EDITOR COMPONENT
-// ============================================================================
-
-/**
- * Built-in cell editor that renders the appropriate input type.
- * Handles keyboard interactions (Enter to commit, Escape to cancel).
- */
 export const CellEditor: React.FC<CellEditorProps> = ({
   type,
   value,
@@ -72,7 +54,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
       e.preventDefault();
       onCancel();
     }
-    // Stop propagation to prevent row-level handlers
+    // Prevent the row's own click handler from also firing.
     e.stopPropagation();
   };
 
@@ -151,12 +133,11 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             className={cn(baseInputClass, "appearance-none cursor-pointer pr-7")}
             value={String(value ?? "")}
             onChange={(e) => {
-              // The DOM always reports a string; resolve back to the option's declared
-              // value so a numeric `SelectOption.value` doesn't silently turn into a string.
+              // The DOM always reports a string — resolve back to the option's value so
+              // a numeric `SelectOption.value` stays numeric.
               const raw = e.target.value;
               const matched = options.find((opt) => String(opt.value) === raw);
               onChange(matched ? matched.value : raw);
-              // Auto-commit for select
               setTimeout(onCommit, 0);
             }}
             onKeyDown={handleKeyDown}
@@ -191,7 +172,6 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               checked={Boolean(value)}
               onChange={(e) => {
                 onChange(e.target.checked);
-                // Auto-commit for boolean
                 setTimeout(onCommit, 0);
               }}
               onKeyDown={handleKeyDown}

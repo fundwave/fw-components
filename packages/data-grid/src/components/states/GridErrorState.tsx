@@ -5,9 +5,6 @@ export interface GridErrorStateProps {
   columnCount: number;
 }
 
-/**
- * Error state shown when the grid encounters an error.
- */
 export const GridErrorState: React.FC<GridErrorStateProps> = ({ error, columnCount }) => (
   <tr>
     <td colSpan={columnCount} className="h-32 text-center">

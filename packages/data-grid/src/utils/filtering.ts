@@ -1,12 +1,5 @@
 import type { Row } from "@tanstack/react-table";
 
-// ============================================================================
-// TEXT NORMALIZATION
-// ============================================================================
-
-/**
- * Normalize a string for fuzzy search: lowercase, remove accents, normalize whitespace
- */
 export const normalize = (str: string): string =>
   str
     .toLowerCase()
@@ -16,14 +9,6 @@ export const normalize = (str: string): string =>
     .replace(/\s+/g, " ")
     .trim();
 
-// ============================================================================
-// SEARCH INDEX
-// ============================================================================
-
-/**
- * Pre-builds a search index for each row by concatenating all primitive values.
- * Attaches `__searchTerm` to each row for fast global filter matching.
- */
 export function buildSearchIndex<T>(
   rows: T[]
 ): (T & { __searchTerm: string })[] {
@@ -44,10 +29,6 @@ export function buildSearchIndex<T>(
   });
 }
 
-// ============================================================================
-// GLOBAL FILTER FUNCTIONS
-// ============================================================================
-
 function getRowValues<TData>(row: Row<TData>): string {
   return row
     .getAllCells()
@@ -56,10 +37,6 @@ function getRowValues<TData>(row: Row<TData>): string {
     .toLowerCase();
 }
 
-/**
- * A tree-aware global filter that matches rows, their parents, and their children.
- * Works with the pre-built search index for performance.
- */
 export function treeAwareGlobalFilterFn<TData>(
   row: Row<TData & { __searchTerm?: string }>,
   _columnId: string,
@@ -69,11 +46,9 @@ export function treeAwareGlobalFilterFn<TData>(
 
   const query = normalize(String(filterValue));
 
-  // Self match
   const rowValues = row.original.__searchTerm || getRowValues(row);
   if (rowValues.includes(query)) return true;
 
-  // Parent match (show children when parent matches)
   let parent = row.getParentRow();
   while (parent) {
     const parentValues = (parent.original as { __searchTerm?: string }).__searchTerm || getRowValues(parent);

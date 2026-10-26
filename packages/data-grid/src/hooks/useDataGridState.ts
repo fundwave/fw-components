@@ -15,10 +15,6 @@ interface UseDataGridStateProps {
   initialState?: Partial<TableState>;
 }
 
-/**
- * Central state management hook for the DataGrid.
- * Manages all table-level state with controlled/uncontrolled support.
- */
 export const useDataGridState = ({ state, onStateChange, initialState }: UseDataGridStateProps) => {
   const [globalFilter, setGlobalFilter] = useControlledState<unknown>(
     state?.globalFilter,

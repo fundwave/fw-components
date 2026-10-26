@@ -2,41 +2,28 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import type { EditingState } from "../types";
 
 interface UseEditingOptions {
-  /** Called when a cell edit is committed */
   onCellEdit?: (rowId: string, columnId: string, value: unknown, previousValue: unknown) => void | Promise<void>;
-  /** Validate before committing */
   validateCell?: (value: unknown, rowId: string, columnId: string) => string | null | Promise<string | null>;
 }
 
 interface UseEditingReturn {
-  /** Current editing state */
   editingState: EditingState;
-  /** Start editing a specific cell */
   startEditing: (rowId: string, columnId: string, currentValue: unknown) => void;
-  /** Update the draft value for the currently editing cell */
   updateDraft: (rowId: string, columnId: string, value: unknown) => void;
-  /** Commit the current edit */
   commitEdit: (rowId: string, columnId: string) => Promise<boolean>;
-  /** Cancel the current edit */
   cancelEdit: () => void;
-  /** Check if a cell is currently being edited */
   isEditing: (rowId: string, columnId: string) => boolean;
-  /** Get the draft value for a cell */
   getDraft: (rowId: string, columnId: string) => unknown | undefined;
-  /** Get validation error for a cell */
   getError: (rowId: string, columnId: string) => string | undefined;
-  /** Check if a cell has uncommitted changes */
   isDirty: (rowId: string, columnId: string) => boolean;
-  /** Clear all editing state */
   reset: () => void;
 }
 
 const cellKey = (rowId: string, columnId: string) => `${rowId}:${columnId}`;
 
 /**
- * Hook for managing cell editing state.
- * Stores draft values independently of the cell component lifecycle,
- * so virtualized rows can unmount without losing edits.
+ * Stores drafts outside the cell lifecycle so virtualized rows can unmount without
+ * losing edits.
  */
 export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   const { onCellEdit, validateCell } = options;
@@ -48,26 +35,19 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
     dirtyCells: new Set(),
   });
 
-  // Store the original values for dirty comparison
   const originalValues = useRef<Record<string, unknown>>({});
 
-  // Mirrors `editingState` synchronously (updated inside the setState updater itself,
-  // not just after render) so a commit that runs immediately after updateDraft/startEditing
-  // in the same tick always reads the latest draft instead of a stale pre-render value.
+  // Mirrors `editingState` synchronously (set inside the updater itself) so a same-tick
+  // commit after updateDraft/startEditing reads the latest draft, not a stale one.
   const editingStateRef = useRef(editingState);
 
-  // Per-cell edit-session counter. An in-flight async commit captures the version for its
-  // cell at the start; if a newer session for that same cell has begun by the time it
-  // resolves (the user reopened it, or started editing another cell), the commit's
-  // completion must not clobber the newer session's draft/editingCell state.
+  // Per-cell session counter — an in-flight commit captures its version at start, and
+  // must not clobber a newer session's state if one began before it resolves.
   const sessionVersion = useRef<Record<string, number>>({});
 
-  // In-flight commit per cell, tagged with the edit session it belongs to. Enter followed
-  // by a blur on the still-mounted editor (or select's auto-commit overlapping a blur) can
-  // call commitEdit twice for the same draft before the first resolves — dedupe those by
-  // returning the same promise. But if the cell was cancelled/reopened in between (a new
-  // session), a prior session's pending commit must not be handed back as if it covers the
-  // new draft — the version tag lets us tell the two apart.
+  // In-flight commit per cell, tagged by session. Enter+blur (or select's auto-commit
+  // overlapping a blur) can call commitEdit twice before the first resolves — dedupe via
+  // the same promise, unless a cancel/reopen started a new session in between.
   const pendingCommits = useRef<Record<string, { version: number; promise: Promise<boolean> }>>({});
 
   const startEditing = useCallback((rowId: string, columnId: string, currentValue: unknown) => {
@@ -103,9 +83,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         dirtyCells: newDirtyCells,
         errors: { ...prev.errors, [key]: "" },
       };
-      // Sync the ref immediately so a commit called right after this (e.g. the
-      // `onChange(newValue); onCommit();` pattern) reads the new draft instead of a
-      // stale pre-render value.
+      // Syncs the ref immediately so a commit called right after (`onChange(v);
+      // onCommit();`) reads the new draft, not a stale one.
       editingStateRef.current = next;
       return next;
     });
@@ -116,8 +95,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
       const key = cellKey(rowId, columnId);
       const version = sessionVersion.current[key] ?? 0;
 
-      // Only dedupe against a pending commit from the SAME session — a pending commit
-      // left over from before a cancel/reopen belongs to a draft that no longer exists.
+      // Only dedupe against a pending commit from the same session — an older one
+      // belongs to a draft that no longer exists.
       const pending = pendingCommits.current[key];
       if (pending && pending.version === version) return pending.promise;
 
@@ -125,7 +104,6 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         const draftValue = editingStateRef.current.drafts[key];
         const previousValue = originalValues.current[key];
 
-        // Skip if unchanged
         if (draftValue === previousValue) {
           setEditingState((prev) => {
             if (prev.editingCell?.rowId !== rowId || prev.editingCell?.columnId !== columnId) return prev;
@@ -136,7 +114,6 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
           return true;
         }
 
-        // Validate
         if (validateCell) {
           let error: string | null;
           try {
@@ -144,8 +121,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
           } catch {
             error = "Validation failed";
           }
-          // A newer session for this cell started while validation was in flight — bail out
-          // without touching state that no longer belongs to this commit.
+          // Bail out if a newer session started while validation was in flight — this
+          // commit no longer owns the state.
           if (sessionVersion.current[key] !== version) return false;
           if (error) {
             setEditingState((prev) => {
@@ -157,13 +134,11 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
           }
         }
 
-        // Commit
         try {
           await onCellEdit?.(rowId, columnId, draftValue, previousValue);
 
           if (sessionVersion.current[key] !== version) return true;
 
-          // Clear editing state for this cell
           setEditingState((prev) => {
             const newDrafts = { ...prev.drafts };
             delete newDrafts[key];
@@ -175,8 +150,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
             const next: EditingState = {
               ...prev,
-              // Only close the editor if this cell is still the active one — an older
-              // commit resolving after the user moved to another cell must not close it.
+              // Only close the editor if this cell is still active — an older commit
+              // resolving later must not close a different one.
               editingCell:
                 prev.editingCell?.rowId === rowId && prev.editingCell?.columnId === columnId
                   ? null
@@ -203,8 +178,8 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
       pendingCommits.current[key] = { version, promise };
       promise.finally(() => {
-        // Only clear the entry if it's still ours — a newer session's commit may have
-        // already replaced it, and that one must not be deleted out from under it.
+        // Only clear if it's still ours — a newer session's commit may have already
+        // replaced it.
         if (pendingCommits.current[key]?.promise === promise) delete pendingCommits.current[key];
       });
       return promise;
@@ -216,8 +191,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
     const editingCell = editingStateRef.current.editingCell;
     if (editingCell) {
       const key = cellKey(editingCell.rowId, editingCell.columnId);
-      // Invalidate any in-flight commit for this cell so it can't resurrect the
-      // cancelled draft after the fact.
+      // Invalidates any in-flight commit so it can't resurrect the cancelled draft later.
       sessionVersion.current[key] = (sessionVersion.current[key] ?? 0) + 1;
       setEditingState((prev) => {
         const newDrafts = { ...prev.drafts };

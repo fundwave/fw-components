@@ -15,9 +15,6 @@ export interface HeaderCellProps<TData> {
   onInteraction?: OnInteractionCallback;
 }
 
-/**
- * Individual header cell with sorting, pinning, and resizing support.
- */
 export const HeaderCell = <TData,>({
   header,
   features,
@@ -34,8 +31,8 @@ export const HeaderCell = <TData,>({
 
   const canSort = column.getCanSort() && features?.sorting !== false;
   const isSorted = column.getIsSorted();
-  // Matches DataGrid's `columnResizing !== false` default (resizing is on unless
-  // explicitly disabled) so handles appear whenever the table is actually in fixed layout.
+  // Matches DataGrid's `columnResizing !== false` default so handles appear whenever
+  // the table is actually fixed-layout.
   const canResize = column.getCanResize() && features?.columnResizing !== false;
 
   const headerContent = flexRender(columnDef.header, header.getContext());
@@ -50,8 +47,8 @@ export const HeaderCell = <TData,>({
 
   const [isHovered, setIsHovered] = useState(false);
 
-  // TanStack's own handler reads `event.shiftKey` to decide multi-sort, honoring the
-  // table's `enableMultiSort` option — calling `toggleSorting()` directly ignores Shift.
+  // TanStack's handler reads `event.shiftKey` for multi-sort — calling `toggleSorting()`
+  // directly would ignore Shift.
   const toggleSortingHandler = column.getToggleSortingHandler();
 
   const handleSortClick = (event: React.KeyboardEvent | React.MouseEvent) => {

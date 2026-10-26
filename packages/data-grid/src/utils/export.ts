@@ -2,80 +2,34 @@ import type { Row, Table } from "@tanstack/react-table";
 import type { FormatOptions, ValueFormatType } from "../types";
 import { formatValue } from "../utils/formatting";
 
-// ============================================================================
-// TYPES
-// ============================================================================
-
 export interface ExportColumn {
-  /** Column ID */
   id: string;
-  /** Display header */
   header: string;
-  /** Value accessor — a (optionally dotted) object path, or a function receiving the row and its index */
   accessor?: string | ((row: Record<string, unknown>, index: number) => unknown);
-  /** Format type for value formatting */
   formatType?: ValueFormatType;
-  /** Format options */
   formatOptions?: FormatOptions;
-  /** Column width in characters (for XLSX) */
   width?: number;
 }
 
 export interface ExportOptions<TData = unknown> {
-  /** File name (without extension) */
   filename?: string;
-  /** Sheet name */
   sheetName?: string;
-  /** Columns to include (defaults to all visible) */
   columns?: ExportColumn[];
-  /** Rows to export. If not set, exports all rows (or selected rows if `selectedOnly` is true) */
   rows?: TData[];
-  /** Export only selected rows */
   selectedOnly?: boolean;
-  /** Include headers in export */
   includeHeaders?: boolean;
-  /** Custom export handler — if provided, receives the prepared data instead of downloading */
   onExport?: (data: ExportData) => void | Promise<void>;
-  /** Default date format for date-type columns. An explicit column `formatOptions.dateFormat` takes precedence over this. */
   dateFormat?: string;
 }
 
 export interface ExportData {
-  /** Column headers */
   headers: string[];
-  /** Rows of cell values (string or number) */
   rows: (string | number | boolean | null)[][];
-  /** Column metadata for width hints etc. */
   columns: ExportColumn[];
-  /** File name */
   filename: string;
-  /** Sheet name */
   sheetName: string;
 }
 
-// ============================================================================
-// EXPORT FUNCTION
-// ============================================================================
-
-/**
- * Export grid data to Excel (CSV or custom handler).
- *
- * Usage:
- * ```tsx
- * // Default CSV download
- * exportGridData(table, { filename: "portfolio-assets" });
- *
- * // Custom handler (e.g., using SheetJS/xlsx)
- * exportGridData(table, {
- *   onExport: (data) => {
- *     const ws = XLSX.utils.aoa_to_sheet([data.headers, ...data.rows]);
- *     const wb = XLSX.utils.book_new();
- *     XLSX.utils.book_append_sheet(wb, ws, data.sheetName);
- *     XLSX.writeFile(wb, `${data.filename}.xlsx`);
- *   }
- * });
- * ```
- */
 export async function exportGridData<TData>(
   table: Table<TData>,
   options: ExportOptions<TData> = {}
@@ -90,20 +44,17 @@ export async function exportGridData<TData>(
     dateFormat,
   } = options;
 
-  // Determine columns to export
   const exportColumns: ExportColumn[] = customColumns || getColumnsFromTable(table);
 
-  // Determine rows to export. Table-sourced rows keep their TanStack `Row` alongside the
-  // original so values can be resolved through the column's actual accessorFn/accessorKey
-  // (including computed accessors and dotted paths) rather than re-guessed here.
+  // Keeps the TanStack `Row` alongside each original so values resolve via the column's
+  // real accessorFn/accessorKey, not a re-guessed path.
   let rows: TData[];
   let tableRows: Row<TData>[] | undefined;
   if (options.rows) {
     rows = options.rows;
   } else if (selectedOnly) {
-    // `.rows` only holds the selected model's top-level entries; for hierarchical data a
-    // selected child whose parent isn't selected (or a selected child under a selected
-    // parent) can be missing from it. `.flatRows` has every selected row individually.
+    // `.rows` only holds top-level selected entries — a selected child can be missing
+    // for hierarchical data. `.flatRows` has every selected row.
     tableRows = table.getSelectedRowModel().flatRows;
     rows = tableRows.map((r) => r.original);
   } else {
@@ -111,7 +62,6 @@ export async function exportGridData<TData>(
     rows = tableRows.map((r) => r.original);
   }
 
-  // Build export data
   const headers = exportColumns.map((col) => col.header);
   const dataRows = rows.map((row, index) => {
     const tableRow = tableRows?.[index];
@@ -129,7 +79,6 @@ export async function exportGridData<TData>(
     sheetName,
   };
 
-  // Use custom handler or default CSV download
   if (onExport) {
     await onExport(exportData);
   } else {
@@ -137,15 +86,10 @@ export async function exportGridData<TData>(
   }
 }
 
-// ============================================================================
-// HELPERS
-// ============================================================================
-
 function getColumnsFromTable<TData>(table: Table<TData>): ExportColumn[] {
   return table
     .getVisibleLeafColumns()
     .filter((col) => {
-      // Skip internal columns like selection checkbox
       return !col.id.startsWith("__");
     })
     .map((col) => {
@@ -154,9 +98,6 @@ function getColumnsFromTable<TData>(table: Table<TData>): ExportColumn[] {
         ? col.columnDef.header
         : col.id;
 
-      // No explicit `accessor` here — getColumnValue falls back to the TanStack row's own
-      // getValue(), which resolves the column's real accessorFn/accessorKey (computed
-      // accessors and dotted keys included) instead of a re-guessed object property.
       return {
         id: col.id,
         header,
@@ -200,21 +141,19 @@ function formatExportValue(
 ): string | number | boolean | null {
   if (value === null || value === undefined) return null;
 
-  // Keep numbers as numbers for Excel compatibility
   if (typeof value === "number" && !col.formatType) return value;
   if (typeof value === "boolean") return value;
 
-  // Format if formatType is specified
   if (col.formatType) {
     const isScaled = col.formatOptions?.numberFormat === "Millions";
-    // Scaled formats (e.g. "1.5M") lose their unit once parsed back to a plain number
-    // (1,500,000 -> 1.5M -> 1.5). Export the unscaled raw number instead of the formatted text.
+    // Scaled formats (e.g. "1.5M") lose their unit when reparsed as a number — export
+    // the unscaled raw value instead.
     if ((col.formatType === "number" || col.formatType === "decimal") && typeof value === "number" && isScaled) {
       return value;
     }
 
-    // `ExportOptions.dateFormat` is the export-wide default; an explicit column-level
-    // `formatOptions.dateFormat` is more specific and wins.
+    // A column-level `formatOptions.dateFormat` is more specific than the export-wide
+    // default and wins.
     const formatOptions =
       col.formatType === "date" && exportDateFormat
         ? { dateFormat: exportDateFormat, ...col.formatOptions }
@@ -229,14 +168,9 @@ function formatExportValue(
     return formatted;
   }
 
-  // Default: stringify
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
-
-// ============================================================================
-// CSV DOWNLOAD (built-in fallback when no custom handler)
-// ============================================================================
 
 function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
   const rows: string[] = [];
@@ -250,8 +184,8 @@ function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
       escapeCSVRow(
         row.map((cell) => {
           if (cell === null) return "";
-          // Only strings can carry an injected formula — numbers/booleans are left as-is
-          // so genuine negative numbers aren't turned into text.
+          // Only strings can carry an injected formula — numbers/booleans pass through
+          // so negatives aren't stringified.
           return typeof cell === "string" ? sanitizeCSVFormula(cell) : String(cell);
         })
       )
@@ -269,7 +203,6 @@ function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
   document.body.appendChild(link);
   link.click();
 
-  // Cleanup
   setTimeout(() => {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
@@ -280,8 +213,8 @@ function downloadAsCSV(data: ExportData, includeHeaders: boolean): void {
 const CSV_FORMULA_TRIGGERS = ["=", "+", "-", "@", "\t", "\r"];
 
 /**
- * Neutralize spreadsheet formula injection (e.g. a cell value of `=1+1`) by prefixing
- * it with a single quote, which Excel/Sheets render literally instead of evaluating.
+ * Neutralizes formula injection (e.g. `=1+1`) with a leading quote, which Excel/Sheets
+ * render literally.
  */
 function sanitizeCSVFormula(value: string): string {
   if (value.length > 0 && CSV_FORMULA_TRIGGERS.includes(value[0])) {
@@ -293,8 +226,7 @@ function sanitizeCSVFormula(value: string): string {
 function escapeCSVRow(values: string[]): string {
   return values.map((val) => {
     // `\r` must be quoted too — some CSV readers treat a bare CR as a record separator,
-    // so an unquoted field containing one (e.g. "safe\r=1+1") can be split into a new
-    // record whose content was never run through the formula sanitizer.
+    // letting unsanitized content leak into a new record.
     if (val.includes(",") || val.includes('"') || val.includes("\n") || val.includes("\r")) {
       return `"${val.replace(/"/g, '""')}"`;
     }

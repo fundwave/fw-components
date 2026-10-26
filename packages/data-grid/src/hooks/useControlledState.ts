@@ -1,11 +1,6 @@
 import type { OnChangeFn } from "@tanstack/react-table";
 import { useCallback, useState } from "react";
 
-/**
- * Hook for managing controlled/uncontrolled state pattern.
- * When a controlled value is provided, it takes precedence.
- * Otherwise, manages internal state with optional onChange notification.
- */
 export function useControlledState<T>(
   controlledValue: T | undefined,
   defaultValue: T,
@@ -23,8 +18,8 @@ export function useControlledState<T>(
           typeof updater === "function" ? (updater as (prev: T) => T)(prev) : updater
         );
       }
-      // Notify outside the state updater (which must stay pure) and forward the
-      // original updater so callers can resolve it against their own state.
+      // Notify outside the updater (must stay pure), forwarding the original so callers
+      // can resolve it against their own state.
       onChange?.(updater);
     },
     [isControlled, onChange]

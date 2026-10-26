@@ -1,12 +1,5 @@
 import type { FormatOptions, ValueFormatType } from "../types";
 
-// ============================================================================
-// FORMATTING UTILITIES
-// ============================================================================
-
-/**
- * Get currency symbol for a given currency code using Intl API
- */
 const currencySymbolCache: Record<string, string> = {};
 
 export const getCurrencySymbol = (currencyCode: string): string => {
@@ -30,9 +23,6 @@ export const getCurrencySymbol = (currencyCode: string): string => {
   }
 };
 
-/**
- * Format a number with commas (thousands separator)
- */
 function formatComma(value: number, decimals: number = 2, trim: boolean = true): string {
   const formatted = new Intl.NumberFormat("en", {
     minimumFractionDigits: trim ? 0 : decimals,
@@ -41,9 +31,6 @@ function formatComma(value: number, decimals: number = 2, trim: boolean = true):
   return formatted;
 }
 
-/**
- * Format a number without commas
- */
 function formatNumber(value: number, decimals: number = 2, trim: boolean = true): string {
   const fixed = value.toFixed(decimals);
   if (trim) {
@@ -52,25 +39,16 @@ function formatNumber(value: number, decimals: number = 2, trim: boolean = true)
   return fixed;
 }
 
-/**
- * Format a number as millions (e.g., 1,500,000 → "1.5M")
- */
 function formatToMillions(value: number, decimals: number = 2, trim: boolean = true): string {
   const millions = value / 1_000_000;
   return formatNumber(millions, decimals, trim);
 }
 
-/**
- * Format a number as percentage (e.g., 0.15 → "15%")
- */
 function formatPercentage(value: number, decimals: number = 2, trim: boolean = true): string {
   const pct = value * 100;
   return `${formatNumber(pct, decimals, trim)}%`;
 }
 
-/**
- * Format a Date to string using Intl.DateTimeFormat
- */
 function formatDate(
   date: Date,
   dateFormat?: string | null,
@@ -82,7 +60,6 @@ function formatDate(
     timeZone: formatAsUTC ? "UTC" : undefined,
   };
 
-  // Simple format mapping
   switch (dateFormat) {
     case "MM/DD/YYYY":
       options.month = "2-digit";
@@ -111,16 +88,8 @@ function formatDate(
   return new Intl.DateTimeFormat("en-US", options).format(date);
 }
 
-// ============================================================================
-// MAIN FORMAT FUNCTION
-// ============================================================================
-
 const NUMBER_VALUE_TYPES: ValueFormatType[] = ["currency", "percentage", "decimal", "number", "ratio"];
 
-/**
- * Format a value according to its type and options.
- * Returns a formatted string representation.
- */
 export const formatValue = (
   value: unknown,
   formatType: ValueFormatType = "text",
@@ -145,14 +114,12 @@ export const formatValue = (
     return placeholder;
   }
 
-  // Convert string numbers if numeric format
   let val = value;
   if (typeof val === "string" && NUMBER_VALUE_TYPES.includes(formatType)) {
     const numValue = parseFloat(val);
     if (!isNaN(numValue)) val = numValue;
   }
 
-  // Zero handling — show placeholder (but not for percentage/ratio where 0 is meaningful)
   if (typeof val === "number" && val === 0 && formatType !== "percentage" && formatType !== "ratio") {
     return placeholder || "-";
   }
@@ -205,10 +172,6 @@ export const formatValue = (
       if (typeof val === "string") {
         const d = new Date(val);
         if (isNaN(d.getTime())) return placeholder;
-        // A date-only string ("2024-01-01") is parsed as UTC midnight. Formatting that in
-        // the viewer's local timezone can shift it to the previous calendar day in
-        // negative UTC offsets, so always format date-only input as UTC to preserve the
-        // calendar date; timestamps keep honoring `formatAsUTC`.
         const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(val);
         return formatDate(d, dateFormat, isDateOnly ? true : formatAsUTC);
       }
@@ -223,17 +186,11 @@ export const formatValue = (
   }
 };
 
-/**
- * Smart format that adjusts decimals and number format based on value magnitude.
- * Useful for financial grids where values range from small to millions.
- */
 export const formatAndTrimValue = (
   value: unknown,
   valueType: ValueFormatType,
   formatOptions?: FormatOptions
 ): string => {
-  // For percentage and ratio, don't apply "smart" magnitude-based adjustments
-  // since the raw values are typically small decimals (e.g., 0.15 = 15%)
   if (valueType === "percentage" || valueType === "ratio") {
     return formatValue(value, valueType, {
       decimals: 2,
@@ -249,8 +206,6 @@ export const formatAndTrimValue = (
     const autoDecimals = autoNumberFormat === "000s" && !isSmallNumber ? 0 : 2;
     const hasDecimals = numValue % 1 !== 0;
 
-    // Auto values come first so an explicit `numberFormat`/`decimals`/`trim` in
-    // formatOptions always wins over the magnitude-based guess.
     return formatValue(value, valueType, {
       numberFormat: autoNumberFormat,
       decimals: autoDecimals,
