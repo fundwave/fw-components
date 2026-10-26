@@ -63,6 +63,9 @@ export const DataGrid = <TData extends object>({
   virtualizationConfig = {},
   globalFilterConfig = {},
 
+  isRowSelectable,
+
+  isRowEditable,
   onCellEdit,
   validateCell,
 
@@ -166,6 +169,7 @@ export const DataGrid = <TData extends object>({
             checked={row.getIsSelected()}
             onChange={(checked) => row.toggleSelected(checked)}
             label={`Select row ${row.id}`}
+            disabled={!row.getCanSelect()}
           />
         ),
         size: rowSelectionConfig.width || 40,
@@ -230,7 +234,7 @@ export const DataGrid = <TData extends object>({
     enableExpanding: expandingEnabled,
 
     // Row Selection
-    enableRowSelection: rowSelectionEnabled,
+    enableRowSelection: rowSelectionEnabled && isRowSelectable ? (row) => isRowSelectable(row.original) : rowSelectionEnabled,
 
     // Column Features
     enableColumnResizing: columnResizingEnabled,
@@ -355,6 +359,7 @@ export const DataGrid = <TData extends object>({
       onInteraction={onInteraction}
       onRowClick={onRowClick}
       editingEnabled={editingEnabled}
+      isRowEditable={isRowEditable}
       isEditingCell={editing.isEditing}
       getDraft={editing.getDraft}
       getError={editing.getError}

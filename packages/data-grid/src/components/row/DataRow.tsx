@@ -18,6 +18,7 @@ export interface DataRowProps<TData> {
   onInteraction?: OnInteractionCallback;
   // Editing props
   editingEnabled?: boolean;
+  isRowEditable?: (row: TData) => boolean;
   isEditingCell?: (rowId: string, columnId: string) => boolean;
   getDraft?: (rowId: string, columnId: string) => unknown | undefined;
   getError?: (rowId: string, columnId: string) => string | undefined;
@@ -56,6 +57,7 @@ export const DataRow = <TData,>({
   dataIndex,
   onInteraction,
   editingEnabled,
+  isRowEditable,
   isEditingCell,
   getDraft,
   getError,
@@ -170,7 +172,7 @@ export const DataRow = <TData,>({
           const columnId = column.id;
           const columnLabel = typeof columnDef.header === "string" ? columnDef.header : undefined;
           const rowId = row.id;
-          const isEditable = editingEnabled && columnMeta?.editable === true;
+          const isEditable = editingEnabled && columnMeta?.editable === true && (!isRowEditable || isRowEditable(row.original));
           const isCellEditing = isEditable && isEditingCell?.(rowId, columnId);
 
           // Range selection state

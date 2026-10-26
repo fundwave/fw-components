@@ -259,7 +259,13 @@ export interface DataGridProps<TData = Record<string, unknown>> {
   /** Configuration for global filter */
   globalFilterConfig?: GlobalFilterConfig<TData>;
 
+  // --- Selection Callbacks ---
+  /** Whether a given row may be selected via the row-selection checkbox */
+  isRowSelectable?: (row: TData) => boolean;
+
   // --- Editing Callbacks ---
+  /** Whether a given row's cells may be edited at all, independent of per-column `meta.editable` */
+  isRowEditable?: (row: TData) => boolean;
   /** Called when a single cell value is committed */
   onCellEdit?: (event: CellEditEvent<TData>) => void | Promise<void>;
   /** Validate a cell value before committing */
