@@ -68,5 +68,9 @@
     "url": "https://github.com/fundwave/fw-components/issues"
   },
   "author": "The Fundwave Authors",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "clsx": "2.1.1",
+    "tailwind-merge": "3.7.0"
+  }
 }

@@ -1,25 +1,12 @@
-// ============================================================================
-// UTILITY: cn (className merger)
-// ============================================================================
-
-/**
- * Merges class names, filtering out falsy values.
- * A lightweight alternative to clsx + tailwind-merge for this package.
- */
-export function cn(...classes: (string | undefined | null | false)[]): string {
-  return classes.filter(Boolean).join(" ");
-}
-
-// ============================================================================
-// COLUMN PINNING STYLES
-// ============================================================================
-
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
 import type { Column } from "@tanstack/react-table";
 import type { CSSProperties } from "react";
 
-/**
- * Get CSS styles for pinned columns (sticky positioning)
- */
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
 export function getColumnPinningStyles<TData>(column: Column<TData, unknown>): CSSProperties {
   const isPinned = column.getIsPinned();
   return {
@@ -30,13 +17,6 @@ export function getColumnPinningStyles<TData>(column: Column<TData, unknown>): C
   };
 }
 
-// ============================================================================
-// ALIGNMENT CLASSES
-// ============================================================================
-
-/**
- * Get CSS classes for text alignment
- */
 export function getAlignmentClasses(align: "left" | "center" | "right" | undefined): {
   textAlign: string;
   justifyContent: string;
@@ -52,13 +32,6 @@ export function getAlignmentClasses(align: "left" | "center" | "right" | undefin
   }
 }
 
-// ============================================================================
-// NESTED ROW PADDING
-// ============================================================================
-
-/**
- * Calculate left padding for nested/hierarchical rows
- */
 export const getNestedRowPadding = (depth: number): string | undefined => {
   if (depth === 0) return undefined;
   const baseIndentRem = 0.5;
