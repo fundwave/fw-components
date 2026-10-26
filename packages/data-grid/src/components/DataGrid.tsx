@@ -179,6 +179,7 @@ export const DataGrid = <TData extends object>({
           align: "center" as const,
           width: rowSelectionConfig.width || 40,
           maxWidth: rowSelectionConfig.width || 40,
+          headerClassName: "px-0 py-0",
         },
       };
 
