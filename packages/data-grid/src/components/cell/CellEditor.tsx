@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import React from "react";
 import type { SelectOption } from "../../types";
 import { cn } from "../../utils/styling";
@@ -154,9 +155,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             ))}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <svg className="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-            </svg>
+            <ChevronDown className="h-4 w-4 text-gray-400" />
           </div>
           {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
         </div>

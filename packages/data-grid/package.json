@@ -71,6 +71,7 @@
   "license": "MIT",
   "dependencies": {
     "clsx": "2.1.1",
+    "lucide-react": "1.62.0",
     "tailwind-merge": "3.7.0"
   }
 }

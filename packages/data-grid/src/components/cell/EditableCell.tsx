@@ -1,4 +1,5 @@
 import type { Row } from "@tanstack/react-table";
+import { Pencil } from "lucide-react";
 import React from "react";
 import type { CellEditType, EditCellRenderProps, SelectOption } from "../../types";
 import { CellEditor } from "./CellEditor";
@@ -110,14 +111,7 @@ export const EditableCell = <TData,>({
       aria-label={`Edit ${columnId}`}
     >
       <span className="flex-1 truncate">{displayValue || <span className="text-gray-400">—</span>}</span>
-      <svg
-        className="w-3 h-3 text-gray-300 group-hover:text-blue-400 flex-shrink-0 ml-1 opacity-0 group-hover:opacity-100 transition-opacity"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-      </svg>
+      <Pencil className="w-3 h-3 text-gray-300 group-hover:text-blue-400 flex-shrink-0 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
     </div>
   );
 };
