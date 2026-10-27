@@ -16,7 +16,6 @@
   "files": [
     "dist",
     "README.md",
-    "LICENSE",
     "CONTRIBUTING.md"
   ],
   "publishConfig": {
@@ -68,7 +67,7 @@
     "url": "https://github.com/fundwave/fw-components/issues"
   },
   "author": "The Fundwave Authors",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
     "clsx": "2.1.1",
     "lucide-react": "1.62.0",

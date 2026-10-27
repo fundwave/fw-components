@@ -525,7 +525,3 @@ editable columns, range selection, export, virtualization, and more.
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and guidelines.
-
-## License
-
-[MIT](./LICENSE)
