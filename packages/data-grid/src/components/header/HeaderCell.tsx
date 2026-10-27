@@ -34,6 +34,10 @@ export const HeaderCell = <TData,>({
   // Matches DataGrid's `columnResizing !== false` default so handles appear whenever
   // the table is actually fixed-layout.
   const canResize = column.getCanResize() && features?.columnResizing !== false;
+  // Fixed-table-layout mode needs every header to carry an explicit width, resizable or
+  // not — gating on `canResize` alone drops the width for a non-resizable column that
+  // still has a `size`, unless it also happens to set `meta.width`.
+  const useLayoutWidth = features?.columnResizing !== false;
 
   const headerContent = flexRender(columnDef.header, header.getContext());
   const pinningStyles = getColumnPinningStyles(column);
@@ -80,7 +84,9 @@ export const HeaderCell = <TData,>({
         )}
         style={{
           ...pinningStyles,
-          width: canResize ? column.getSize() : meta?.width,
+          // `header.getSize()` sums the leaf columns a grouped header spans, unlike
+          // `column.getSize()` which only covers a single column.
+          width: useLayoutWidth ? header.getSize() : meta?.width,
           minWidth: meta?.minWidth,
           maxWidth: meta?.maxWidth,
         }}
