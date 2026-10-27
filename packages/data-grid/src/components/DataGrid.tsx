@@ -279,6 +279,36 @@ export const DataGrid = <TData extends object>({
     skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
   });
 
+  // Syncs DOM focus/scroll with the keyboard destination (last range's end, or activeCell
+  // for a plain move) since neither followed the state update on its own.
+  const lastRange = rangeSelection.selectionState.ranges[rangeSelection.selectionState.ranges.length - 1];
+  const keyboardFocusTarget = lastRange?.end ?? rangeSelection.selectionState.activeCell;
+  const isSelecting = rangeSelection.selectionState.isSelecting;
+
+  useEffect(() => {
+    // Skip during an active drag to avoid fighting the user's own scrolling; syncs once
+    // the drag/click settles on mouseup.
+    if (!rangeSelectionEnabled || !keyboardFocusTarget || isSelecting) return;
+    const { rowIndex, columnIndex } = keyboardFocusTarget;
+
+    const focusCell = () => {
+      const el = tableContainerRef.current?.querySelector<HTMLElement>(
+        `[data-row-index="${rowIndex}"][data-col-index="${columnIndex}"]`
+      );
+      el?.focus({ preventScroll: true });
+      el?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+
+    if (virtualizationEnabled) {
+      // The destination row may not be mounted yet — scroll it into the virtualizer's
+      // range first.
+      rowVirtualizer.scrollToIndex(rowIndex, { align: "auto" });
+      requestAnimationFrame(focusCell);
+    } else {
+      focusCell();
+    }
+  }, [keyboardFocusTarget?.rowIndex, keyboardFocusTarget?.columnIndex, isSelecting, rangeSelectionEnabled, virtualizationEnabled, rowVirtualizer]);
+
   // Accounts for detail <tr> rows (not part of `rows`) so aria-rowindex/rowcount reflect
   // each row's true logical position.
   const { detailRowOffsets, totalDetailRows } = useMemo(() => {
