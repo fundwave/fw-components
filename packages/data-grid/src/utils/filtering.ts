@@ -30,11 +30,20 @@ export function buildSearchIndex<T>(
 }
 
 function getRowValues<TData>(row: Row<TData>): string {
-  return row
-    .getAllCells()
-    .map((cell) => String(cell.getValue() ?? ""))
-    .join(" ")
-    .toLowerCase();
+  return normalize(
+    row
+      .getAllCells()
+      .map((cell) => String(cell.getValue() ?? ""))
+      .join(" ")
+  );
+}
+
+function matchesRow<TData>(row: Row<TData & { __searchTerm?: string }>, query: string): boolean {
+  if (row.original.__searchTerm?.includes(query)) return true;
+  // The raw-data index only covers flat scalar fields on the original row — nested or
+  // computed column accessors (e.g. accessorKey "company.name", or an accessorFn) aren't
+  // captured there, so also check the table's own resolved cell values.
+  return getRowValues(row).includes(query);
 }
 
 export function treeAwareGlobalFilterFn<TData>(
@@ -46,13 +55,11 @@ export function treeAwareGlobalFilterFn<TData>(
 
   const query = normalize(String(filterValue));
 
-  const rowValues = row.original.__searchTerm || getRowValues(row);
-  if (rowValues.includes(query)) return true;
+  if (matchesRow(row, query)) return true;
 
   let parent = row.getParentRow();
   while (parent) {
-    const parentValues = (parent.original as { __searchTerm?: string }).__searchTerm || getRowValues(parent);
-    if (parentValues.includes(query)) return true;
+    if (matchesRow(parent, query)) return true;
     parent = parent.getParentRow();
   }
 
