@@ -174,45 +174,28 @@ For complex editors (e.g., entity pickers, async selects), use `meta.editCell`:
 
 ### Bulk Editing
 
-Enable row selection + bulk editing to edit multiple rows at once:
+Enable row selection, then commit an edit via `onCellEdit` for any row that's part of the
+current selection to apply it across all selected rows:
 
 ```tsx
-import { DataGrid, useBulkEdit } from "@fw-components/data-grid";
-import type { Table } from "@fw-components/data-grid";
-
 function PortfolioDashboard() {
-  const [tableRef, setTableRef] = useState<Table<Asset> | null>(null);
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
-  const bulkEdit = useBulkEdit<Asset>({
-    onBulkEdit: async ({ rowIds, columnId, value }) => {
-      await api.bulkUpdateAssets(rowIds, { [columnId]: value });
-    },
-  });
-
-  const handleBulkEdit = () => {
-    if (!tableRef) return;
-    const selectedRows = tableRef.getSelectedRowModel().rows;
-    const rowIds = selectedRows.map((r) => r.id);
-    const rows = selectedRows.map((r) => r.original);
-    bulkEdit.commitBulkEdit(rowIds, rows);
+  const handleCellEdit = async ({ rowId, columnId, value, row }: CellEditEvent<Asset>) => {
+    const isBulkTarget = selectedIds.length > 1 && selectedIds.includes(rowId);
+    const targetIds = isBulkTarget ? selectedIds : [rowId];
+    await Promise.all(targetIds.map((id) => api.updateAsset(id, { [columnId]: value })));
   };
 
   return (
-    <div>
-      <DataGrid
-        data={assets}
-        columns={columns}
-        getRowId={(row) => row.id}
-        features={{ rowSelection: true, editing: true }}
-        onTableReady={setTableRef}
-      />
-      {bulkEdit.isBulkEditing && (
-        <BulkEditToolbar
-          onSave={handleBulkEdit}
-          onCancel={bulkEdit.cancelBulkEdit}
-        />
-      )}
-    </div>
+    <DataGrid
+      data={assets}
+      columns={columns}
+      getRowId={(row) => row.id}
+      features={{ rowSelection: true, editing: true }}
+      onCellEdit={handleCellEdit}
+      onStateChange={{ onRowSelectionChange: setSelectedIds }}
+    />
   );
 }
 ```
@@ -374,10 +357,6 @@ Extend column definitions with `meta`:
 #### `useEditing(options)`
 
 Manages cell-level editing state. Stores drafts outside cell components for virtualization safety.
-
-#### `useBulkEdit(options)`
-
-Manages bulk editing operations across multiple selected rows.
 
 #### `useDataGridState(options)`
 

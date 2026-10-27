@@ -49,7 +49,6 @@ src/
 │   └── states/           # Empty, Error, Skeleton states
 ├── hooks/
 │   ├── useEditing.ts     # Cell editing state management
-│   ├── useBulkEdit.ts    # Bulk edit operations
 │   ├── useDataGridState.ts # Table state orchestration
 │   └── useControlledState.ts # Controlled/uncontrolled pattern
 └── utils/

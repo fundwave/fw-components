@@ -81,13 +81,6 @@ export interface CellEditEvent<TData = unknown> {
   row: TData;
 }
 
-export interface BulkEditEvent<TData = unknown> {
-  rowIds: string[];
-  columnId: string;
-  value: unknown;
-  rows: TData[];
-}
-
 export interface EditCellRenderProps<TData = unknown, TValue = unknown> {
   value: TValue;
   row: Row<TData>;
