@@ -358,7 +358,7 @@ export const DataGrid = <TData extends object>({
   return (
     <div
       className={cn("w-full", className)}
-      role="grid"
+      // No role="grid" here — the <table> below already owns it.
       aria-busy={isLoading}
       tabIndex={rangeSelectionEnabled ? 0 : undefined}
       onKeyDown={rangeSelectionEnabled ? rangeSelection.handleKeyDown : undefined}
