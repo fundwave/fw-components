@@ -45,15 +45,18 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
   // must not clobber a newer session's state if one began before it resolves.
   const sessionVersion = useRef<Record<string, number>>({});
 
-  // In-flight commit per cell, tagged by session. Enter+blur (or select's auto-commit
-  // overlapping a blur) can call commitEdit twice before the first resolves — dedupe via
-  // the same promise, unless a cancel/reopen started a new session in between.
-  const pendingCommits = useRef<Record<string, { version: number; promise: Promise<boolean> }>>({});
+  // In-flight commit per cell, tagged by session and draft revision — dedupes a repeated
+  // call for the same draft but still saves a newer one.
+  const pendingCommits = useRef<Record<string, { version: number; revision: number; promise: Promise<boolean> }>>({});
+
+  // Bumped on every updateDraft so a commit can tell if a pending one covers an earlier draft.
+  const draftRevision = useRef<Record<string, number>>({});
 
   const startEditing = useCallback((rowId: string, columnId: string, currentValue: unknown) => {
     const key = cellKey(rowId, columnId);
     originalValues.current[key] = currentValue;
     sessionVersion.current[key] = (sessionVersion.current[key] ?? 0) + 1;
+    draftRevision.current[key] = 0;
 
     setEditingState((prev) => {
       const next: EditingState = {
@@ -69,6 +72,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
   const updateDraft = useCallback((rowId: string, columnId: string, value: unknown) => {
     const key = cellKey(rowId, columnId);
+    draftRevision.current[key] = (draftRevision.current[key] ?? 0) + 1;
     setEditingState((prev) => {
       const newDirtyCells = new Set(prev.dirtyCells);
       if (value !== originalValues.current[key]) {
@@ -94,11 +98,21 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
     (rowId: string, columnId: string): Promise<boolean> => {
       const key = cellKey(rowId, columnId);
       const version = sessionVersion.current[key] ?? 0;
+      const revision = draftRevision.current[key] ?? 0;
 
       // Only dedupe against a pending commit from the same session — an older one
       // belongs to a draft that no longer exists.
       const pending = pendingCommits.current[key];
-      if (pending && pending.version === version) return pending.promise;
+      if (pending && pending.version === version) {
+        if (pending.revision === revision) {
+          // Exact duplicate of the in-flight commit (same draft) — reuse it.
+          return pending.promise;
+        }
+        // Draft changed since dispatch — queue a fresh commit instead of losing it.
+        const queued = pending.promise.then(() => commitEdit(rowId, columnId));
+        pendingCommits.current[key] = { version, revision, promise: queued };
+        return queued;
+      }
 
       const promise = (async (): Promise<boolean> => {
         const draftValue = editingStateRef.current.drafts[key];
@@ -147,6 +161,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
             const newDirtyCells = new Set(prev.dirtyCells);
             newDirtyCells.delete(key);
             delete originalValues.current[key];
+            delete draftRevision.current[key];
 
             const next: EditingState = {
               ...prev,
@@ -176,7 +191,7 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
         }
       })();
 
-      pendingCommits.current[key] = { version, promise };
+      pendingCommits.current[key] = { version, revision, promise };
       promise.finally(() => {
         // Only clear if it's still ours — a newer session's commit may have already
         // replaced it.
