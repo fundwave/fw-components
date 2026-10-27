@@ -1,5 +1,5 @@
 import type { Row, Table } from "@tanstack/react-table";
-import type { FormatOptions, ValueFormatType } from "../types";
+import type { DateFormat, FormatOptions, ValueFormatType } from "../types";
 import { formatValue } from "../utils/formatting";
 
 export interface ExportColumn {
@@ -19,7 +19,7 @@ export interface ExportOptions<TData = unknown> {
   selectedOnly?: boolean;
   includeHeaders?: boolean;
   onExport?: (data: ExportData) => void | Promise<void>;
-  dateFormat?: string;
+  dateFormat?: DateFormat;
 }
 
 export interface ExportData {
@@ -137,7 +137,7 @@ function getColumnValue<TData>(
 function formatExportValue(
   value: unknown,
   col: ExportColumn,
-  exportDateFormat?: string
+  exportDateFormat?: DateFormat
 ): string | number | boolean | null {
   if (value === null || value === undefined) return null;
 

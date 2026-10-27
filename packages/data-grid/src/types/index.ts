@@ -47,11 +47,19 @@ export const ValueFormatType = {
 } as const;
 export type ValueFormatType = (typeof ValueFormatType)[keyof typeof ValueFormatType];
 
+export const DateFormat = {
+  MMDDYYYY: "MM/DD/YYYY",
+  DDMMYYYY: "DD/MM/YYYY",
+  YYYYMMDD: "YYYY-MM-DD",
+  MMMDDYYYY: "MMM DD, YYYY",
+} as const;
+export type DateFormat = (typeof DateFormat)[keyof typeof DateFormat];
+
 export type FormatOptions = {
   currencyCode?: string | null;
   numberFormat?: "000s" | "Millions" | null;
   decimals?: number | null;
-  dateFormat?: string | null;
+  dateFormat?: DateFormat | null;
   formatAsUTC?: boolean | null;
   trim?: boolean | null;
   placeholder?: string;

@@ -1,4 +1,4 @@
-import type { FormatOptions, ValueFormatType } from "../types";
+import { DateFormat, type FormatOptions, type ValueFormatType } from "../types";
 
 const currencySymbolCache: Record<string, string> = {};
 
@@ -51,7 +51,7 @@ function formatPercentage(value: number, decimals: number = 2, trim: boolean = t
 
 function formatDate(
   date: Date,
-  dateFormat?: string | null,
+  dateFormat?: DateFormat | null,
   formatAsUTC?: boolean | null
 ): string {
   if (!date || isNaN(date.getTime())) return "";
@@ -61,19 +61,19 @@ function formatDate(
   };
 
   switch (dateFormat) {
-    case "MM/DD/YYYY":
+    case DateFormat.MMDDYYYY:
       options.month = "2-digit";
       options.day = "2-digit";
       options.year = "numeric";
       break;
-    case "DD/MM/YYYY":
+    case DateFormat.DDMMYYYY:
       options.day = "2-digit";
       options.month = "2-digit";
       options.year = "numeric";
       return new Intl.DateTimeFormat("en-GB", options).format(date);
-    case "YYYY-MM-DD":
+    case DateFormat.YYYYMMDD:
       return date.toISOString().split("T")[0];
-    case "MMM DD, YYYY":
+    case DateFormat.MMMDDYYYY:
       options.month = "short";
       options.day = "2-digit";
       options.year = "numeric";
@@ -99,7 +99,7 @@ export const formatValue = (
     currencyCode = undefined,
     numberFormat = "000s",
     decimals = 2,
-    dateFormat = "MMM DD, YYYY",
+    dateFormat = DateFormat.MMMDDYYYY,
     formatAsUTC = false,
     trim = true,
     placeholder = "",
