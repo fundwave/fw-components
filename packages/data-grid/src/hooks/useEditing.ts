@@ -260,7 +260,13 @@ export function useEditing(options: UseEditingOptions = {}): UseEditingReturn {
 
   const reset = useCallback(() => {
     originalValues.current = {};
-    sessionVersion.current = {};
+    // Bump existing versions instead of clearing them — if a commit for a cell is still
+    // pending, clearing back to {} would let a later edit of that same cell reuse version
+    // 1 again, matching the stale pending commit's captured version and getting deduped
+    // against it (silently reusing a save of the pre-reset draft) instead of saving.
+    for (const key of Object.keys(sessionVersion.current)) {
+      sessionVersion.current[key] += 1;
+    }
     const next: EditingState = {
       editingCell: null,
       drafts: {},
