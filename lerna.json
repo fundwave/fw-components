@@ -1,6 +1,6 @@
 {
   "packages": ["packages/*"],
-  "version": "2.6.2-data-grid.7",
+  "version": "2.6.2-data-grid.8",
   "command": {
     "version": {
       "message": "chore(release): publish %s \n [skip ci]"
