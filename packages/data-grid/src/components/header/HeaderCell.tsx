@@ -100,7 +100,7 @@ export const HeaderCell = <TData,>({
       )}
       style={{
         ...pinningStyles,
-        width: canResize ? column.getSize() : meta?.width,
+        width: useLayoutWidth ? header.getSize() : meta?.width,
         minWidth: meta?.minWidth,
         maxWidth: meta?.maxWidth,
       }}
