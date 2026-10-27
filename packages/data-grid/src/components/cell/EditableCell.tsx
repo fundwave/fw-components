@@ -24,8 +24,6 @@ export interface EditableCellProps<TData = unknown> {
   draftValue?: unknown;
   error?: string | null;
   commitOnBlur?: boolean;
-  /** When active, a modified click extends the range instead of opening the editor */
-  rangeSelectionEnabled?: boolean;
 }
 
 export const EditableCell = <TData,>({
@@ -47,7 +45,6 @@ export const EditableCell = <TData,>({
   draftValue,
   error,
   commitOnBlur = true,
-  rangeSelectionEnabled,
 }: EditableCellProps<TData>) => {
   if (!editable) {
     return <>{displayValue}</>;
@@ -93,9 +90,6 @@ export const EditableCell = <TData,>({
     <div
       className="cursor-pointer hover:bg-blue-50/60 rounded px-1 -mx-1 min-h-[1.5rem] flex items-center w-full group"
       onClick={(e) => {
-        // A modified click here is extending the range (handled by mousedown) — opening
-        // the editor too would steal its keyboard input.
-        if (rangeSelectionEnabled && (e.shiftKey || e.ctrlKey || e.metaKey)) return;
         e.stopPropagation();
         onStartEdit(rowId, columnId, rawValue);
       }}

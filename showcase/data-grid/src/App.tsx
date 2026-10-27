@@ -283,9 +283,6 @@ export default function App() {
             <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full font-medium">
               Editable
             </span>
-            <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded-full font-medium">
-              Range Select
-            </span>
           </div>
         </div>
 
@@ -350,8 +347,6 @@ export default function App() {
               <option value="5000">5,000 rows</option>
               <option value="10000">10,000 rows</option>
             </select>
-
-            {/* Range selection info */}
           </div>
         </div>
 
@@ -369,7 +364,6 @@ export default function App() {
               columnPinning: true,
               rowSelection: { enabled: true, pinned: "left", width: 36 },
               editing: { enabled: true, commitOnBlur: true },
-              rangeSelection: true,
             }}
             state={{ globalFilter }}
             onStateChange={{ onGlobalFilterChange: setGlobalFilter as (value: unknown) => void }}
@@ -407,18 +401,6 @@ export default function App() {
               <div className="flex items-start gap-2">
                 <span className="font-mono bg-gray-100 px-1 rounded">☑️ Checkbox</span>
                 <span>Select rows for bulk operations or export</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="font-mono bg-gray-100 px-1 rounded">Shift+Click</span>
-                <span>Range select cells (Excel-like)</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="font-mono bg-gray-100 px-1 rounded">Shift+Arrow</span>
-                <span>Extend selection with keyboard</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="font-mono bg-gray-100 px-1 rounded">Ctrl+A</span>
-                <span>Select all cells</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono bg-gray-100 px-1 rounded">Column header</span>

@@ -29,12 +29,6 @@ export interface DataRowProps<TData> {
   onCommitEdit?: (rowId: string, columnId: string) => void;
   onCancelEdit?: () => void;
   commitOnBlur?: boolean;
-  rangeSelectionEnabled?: boolean;
-  onCellMouseDown?: (rowIndex: number, columnIndex: number, event: React.MouseEvent) => void;
-  onCellMouseEnter?: (rowIndex: number, columnIndex: number) => void;
-  isCellSelected?: (rowIndex: number, columnIndex: number) => boolean;
-  isActiveCell?: (rowIndex: number, columnIndex: number) => boolean;
-  rowVisualIndex?: number;
   /** Reports this row's measured height to the virtualizer */
   measureRef?: (el: HTMLTableRowElement | null) => void;
 }
@@ -59,12 +53,6 @@ export const DataRow = <TData,>({
   onCommitEdit,
   onCancelEdit,
   commitOnBlur,
-  rangeSelectionEnabled,
-  onCellMouseDown,
-  onCellMouseEnter,
-  isCellSelected,
-  isActiveCell,
-  rowVisualIndex,
   measureRef,
 }: DataRowProps<TData>) => {
   const originalRow = row.original;
@@ -164,21 +152,12 @@ export const DataRow = <TData,>({
           const isEditable = editingEnabled && columnMeta?.editable === true && (!isRowEditable || isRowEditable(row.original));
           const isCellEditing = isEditable && isEditingCell?.(rowId, columnId);
 
-          const cellSelected = rangeSelectionEnabled && rowVisualIndex !== undefined
-            ? isCellSelected?.(rowVisualIndex, cellIndex)
-            : false;
-          const cellActive = rangeSelectionEnabled && rowVisualIndex !== undefined
-            ? isActiveCell?.(rowVisualIndex, cellIndex)
-            : false;
-
           return (
             <td
               key={cell.id}
               className={cn(
                 "px-3 py-2 text-sm overflow-hidden",
                 pinnedStyles ? "bg-white hover:bg-gray-50" : "",
-                cellSelected && "bg-blue-50",
-                cellActive && "ring-2 ring-blue-500 ring-inset",
                 columnMeta?.cellClassName
               )}
               style={{
@@ -188,28 +167,6 @@ export const DataRow = <TData,>({
                 maxWidth: columnMeta?.maxWidth,
                 ...pinnedStyles,
               }}
-              onMouseDown={rangeSelectionEnabled && rowVisualIndex !== undefined
-                ? (e) => onCellMouseDown?.(rowVisualIndex, cellIndex, e)
-                : undefined}
-              onMouseEnter={rangeSelectionEnabled && rowVisualIndex !== undefined
-                ? () => onCellMouseEnter?.(rowVisualIndex, cellIndex)
-                : undefined}
-              // Lets DataGrid locate and focus this cell after keyboard range navigation.
-              tabIndex={rangeSelectionEnabled ? -1 : undefined}
-              data-row-index={rangeSelectionEnabled ? rowVisualIndex : undefined}
-              data-col-index={rangeSelectionEnabled ? cellIndex : undefined}
-              onKeyDown={
-                rangeSelectionEnabled && isEditable && !isCellEditing
-                  ? (e) => {
-                      // Only reached when focus is on the <td> itself — EditableCell's own
-                      // control stops propagation for these keys.
-                      if (e.key === "Enter" || e.key === "F2") {
-                        e.preventDefault();
-                        onStartEdit?.(rowId, columnId, value);
-                      }
-                    }
-                  : undefined
-              }
             >
               <div className={cn("flex items-start", justifyContent, textAlign)}>
                 {isFirstColumn &&
@@ -239,7 +196,6 @@ export const DataRow = <TData,>({
                     draftValue={getDraft?.(rowId, columnId)}
                     error={getError?.(rowId, columnId)}
                     commitOnBlur={commitOnBlur}
-                    rangeSelectionEnabled={rangeSelectionEnabled}
                   />
                 ) : (
                   cellContent

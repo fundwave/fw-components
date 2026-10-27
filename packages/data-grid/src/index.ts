@@ -6,8 +6,6 @@ export { useEditing } from "./hooks/useEditing";
 export { useBulkEdit } from "./hooks/useBulkEdit";
 export { useDataGridState } from "./hooks/useDataGridState";
 export { useControlledState } from "./hooks/useControlledState";
-export { useRangeSelection } from "./hooks/useRangeSelection";
-export type { CellPosition, CellRange, RangeSelectionState, UseRangeSelectionOptions, UseRangeSelectionReturn } from "./hooks/useRangeSelection";
 
 export { exportGridData } from "./utils/export";
 export type { ExportColumn, ExportOptions, ExportData } from "./utils/export";

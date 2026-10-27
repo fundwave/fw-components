@@ -343,7 +343,6 @@ interface DataGridFeatures {
   virtualization?: boolean;
   rowSelection?: boolean | RowSelectionConfig;
   editing?: boolean | EditingConfig;
-  rangeSelection?: boolean;
 }
 ```
 
@@ -380,56 +379,9 @@ Manages cell-level editing state. Stores drafts outside cell components for virt
 
 Manages bulk editing operations across multiple selected rows.
 
-#### `useRangeSelection(options)`
-
-Excel-like cell/row/column range selection. See [Range Selection](#range-selection) section.
-
 #### `useDataGridState(options)`
 
 Central state management with controlled/uncontrolled support.
-
-## Range Selection
-
-Enable Excel-like range selection with `useRangeSelection`:
-
-```tsx
-import { DataGrid, useRangeSelection } from "@fw-components/data-grid";
-
-function MyGrid() {
-  const rangeSelection = useRangeSelection({
-    rowCount: data.length,
-    columnCount: columns.length,
-    skipColumns: [0], // skip checkbox column
-    onSelectionChange: (state) => {
-      console.log("Selected ranges:", state.ranges);
-    },
-  });
-
-  return (
-    <div
-      onKeyDown={rangeSelection.handleKeyDown}
-      onMouseUp={rangeSelection.handleMouseUp}
-      tabIndex={0}
-    >
-      <DataGrid
-        data={data}
-        columns={columns}
-        features={{ rangeSelection: true }}
-      />
-    </div>
-  );
-}
-```
-
-**Supported interactions:**
-- **Click** — select single cell
-- **Shift+Click** — extend selection from active cell
-- **Ctrl/Cmd+Click** — add another range (multi-select)
-- **Click+Drag** — select a rectangular range
-- **Shift+Arrow** — extend selection with keyboard
-- **Ctrl+A** — select all cells
-- **`selectRow(index)`** — select entire row
-- **`selectColumn(index)`** — select entire column
 
 ## Export to Excel
 
@@ -498,10 +450,6 @@ function MyGrid() {
 | `Escape` | Cancel edit |
 | `Tab` | Move to next cell (when editing) |
 | `Space` | Toggle checkbox / expand row |
-| `Shift+Arrow` | Extend range selection |
-| `Ctrl+A` | Select all cells |
-| `Home` / `End` | Jump to first/last column |
-| `Ctrl+Home/End` | Jump to first/last cell in grid |
 
 ## Showcase / Demo
 
@@ -514,7 +462,7 @@ npm run dev
 ```
 
 Open http://localhost:5173 to see the portfolio dashboard demo with 500+ assets,
-editable columns, range selection, export, virtualization, and more.
+editable columns, export, virtualization, and more.
 
 ## Browser Support
 

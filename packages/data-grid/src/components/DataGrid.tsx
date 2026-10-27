@@ -14,7 +14,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import { useDataGridState } from "../hooks/useDataGridState";
 import { useEditing } from "../hooks/useEditing";
-import { useRangeSelection } from "../hooks/useRangeSelection";
 import type { DataGridProps, RowSelectionConfig } from "../types";
 import { buildSearchIndex, treeAwareGlobalFilterFn } from "../utils/filtering";
 import { cn } from "../utils/styling";
@@ -82,8 +81,6 @@ export const DataGrid = <TData extends object>({
     : { enabled: features.editing === true };
   const editingEnabled = editingConfig.enabled;
   const commitOnBlur = editingConfig.commitOnBlur !== false;
-
-  const rangeSelectionEnabled = features.rangeSelection === true;
 
   const {
     globalFilter,
@@ -268,47 +265,6 @@ export const DataGrid = <TData extends object>({
 
   const virtualRows = rowVirtualizer.getVirtualItems();
 
-  const visibleLeafColumns = table.getVisibleLeafColumns();
-  const selectionColumnIndex = rowSelectionEnabled
-    ? visibleLeafColumns.findIndex((col) => col.id === "__selection")
-    : -1;
-
-  const rangeSelection = useRangeSelection({
-    rowCount: rows.length,
-    columnCount: visibleLeafColumns.length,
-    skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
-  });
-
-  // Syncs DOM focus/scroll with the keyboard destination (last range's end, or activeCell
-  // for a plain move) since neither followed the state update on its own.
-  const lastRange = rangeSelection.selectionState.ranges[rangeSelection.selectionState.ranges.length - 1];
-  const keyboardFocusTarget = lastRange?.end ?? rangeSelection.selectionState.activeCell;
-  const isSelecting = rangeSelection.selectionState.isSelecting;
-
-  useEffect(() => {
-    // Skip during an active drag to avoid fighting the user's own scrolling; syncs once
-    // the drag/click settles on mouseup.
-    if (!rangeSelectionEnabled || !keyboardFocusTarget || isSelecting) return;
-    const { rowIndex, columnIndex } = keyboardFocusTarget;
-
-    const focusCell = () => {
-      const el = tableContainerRef.current?.querySelector<HTMLElement>(
-        `[data-row-index="${rowIndex}"][data-col-index="${columnIndex}"]`
-      );
-      el?.focus({ preventScroll: true });
-      el?.scrollIntoView({ block: "nearest", inline: "nearest" });
-    };
-
-    if (virtualizationEnabled) {
-      // The destination row may not be mounted yet — scroll it into the virtualizer's
-      // range first.
-      rowVirtualizer.scrollToIndex(rowIndex, { align: "auto" });
-      requestAnimationFrame(focusCell);
-    } else {
-      focusCell();
-    }
-  }, [keyboardFocusTarget?.rowIndex, keyboardFocusTarget?.columnIndex, isSelecting, rangeSelectionEnabled, virtualizationEnabled, rowVirtualizer]);
-
   // Accounts for detail <tr> rows (not part of `rows`) so aria-rowindex/rowcount reflect
   // each row's true logical position.
   const { detailRowOffsets, totalDetailRows } = useMemo(() => {
@@ -356,12 +312,6 @@ export const DataGrid = <TData extends object>({
       onCommitEdit={(rowId, columnId) => { editing.commitEdit(rowId, columnId); }}
       onCancelEdit={editing.cancelEdit}
       commitOnBlur={commitOnBlur}
-      rangeSelectionEnabled={rangeSelectionEnabled}
-      onCellMouseDown={rangeSelectionEnabled ? rangeSelection.handleCellMouseDown : undefined}
-      onCellMouseEnter={rangeSelectionEnabled ? rangeSelection.handleCellMouseEnter : undefined}
-      isCellSelected={rangeSelectionEnabled ? rangeSelection.isCellSelected : undefined}
-      isActiveCell={rangeSelectionEnabled ? rangeSelection.isActiveCell : undefined}
-      rowVisualIndex={rowVisualIndex}
       measureRef={measureRef}
     />
   );
@@ -411,9 +361,6 @@ export const DataGrid = <TData extends object>({
       className={cn("w-full", className)}
       // No role="grid" here — the <table> below already owns it.
       aria-busy={isLoading}
-      tabIndex={rangeSelectionEnabled ? 0 : undefined}
-      onKeyDown={rangeSelectionEnabled ? rangeSelection.handleKeyDown : undefined}
-      onMouseUp={rangeSelectionEnabled ? rangeSelection.handleMouseUp : undefined}
     >
       {isLoading && (
         <div className="w-full h-1 bg-gray-100 overflow-hidden">

@@ -115,7 +115,6 @@ export interface DataGridFeatures {
   virtualization?: boolean;
   rowSelection?: boolean | RowSelectionConfig;
   editing?: boolean | EditingConfig;
-  rangeSelection?: boolean;
 }
 
 export interface RowSelectionConfig {
