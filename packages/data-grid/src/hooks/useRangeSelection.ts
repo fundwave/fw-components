@@ -95,7 +95,10 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
       while (next >= 0 && next < columnCount && skipColumns.includes(next)) {
         next += direction;
       }
-      return Math.max(0, Math.min(next, columnCount - 1));
+      // Ran off the grid without finding a valid column in that direction — stay put
+      // instead of clamping back onto an excluded (e.g. checkbox) column.
+      if (next < 0 || next >= columnCount) return current;
+      return next;
     },
     [columnCount, skipColumns]
   );
