@@ -15,6 +15,9 @@ export interface DataRowProps<TData> {
   renderSubContent?: (row: TData) => ReactNode;
   showExpandToggle?: (row: TData) => boolean;
   dataIndex?: number;
+  /** Absolute logical row position (accounting for the header and any detail rows before
+   * it), exposed via aria-rowindex since virtualization only mounts a window of rows */
+  ariaRowIndex?: number;
   onInteraction?: OnInteractionCallback;
   editingEnabled?: boolean;
   isRowEditable?: (row: TData) => boolean;
@@ -44,6 +47,7 @@ export const DataRow = <TData,>({
   renderSubContent,
   showExpandToggle,
   dataIndex,
+  ariaRowIndex,
   onInteraction,
   editingEnabled,
   isRowEditable,
@@ -111,6 +115,7 @@ export const DataRow = <TData,>({
         tabIndex={onRowClick ? 0 : undefined}
         data-index={dataIndex}
         data-row-id={row.id}
+        aria-rowindex={ariaRowIndex}
       >
         {row.getVisibleCells().map((cell, cellIndex) => {
           const column = cell.column;
@@ -230,7 +235,7 @@ export const DataRow = <TData,>({
       </tr>
 
       {isExpanded && renderSubContent && (
-        <tr>
+        <tr aria-rowindex={ariaRowIndex !== undefined ? ariaRowIndex + 1 : undefined}>
           <td colSpan={row.getVisibleCells().length} className="p-0">
             <div className="px-4 py-3 bg-gray-50">{renderSubContent(originalRow)}</div>
           </td>
