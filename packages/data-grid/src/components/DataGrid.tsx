@@ -358,7 +358,9 @@ export const DataGrid = <TData extends object>({
   return (
     <div
       className={cn("w-full", className)}
-      role="grid"
+      // No role="grid" here — the <table> below already owns that role. Declaring it on
+      // both creates a grid whose only content is another grid, an invalid hierarchy for
+      // assistive tech. The keyboard/mouse handlers stay on this wrapper either way.
       aria-busy={isLoading}
       tabIndex={rangeSelectionEnabled ? 0 : undefined}
       onKeyDown={rangeSelectionEnabled ? rangeSelection.handleKeyDown : undefined}
