@@ -1,6 +1,5 @@
 import {
   DataGrid,
-  useBulkEdit,
   type ColumnDef,
   type Table,
   type CellEditEvent,
@@ -160,21 +159,6 @@ export default function App() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [editLog, setEditLog] = useState<string[]>([]);
 
-  // Bulk edit hook
-  const bulkEdit = useBulkEdit<Asset>({
-    onBulkEdit: async ({ rowIds, columnId, value }) => {
-      setData((prev) =>
-        prev.map((asset) =>
-          rowIds.includes(asset.id) ? { ...asset, [columnId]: value } : asset
-        )
-      );
-      setEditLog((prev) => [
-        `Bulk edit: ${rowIds.length} rows, ${columnId} = ${JSON.stringify(value)}`,
-        ...prev.slice(0, 9),
-      ]);
-    },
-  });
-
   // Cell edit handler
   // When the edited row is part of a multi-row selection, apply the new value to every
   // selected row — not just the one that was clicked.
@@ -211,7 +195,8 @@ export default function App() {
     return null;
   }, []);
 
-  // Bulk edit actions
+  // Bulk edit action — no separate bulk-edit API, just reuses handleCellEdit (which
+  // already fans an edit out to every selected row) with a value for one of them.
   const handleBulkEditStatus = () => {
     if (!tableInstance) return;
     const selectedRows = tableInstance.getSelectedRowModel().rows;
@@ -219,11 +204,14 @@ export default function App() {
       alert("Select rows first (using checkboxes)");
       return;
     }
-    const rowIds = selectedRows.map((r) => r.id);
-    const rows = selectedRows.map((r) => r.original);
-    // Commit atomically with an explicit column/value — calling startBulkEdit/updateBulkValue
-    // then immediately committing would read stale pre-render state.
-    bulkEdit.commitBulkEdit(rowIds, rows, { columnId: "status", value: "Realized" });
+    const [firstRow] = selectedRows;
+    handleCellEdit({
+      rowId: firstRow.id,
+      columnId: "status",
+      value: "Realized",
+      previousValue: firstRow.original.status,
+      row: firstRow.original,
+    });
   };
 
   // Stats
