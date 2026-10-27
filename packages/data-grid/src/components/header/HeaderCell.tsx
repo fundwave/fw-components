@@ -1,7 +1,7 @@
 import type { Header } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import React, { useState } from "react";
-import type { DataGridFeatures, OnInteractionCallback } from "../../types";
+import type { DataGridFeatures } from "../../types";
 import { cn, getAlignmentClasses, getColumnPinningStyles } from "../../utils/styling";
 import { ExpandToggle } from "../commons/ExpandToggle";
 import { SortIndicator } from "../commons/SortIndicator";
@@ -12,7 +12,6 @@ export interface HeaderCellProps<TData> {
   showExpandAll: boolean;
   isAllExpanded: boolean;
   onToggleAll: () => void;
-  onInteraction?: OnInteractionCallback;
 }
 
 export const HeaderCell = <TData,>({
@@ -21,7 +20,6 @@ export const HeaderCell = <TData,>({
   showExpandAll,
   isAllExpanded,
   onToggleAll,
-  onInteraction,
 }: HeaderCellProps<TData>) => {
   const column = header.column;
   const columnDef = column.columnDef;
@@ -60,14 +58,12 @@ export const HeaderCell = <TData,>({
     if (isEnterOrSpace || isMouseClick) {
       event.preventDefault();
       toggleSortingHandler?.(event);
-      onInteraction?.(`Sorted Column ${isSorted ? "Descending" : "Ascending"}`, { type: "sorting" });
     }
   };
 
   const handleResizeMouseDown = (event: React.MouseEvent | React.TouchEvent) => {
     event.preventDefault();
     header.getResizeHandler()?.(event);
-    onInteraction?.("Resized Column", { type: "resizing" });
   };
 
   // A placeholder header has no content of its own — rendering it would duplicate the

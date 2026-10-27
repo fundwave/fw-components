@@ -442,7 +442,6 @@ export const DataGrid = <TData extends object>({
                     showExpandAll={expandConfig?.showAllExpand ?? false}
                     isAllExpanded={table.getIsAllRowsExpanded()}
                     onToggleAll={() => table.toggleAllRowsExpanded()}
-                    onInteraction={onInteraction}
                   />
                 ))}
               </tr>
