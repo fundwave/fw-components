@@ -279,6 +279,22 @@ export const DataGrid = <TData extends object>({
     skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
   });
 
+  // Accounts for detail <tr> rows (not part of `rows`) so aria-rowindex/rowcount reflect
+  // each row's true logical position.
+  const { detailRowOffsets, totalDetailRows } = useMemo(() => {
+    if (!expandConfig?.renderSubContent) return { detailRowOffsets: null as number[] | null, totalDetailRows: 0 };
+    const offsets: number[] = new Array(rows.length);
+    let count = 0;
+    for (let i = 0; i < rows.length; i++) {
+      offsets[i] = count;
+      if (rows[i].getCanExpand() && rows[i].getIsExpanded()) count += 1;
+    }
+    return { detailRowOffsets: offsets, totalDetailRows: count };
+  }, [rows, expandConfig?.renderSubContent]);
+
+  // +1 for the header row.
+  const ariaRowCount = rows.length + 1 + totalDetailRows;
+
   const renderRow = (
     row: Row<TData>,
     dataIndex?: number,
@@ -293,6 +309,11 @@ export const DataGrid = <TData extends object>({
       showExpandToggle={expandConfig?.showExpandToggle}
       getRowClassName={getRowClassName}
       dataIndex={dataIndex}
+      ariaRowIndex={
+        rowVisualIndex !== undefined
+          ? rowVisualIndex + 2 + (detailRowOffsets?.[rowVisualIndex] ?? 0)
+          : undefined
+      }
       onInteraction={onInteraction}
       onRowClick={onRowClick}
       editingEnabled={editingEnabled}
@@ -330,7 +351,7 @@ export const DataGrid = <TData extends object>({
       return (
         <>
           {paddingTop > 0 && (
-            <tr style={{ height: `${paddingTop}px` }}>
+            <tr aria-hidden="true" style={{ height: `${paddingTop}px` }}>
               <td colSpan={columns.length} />
             </tr>
           )}
@@ -339,7 +360,7 @@ export const DataGrid = <TData extends object>({
             return renderRow(row, virtualRow.index, virtualRow.index, rowVirtualizer.measureElement);
           })}
           {paddingBottom > 0 && (
-            <tr style={{ height: `${paddingBottom}px` }}>
+            <tr aria-hidden="true" style={{ height: `${paddingBottom}px` }}>
               <td colSpan={columns.length} />
             </tr>
           )}
@@ -378,10 +399,11 @@ export const DataGrid = <TData extends object>({
           className="w-full border-collapse"
           style={{ width: tableWidth, tableLayout: columnResizingEnabled ? "fixed" : undefined }}
           role="grid"
+          aria-rowcount={ariaRowCount}
         >
           <thead className="sticky top-0 z-20 bg-gray-50">
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="border-b-2 border-gray-200">
+              <tr key={headerGroup.id} className="border-b-2 border-gray-200" aria-rowindex={1}>
                 {headerGroup.headers.map((header) => (
                   <HeaderCell
                     key={header.id}
