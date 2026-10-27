@@ -2,7 +2,7 @@ import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import React, { type ReactNode } from "react";
 import type { DataGridFeatures, OnInteractionCallback } from "../../types";
-import { formatAndTrimValue } from "../../utils/formatting";
+import { formatAndTrimValue, formatValue } from "../../utils/formatting";
 import { cn, getAlignmentClasses, getColumnPinningStyles, getNestedRowPadding } from "../../utils/styling";
 import { EditableCell } from "../cell/EditableCell";
 import { ExpandToggle } from "../commons/ExpandToggle";
@@ -120,7 +120,9 @@ export const DataRow = <TData,>({
               ? columnMeta.formatFn(value, cell.getContext())
               : columnMeta?.formatType
                 ? formatAndTrimValue(value, columnMeta.formatType, columnMeta.formatOptions)
-                : undefined
+                : columnMeta?.editType === "date"
+                  ? formatValue(value, "date", columnMeta.formatOptions)
+                  : undefined
           ) as ReactNode;
 
           // TanStack's default renderer (no `columnDef.cell`) reads `renderValue()`, bound

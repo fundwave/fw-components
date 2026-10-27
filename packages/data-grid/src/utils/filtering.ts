@@ -33,7 +33,10 @@ function getRowValues<TData>(row: Row<TData>): string {
   return normalize(
     row
       .getAllCells()
-      .map((cell) => String(cell.getValue() ?? ""))
+      .map((cell) => {
+        const searchValue = cell.column.columnDef.meta?.getSearchValue?.(cell.getValue(), row.original);
+        return String(searchValue ?? cell.getValue() ?? "");
+      })
       .join(" ")
   );
 }

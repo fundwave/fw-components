@@ -21,6 +21,7 @@ declare module "@tanstack/react-table" {
     formatOptions?: FormatOptions;
     /** Takes precedence over formatType */
     formatFn?: (value: TValue, cell: CellContext<TData, TValue>) => string | number | ReactNode;
+    getSearchValue?: (value: TValue, row: TData) => string | number | null | undefined;
     align?: "left" | "center" | "right";
     width?: string | number;
     maxWidth?: string | number;
