@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import React, { type ReactNode } from "react";
-import type { DataGridFeatures, EditingHandlers, OnInteractionCallback } from "../../types";
+import type { DataGridFeatures, EditingHandlers } from "../../types";
 import { formatAndTrimValue, formatValue } from "../../utils/formatting";
 import { cn, getAlignmentClasses, getColumnPinningStyles, getNestedRowPadding } from "../../utils/styling";
 import { EditableCell } from "../cell/EditableCell";
@@ -18,7 +18,6 @@ export interface DataRowProps<TData> {
   /** Absolute logical row position (accounting for the header and any detail rows before
    * it), exposed via aria-rowindex since virtualization only mounts a window of rows */
   ariaRowIndex?: number;
-  onInteraction?: OnInteractionCallback;
   editingEnabled?: boolean;
   isRowEditable?: (row: TData) => boolean;
   editing?: EditingHandlers;
@@ -35,7 +34,6 @@ export const DataRow = <TData,>({
   showExpandToggle,
   dataIndex,
   ariaRowIndex,
-  onInteraction,
   editingEnabled,
   isRowEditable,
   editing,
@@ -66,7 +64,6 @@ export const DataRow = <TData,>({
     const isEnterOrSpace = "key" in event && (event.key === "Enter" || event.key === " ");
     const isMouseClick = "button" in event;
     if (isEnterOrSpace || isMouseClick) {
-      onInteraction?.("Clicked Row", { label: String(row.id), type: "rowClick" });
       onRowClick(originalRow);
     }
   };
@@ -74,7 +71,6 @@ export const DataRow = <TData,>({
   const handleExpandToggle = (e: React.MouseEvent) => {
     e.stopPropagation();
     row.toggleExpanded();
-    onInteraction?.("Toggled Row Expansion", { label: String(row.id), type: "expanding" });
   };
 
   return (

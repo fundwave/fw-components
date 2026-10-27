@@ -46,7 +46,6 @@ export const DataGrid = <TData extends object>({
   validateCell,
 
   onTableReady,
-  onInteraction,
   onRowClick,
 
   className,
@@ -224,9 +223,6 @@ export const DataGrid = <TData extends object>({
           // getRowId, nested rows) instead of re-implementing a lookup.
           const row = table.getRow(rowId, true).original as TData;
           await onCellEdit?.({ rowId, columnId, value, previousValue, row });
-          // Reported only after the save succeeds, so a rejected save isn't tracked as
-          // successful.
-          onInteraction?.("Cell Edited", { label: `${rowId}:${columnId}`, type: "cellEdit" });
         }
       : undefined,
     validateCell: editingEnabled
@@ -300,7 +296,6 @@ export const DataGrid = <TData extends object>({
           ? rowVisualIndex + 2 + (detailRowOffsets?.[rowVisualIndex] ?? 0)
           : undefined
       }
-      onInteraction={onInteraction}
       onRowClick={onRowClick}
       editingEnabled={editingEnabled}
       isRowEditable={isRowEditable}

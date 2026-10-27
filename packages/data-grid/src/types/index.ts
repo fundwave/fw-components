@@ -163,22 +163,6 @@ export interface TableStateHandlers {
   onRowSelectionChange?: OnChangeFn<RowSelectionState>;
 }
 
-export type InteractionType =
-  | "sorting"
-  | "filtering"
-  | "expanding"
-  | "resizing"
-  | "pinning"
-  | "rowClick"
-  | "cellEdit"
-  | "bulkEdit"
-  | "rowSelect";
-
-export type OnInteractionCallback = (
-  eventName: string,
-  properties?: { label?: string; type: InteractionType }
-) => void;
-
 export interface DataGridProps<TData = Record<string, unknown>> {
   columns: ColumnDef<TData, unknown>[];
   data: TData[];
@@ -205,7 +189,6 @@ export interface DataGridProps<TData = Record<string, unknown>> {
   validateCell?: (value: unknown, row: TData, columnId: string) => string | null | Promise<string | null>;
 
   onTableReady?: (table: Table<TData>) => void;
-  onInteraction?: OnInteractionCallback;
   onRowClick?: (row: TData) => void;
 
   className?: string;

@@ -308,7 +308,6 @@ export default function App() {
             validateCell={validateCell}
             onTableReady={setTableInstance}
             onRowClick={(row) => console.log("Row clicked:", row.name)}
-            onInteraction={(event, props) => console.log("Interaction:", event, props)}
             tableContainerClassName="h-[65vh]"
             className="w-full"
             emptyState={{

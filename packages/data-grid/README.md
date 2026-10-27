@@ -306,7 +306,6 @@ Available format types: `currency`, `percentage`, `decimal`, `number`, `text`, `
 | `validateCell` | `(value, row, colId) => string \| null` | Cell validation |
 | `onTableReady` | `(table) => void` | TanStack Table instance callback |
 | `onRowClick` | `(row) => void` | Row click handler |
-| `onInteraction` | `(event, props) => void` | Analytics/tracking callback |
 | `isLoading` | `boolean` | Show loading state |
 | `emptyState` | `object` | Empty state configuration |
 | `errorMessage` | `ReactNode` | Error state message |
