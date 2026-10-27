@@ -188,7 +188,7 @@ export const DataGrid = <TData extends object>({
     getSubRows: expandConfig?.getSubRows
       ? expandConfig.getSubRows
       : (row) => (row as Record<string, unknown>).subRows as TData[] | undefined,
-    getRowCanExpand: (row) => row.subRows?.length > 0 || !!expandConfig?.renderSubContent,
+    getRowCanExpand: (row) => expandingEnabled && (row.subRows?.length > 0 || !!expandConfig?.renderSubContent),
     enableExpanding: expandingEnabled,
 
     enableRowSelection: rowSelectionEnabled && isRowSelectable ? (row) => isRowSelectable(row.original) : rowSelectionEnabled,
