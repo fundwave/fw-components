@@ -160,9 +160,12 @@ function formatExportValue(
         : col.formatOptions;
 
     const formatted = formatValue(value, col.formatType, formatOptions);
-    // Try to keep numeric formatted values as numbers (only safe for unscaled formats)
+    // Try to keep numeric formatted values as numbers (only safe for unscaled formats).
+    // Only strip thousands-separator commas and hand the rest to parseFloat — stripping
+    // every non-digit character also strips the "e"/"+" of exponent notation (very small
+    // decimals can format as e.g. "1e-7"), corrupting it into "1-7" (parsed as 1).
     if ((col.formatType === "number" || col.formatType === "decimal") && !isScaled) {
-      const num = parseFloat(formatted.replace(/[^0-9.-]/g, ""));
+      const num = parseFloat(formatted.replace(/,/g, ""));
       if (!isNaN(num)) return num;
     }
     return formatted;
