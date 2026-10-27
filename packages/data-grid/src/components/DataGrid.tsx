@@ -18,9 +18,9 @@ import { useRangeSelection } from "../hooks/useRangeSelection";
 import type { DataGridProps, RowSelectionConfig } from "../types";
 import { buildSearchIndex, treeAwareGlobalFilterFn } from "../utils/filtering";
 import { cn } from "../utils/styling";
+import { Checkbox } from "./commons/Checkbox";
 import { HeaderCell } from "./header/HeaderCell";
 import { DataRow } from "./row/DataRow";
-import { SelectionCheckbox } from "./selection/SelectionCheckbox";
 import { GridEmptyState } from "./states/GridEmptyState";
 import { GridErrorState } from "./states/GridErrorState";
 import { GridSkeleton } from "./states/GridSkeleton";
@@ -120,7 +120,7 @@ export const DataGrid = <TData extends object>({
       const selectionCol: ColumnDef<TData, unknown> = {
         id: "__selection",
         header: ({ table }) => (
-          <SelectionCheckbox
+          <Checkbox
             checked={table.getIsAllRowsSelected()}
             indeterminate={table.getIsSomeRowsSelected()}
             onChange={(checked) => table.toggleAllRowsSelected(checked)}
@@ -129,7 +129,7 @@ export const DataGrid = <TData extends object>({
           />
         ),
         cell: ({ row }) => (
-          <SelectionCheckbox
+          <Checkbox
             checked={row.getIsSelected()}
             onChange={(checked) => row.toggleSelected(checked)}
             label={`Select row ${row.id}`}

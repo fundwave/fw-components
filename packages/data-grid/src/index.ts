@@ -20,7 +20,7 @@ export { HeaderCell } from "./components/header/HeaderCell";
 export { DataRow } from "./components/row/DataRow";
 export { EditableCell } from "./components/cell/EditableCell";
 export { CellEditor } from "./components/cell/CellEditor";
-export { SelectionCheckbox } from "./components/selection/SelectionCheckbox";
+export { Checkbox } from "./components/commons/Checkbox";
 export { GridEmptyState } from "./components/states/GridEmptyState";
 export { GridErrorState } from "./components/states/GridErrorState";
 export { GridSkeleton } from "./components/states/GridSkeleton";

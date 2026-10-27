@@ -1,7 +1,7 @@
 import React from "react";
 import { cn } from "../../utils/styling";
 
-export interface SelectionCheckboxProps {
+export interface CheckboxProps {
   checked: boolean;
   indeterminate?: boolean;
   onChange: (checked: boolean) => void;
@@ -9,7 +9,7 @@ export interface SelectionCheckboxProps {
   disabled?: boolean;
 }
 
-export const SelectionCheckbox: React.FC<SelectionCheckboxProps> = ({
+export const Checkbox: React.FC<CheckboxProps> = ({
   checked,
   indeterminate = false,
   onChange,
