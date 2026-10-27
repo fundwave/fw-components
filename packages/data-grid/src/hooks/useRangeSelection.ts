@@ -95,7 +95,9 @@ export function useRangeSelection(options: UseRangeSelectionOptions): UseRangeSe
       while (next >= 0 && next < columnCount && skipColumns.includes(next)) {
         next += direction;
       }
-      return Math.max(0, Math.min(next, columnCount - 1));
+      // No valid column in that direction — stay put instead of clamping onto a skipped one.
+      if (next < 0 || next >= columnCount) return current;
+      return next;
     },
     [columnCount, skipColumns]
   );
