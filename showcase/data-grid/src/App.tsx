@@ -1,6 +1,5 @@
 import {
   DataGrid,
-  exportGridData,
   useBulkEdit,
   type ColumnDef,
   type Table,
@@ -212,35 +211,6 @@ export default function App() {
     return null;
   }, []);
 
-  // Export handlers
-  const handleExportCSV = () => {
-    if (!tableInstance) return;
-    exportGridData(tableInstance, {
-      filename: "portfolio-assets",
-      sheetName: "Assets",
-    });
-  };
-
-  const handleExportSelected = () => {
-    if (!tableInstance) return;
-    exportGridData(tableInstance, {
-      filename: "selected-assets",
-      selectedOnly: true,
-    });
-  };
-
-  const handleExportCustom = () => {
-    if (!tableInstance) return;
-    exportGridData(tableInstance, {
-      filename: "custom-export",
-      onExport: (exportData) => {
-        // Custom handler — just log it (in real app, could use SheetJS)
-        const preview = JSON.stringify(exportData.rows.slice(0, 3), null, 2);
-        alert(`Custom export handler!\n\nHeaders: ${exportData.headers.join(", ")}\n\nFirst 3 rows:\n${preview}`);
-      },
-    });
-  };
-
   // Bulk edit actions
   const handleBulkEditStatus = () => {
     if (!tableInstance) return;
@@ -299,28 +269,6 @@ export default function App() {
                 className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none"
               />
             </div>
-
-            <div className="h-6 w-px bg-gray-200" />
-
-            {/* Export buttons */}
-            <button
-              onClick={handleExportCSV}
-              className="px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              📥 Export CSV
-            </button>
-            <button
-              onClick={handleExportSelected}
-              className="px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              📋 Export Selected
-            </button>
-            <button
-              onClick={handleExportCustom}
-              className="px-3 py-2 text-xs font-medium bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-            >
-              ⚙️ Custom Export
-            </button>
 
             <div className="h-6 w-px bg-gray-200" />
 
@@ -400,7 +348,7 @@ export default function App() {
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono bg-gray-100 px-1 rounded">☑️ Checkbox</span>
-                <span>Select rows for bulk operations or export</span>
+                <span>Select rows for bulk operations</span>
               </div>
               <div className="flex items-start gap-2">
                 <span className="font-mono bg-gray-100 px-1 rounded">Column header</span>

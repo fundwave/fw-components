@@ -383,64 +383,6 @@ Manages bulk editing operations across multiple selected rows.
 
 Central state management with controlled/uncontrolled support.
 
-## Export to Excel
-
-Export grid data with the built-in `exportGridData` utility:
-
-```tsx
-import { DataGrid, exportGridData, type Table } from "@fw-components/data-grid";
-
-function MyGrid() {
-  const [table, setTable] = useState<Table<Asset> | null>(null);
-
-  // Default: downloads as CSV
-  const handleExport = () => {
-    exportGridData(table!, { filename: "portfolio-assets" });
-  };
-
-  // Export only selected rows
-  const handleExportSelected = () => {
-    exportGridData(table!, { filename: "selected", selectedOnly: true });
-  };
-
-  // Custom export handler (e.g., using SheetJS/xlsx library)
-  const handleExportXLSX = () => {
-    exportGridData(table!, {
-      filename: "portfolio",
-      onExport: (data) => {
-        // data.headers: string[]
-        // data.rows: (string | number | boolean | null)[][]
-        // Use SheetJS, ExcelJS, or any library here
-        const ws = XLSX.utils.aoa_to_sheet([data.headers, ...data.rows]);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, data.sheetName);
-        XLSX.writeFile(wb, `${data.filename}.xlsx`);
-      },
-    });
-  };
-
-  return (
-    <>
-      <button onClick={handleExport}>Export CSV</button>
-      <button onClick={handleExportSelected}>Export Selected</button>
-      <button onClick={handleExportXLSX}>Export XLSX</button>
-      <DataGrid data={data} columns={columns} onTableReady={setTable} />
-    </>
-  );
-}
-```
-
-**Export options:**
-
-| Option | Type | Description |
-|--------|------|-------------|
-| `filename` | `string` | File name without extension |
-| `sheetName` | `string` | Sheet name (default: "Sheet1") |
-| `columns` | `ExportColumn[]` | Override which columns to export |
-| `selectedOnly` | `boolean` | Export only selected rows |
-| `includeHeaders` | `boolean` | Include header row (default: true) |
-| `onExport` | `(data) => void` | Custom handler — receives prepared data |
-
 ## Keyboard Shortcuts
 
 | Key | Action |
@@ -462,7 +404,7 @@ npm run dev
 ```
 
 Open http://localhost:5173 to see the portfolio dashboard demo with 500+ assets,
-editable columns, export, virtualization, and more.
+editable columns, virtualization, and more.
 
 ## Browser Support
 
