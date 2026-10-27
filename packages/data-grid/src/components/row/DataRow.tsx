@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { flexRender } from "@tanstack/react-table";
 import React, { type ReactNode } from "react";
-import type { DataGridFeatures, OnInteractionCallback } from "../../types";
+import type { DataGridFeatures, EditingHandlers, OnInteractionCallback } from "../../types";
 import { formatAndTrimValue, formatValue } from "../../utils/formatting";
 import { cn, getAlignmentClasses, getColumnPinningStyles, getNestedRowPadding } from "../../utils/styling";
 import { EditableCell } from "../cell/EditableCell";
@@ -21,14 +21,7 @@ export interface DataRowProps<TData> {
   onInteraction?: OnInteractionCallback;
   editingEnabled?: boolean;
   isRowEditable?: (row: TData) => boolean;
-  isEditingCell?: (rowId: string, columnId: string) => boolean;
-  getDraft?: (rowId: string, columnId: string) => unknown | undefined;
-  getError?: (rowId: string, columnId: string) => string | undefined;
-  onStartEdit?: (rowId: string, columnId: string, currentValue: unknown) => void;
-  onUpdateDraft?: (rowId: string, columnId: string, value: unknown) => void;
-  onCommitEdit?: (rowId: string, columnId: string) => void;
-  onCancelEdit?: () => void;
-  commitOnBlur?: boolean;
+  editing?: EditingHandlers;
   /** Reports this row's measured height to the virtualizer */
   measureRef?: (el: HTMLTableRowElement | null) => void;
 }
@@ -45,14 +38,7 @@ export const DataRow = <TData,>({
   onInteraction,
   editingEnabled,
   isRowEditable,
-  isEditingCell,
-  getDraft,
-  getError,
-  onStartEdit,
-  onUpdateDraft,
-  onCommitEdit,
-  onCancelEdit,
-  commitOnBlur,
+  editing,
   measureRef,
 }: DataRowProps<TData>) => {
   const originalRow = row.original;
@@ -152,7 +138,7 @@ export const DataRow = <TData,>({
           const columnLabel = typeof columnDef.header === "string" ? columnDef.header : undefined;
           const rowId = row.id;
           const isEditable = editingEnabled && columnMeta?.editable === true && (!isRowEditable || isRowEditable(row.original));
-          const isCellEditing = isEditable && isEditingCell?.(rowId, columnId);
+          const isCellEditing = isEditable && editing?.isEditingCell(rowId, columnId);
 
           return (
             <td
@@ -191,13 +177,9 @@ export const DataRow = <TData,>({
                     editType={columnMeta?.editType}
                     editOptions={columnMeta?.editOptions}
                     customEditCell={columnMeta?.editCell as EditableCell<TData>["props"]["customEditCell"]}
-                    onStartEdit={onStartEdit!}
-                    onUpdateDraft={onUpdateDraft!}
-                    onCommit={onCommitEdit!}
-                    onCancel={onCancelEdit!}
-                    draftValue={getDraft?.(rowId, columnId)}
-                    error={getError?.(rowId, columnId)}
-                    commitOnBlur={commitOnBlur}
+                    draftValue={editing?.getDraft(rowId, columnId)}
+                    error={editing?.getError(rowId, columnId)}
+                    editing={editing!}
                   />
                 ) : (
                   cellContent

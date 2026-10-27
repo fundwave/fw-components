@@ -98,6 +98,18 @@ export interface EditingState {
   dirtyCells: Set<string>;
 }
 
+/** Editing callbacks threaded from DataGrid through DataRow down to EditableCell. */
+export interface EditingHandlers {
+  isEditingCell: (rowId: string, columnId: string) => boolean;
+  getDraft: (rowId: string, columnId: string) => unknown;
+  getError: (rowId: string, columnId: string) => string | undefined;
+  onStartEdit: (rowId: string, columnId: string, currentValue: unknown) => void;
+  onUpdateDraft: (rowId: string, columnId: string, value: unknown) => void;
+  onCommitEdit: (rowId: string, columnId: string) => void;
+  onCancelEdit: () => void;
+  commitOnBlur?: boolean;
+}
+
 export interface DataGridFeatures {
   /** Set `{ manual: true }` for server-side filtering. */
   globalFilter?: boolean | { manual?: boolean };

@@ -304,14 +304,16 @@ export const DataGrid = <TData extends object>({
       onRowClick={onRowClick}
       editingEnabled={editingEnabled}
       isRowEditable={isRowEditable}
-      isEditingCell={editing.isEditing}
-      getDraft={editing.getDraft}
-      getError={editing.getError}
-      onStartEdit={editing.startEditing}
-      onUpdateDraft={editing.updateDraft}
-      onCommitEdit={(rowId, columnId) => { editing.commitEdit(rowId, columnId); }}
-      onCancelEdit={editing.cancelEdit}
-      commitOnBlur={commitOnBlur}
+      editing={{
+        isEditingCell: editing.isEditing,
+        getDraft: editing.getDraft,
+        getError: editing.getError,
+        onStartEdit: editing.startEditing,
+        onUpdateDraft: editing.updateDraft,
+        onCommitEdit: (rowId, columnId) => { editing.commitEdit(rowId, columnId); },
+        onCancelEdit: editing.cancelEdit,
+        commitOnBlur,
+      }}
       measureRef={measureRef}
     />
   );

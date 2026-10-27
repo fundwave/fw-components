@@ -1,7 +1,7 @@
 import type { Row } from "@tanstack/react-table";
 import { Pencil } from "lucide-react";
 import React from "react";
-import type { CellEditType, EditCellRenderProps, SelectOption } from "../../types";
+import type { CellEditType, EditCellRenderProps, EditingHandlers, SelectOption } from "../../types";
 import { CellEditor } from "./CellEditor";
 
 export interface EditableCellProps<TData = unknown> {
@@ -17,13 +17,9 @@ export interface EditableCellProps<TData = unknown> {
   editType?: CellEditType;
   editOptions?: SelectOption[];
   customEditCell?: (props: EditCellRenderProps<TData>) => React.ReactNode;
-  onStartEdit: (rowId: string, columnId: string, currentValue: unknown) => void;
-  onUpdateDraft: (rowId: string, columnId: string, value: unknown) => void;
-  onCommit: (rowId: string, columnId: string) => void;
-  onCancel: () => void;
   draftValue?: unknown;
   error?: string | null;
-  commitOnBlur?: boolean;
+  editing: EditingHandlers;
 }
 
 export const EditableCell = <TData,>({
@@ -38,14 +34,11 @@ export const EditableCell = <TData,>({
   editType = "text",
   editOptions,
   customEditCell,
-  onStartEdit,
-  onUpdateDraft,
-  onCommit,
-  onCancel,
   draftValue,
   error,
-  commitOnBlur = true,
+  editing,
 }: EditableCellProps<TData>) => {
+  const { onStartEdit, onUpdateDraft, onCommitEdit, onCancelEdit, commitOnBlur = true } = editing;
   if (!editable) {
     return <>{displayValue}</>;
   }
@@ -63,8 +56,8 @@ export const EditableCell = <TData,>({
             row,
             columnId,
             onChange: (v) => onUpdateDraft(rowId, columnId, v),
-            onCommit: () => onCommit(rowId, columnId),
-            onCancel,
+            onCommit: () => onCommitEdit(rowId, columnId),
+            onCancel: onCancelEdit,
             error,
           })}
         </>
@@ -77,8 +70,8 @@ export const EditableCell = <TData,>({
         value={effectiveValue}
         options={editOptions}
         onChange={(v) => onUpdateDraft(rowId, columnId, v)}
-        onCommit={() => onCommit(rowId, columnId)}
-        onCancel={onCancel}
+        onCommit={() => onCommitEdit(rowId, columnId)}
+        onCancel={onCancelEdit}
         error={error}
         commitOnBlur={commitOnBlur}
         label={columnLabel || columnId}
