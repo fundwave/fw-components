@@ -68,6 +68,27 @@ export const HeaderCell = <TData,>({
     onInteraction?.("Resized Column", { type: "resizing" });
   };
 
+  // A placeholder header stands in for a leaf column at a shallower depth than its
+  // siblings in a mixed-depth group. It has no header content of its own — rendering the
+  // real column's label/sort/resize controls here would duplicate them.
+  if (header.isPlaceholder) {
+    return (
+      <th
+        className={cn(
+          "bg-gray-50 border-b-2 border-gray-200",
+          meta?.headerClassName
+        )}
+        style={{
+          ...pinningStyles,
+          width: canResize ? column.getSize() : meta?.width,
+          minWidth: meta?.minWidth,
+          maxWidth: meta?.maxWidth,
+        }}
+        colSpan={header.colSpan}
+      />
+    );
+  }
+
   return (
     <th
       className={cn(
