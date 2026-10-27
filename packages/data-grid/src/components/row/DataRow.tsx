@@ -194,6 +194,25 @@ export const DataRow = <TData,>({
               onMouseEnter={rangeSelectionEnabled && rowVisualIndex !== undefined
                 ? () => onCellMouseEnter?.(rowVisualIndex, cellIndex)
                 : undefined}
+              // Lets DataGrid locate and focus this exact cell after keyboard range
+              // navigation moves the destination — otherwise DOM focus never follows the
+              // highlight and Enter would act on whichever cell was previously focused.
+              tabIndex={rangeSelectionEnabled ? -1 : undefined}
+              data-row-index={rangeSelectionEnabled ? rowVisualIndex : undefined}
+              data-col-index={rangeSelectionEnabled ? cellIndex : undefined}
+              onKeyDown={
+                rangeSelectionEnabled && isEditable && !isCellEditing
+                  ? (e) => {
+                      // Only reached when focus is on the <td> itself (e.g. placed there
+                      // by keyboard range navigation) — EditableCell's own read-mode
+                      // control already stops propagation for these keys.
+                      if (e.key === "Enter" || e.key === "F2") {
+                        e.preventDefault();
+                        onStartEdit?.(rowId, columnId, value);
+                      }
+                    }
+                  : undefined
+              }
             >
               <div className={cn("flex items-start", justifyContent, textAlign)}>
                 {isFirstColumn &&

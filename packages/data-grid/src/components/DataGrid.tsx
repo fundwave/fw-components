@@ -279,6 +279,40 @@ export const DataGrid = <TData extends object>({
     skipColumns: selectionColumnIndex >= 0 ? [selectionColumnIndex] : [],
   });
 
+  // Keyboard navigation only moved the active cell/range in state — DOM focus and scroll
+  // position never followed, so the highlighted destination could be off-screen and Enter
+  // would act on whatever cell was previously focused instead. The target is the last
+  // range's end (the moving endpoint while extending with Shift), falling back to the
+  // active cell for a plain move.
+  const lastRange = rangeSelection.selectionState.ranges[rangeSelection.selectionState.ranges.length - 1];
+  const keyboardFocusTarget = lastRange?.end ?? rangeSelection.selectionState.activeCell;
+  const isSelecting = rangeSelection.selectionState.isSelecting;
+
+  useEffect(() => {
+    // Skip while a drag is in progress (mousedown sets this immediately, even for a plain
+    // click) — syncing on every mouseenter during a fast drag would fight the user's own
+    // scrolling. It still fires once the drag/click settles on mouseup.
+    if (!rangeSelectionEnabled || !keyboardFocusTarget || isSelecting) return;
+    const { rowIndex, columnIndex } = keyboardFocusTarget;
+
+    const focusCell = () => {
+      const el = tableContainerRef.current?.querySelector<HTMLElement>(
+        `[data-row-index="${rowIndex}"][data-col-index="${columnIndex}"]`
+      );
+      el?.focus({ preventScroll: true });
+      el?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    };
+
+    if (virtualizationEnabled) {
+      // The destination row may not be mounted yet — ask the virtualizer to scroll it
+      // into range first, then focus once that's had a chance to render.
+      rowVirtualizer.scrollToIndex(rowIndex, { align: "auto" });
+      requestAnimationFrame(focusCell);
+    } else {
+      focusCell();
+    }
+  }, [keyboardFocusTarget?.rowIndex, keyboardFocusTarget?.columnIndex, isSelecting, rangeSelectionEnabled, virtualizationEnabled, rowVirtualizer]);
+
   // `rows` already includes expanded tree children in visual order, but not the extra
   // detail <tr> rendered after a row with `renderSubContent` — virtualization mounts only
   // a window of rows, so assistive tech needs each one's true logical position (and the
