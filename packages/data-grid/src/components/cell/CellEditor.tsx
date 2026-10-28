@@ -83,7 +83,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
+          <div className="fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:min-h-[14px]">{error}</div>
         </div>
       );
 
@@ -105,7 +105,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             step="any"
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
+          <div className="fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:min-h-[14px]">{error}</div>
         </div>
       );
 
@@ -123,7 +123,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
+          <div className="fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:min-h-[14px]">{error}</div>
         </div>
       );
 
@@ -157,7 +157,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
           <div className="fwgrid:pointer-events-none fwgrid:absolute fwgrid:inset-y-0 fwgrid:right-0 fwgrid:flex fwgrid:items-center fwgrid:pr-2">
             <ChevronDown className="fwgrid:h-4 fwgrid:w-4 fwgrid:text-gray-400" />
           </div>
-          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
+          <div className="fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:min-h-[14px]">{error}</div>
         </div>
       );
 
@@ -187,7 +187,7 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               "fwgrid:peer-checked:after:translate-x-full"
             )} />
           </label>
-          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
+          <div className="fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:min-h-[14px]">{error}</div>
         </div>
       );
 
