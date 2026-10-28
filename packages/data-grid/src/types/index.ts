@@ -85,6 +85,8 @@ export interface EditCellRenderProps<TData = unknown, TValue = unknown> {
   value: TValue;
   row: Row<TData>;
   columnId: string;
+  /** Human-readable column label, for the editor's accessible name. */
+  columnLabel?: string;
   onChange: (value: TValue) => void;
   onCommit: () => void;
   onCancel: () => void;

@@ -55,6 +55,7 @@ export const EditableCell = <TData,>({
             value: effectiveValue,
             row,
             columnId,
+            columnLabel,
             onChange: (v) => onUpdateDraft(rowId, columnId, v),
             onCommit: () => onCommitEdit(rowId, columnId),
             onCancel: onCancelEdit,
