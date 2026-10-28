@@ -1,6 +1,6 @@
 {
   "name": "@fw-components/data-grid",
-  "version": "2.6.2-data-grid.12",
+  "version": "2.6.2-data-grid.13",
   "description": "A high-performance, editable data grid for React with built-in virtualization, sorting, filtering, and bulk editing.",
   "type": "module",
   "main": "./dist/index.js",
