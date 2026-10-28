@@ -35,8 +35,11 @@ npm run dev
 ## Project Structure
 
 ```
+styles/
+└── index.css             # Tailwind entry (fwgrid:-prefixed), compiled into dist/styles.css
 src/
 ├── index.ts              # Package entry point & exports
+├── styles.ts             # Publishes the compiled CSS as a JS string export
 ├── types/                # TypeScript type definitions
 │   └── index.ts          # All types, interfaces, and TanStack module augmentation
 ├── components/

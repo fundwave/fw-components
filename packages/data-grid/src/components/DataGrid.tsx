@@ -139,7 +139,7 @@ export const DataGrid = <TData extends object>({
           align: "center" as const,
           width: rowSelectionConfig.width || 40,
           maxWidth: rowSelectionConfig.width || 40,
-          headerClassName: "px-0 py-0",
+          headerClassName: "fwgrid:px-0 fwgrid:py-0",
         },
       };
 
@@ -355,29 +355,29 @@ export const DataGrid = <TData extends object>({
 
   return (
     <div
-      className={cn("w-full", className)}
+      className={cn("fwgrid:w-full", className)}
       // No role="grid" here — the <table> below already owns it.
       aria-busy={isLoading}
     >
       {isLoading && (
-        <div className="w-full h-1 bg-gray-100 overflow-hidden">
-          <div className="h-full bg-blue-500 animate-pulse w-1/3" />
+        <div className="fwgrid:w-full fwgrid:h-1 fwgrid:bg-gray-100 fwgrid:overflow-hidden">
+          <div className="fwgrid:h-full fwgrid:bg-blue-500 fwgrid:animate-pulse fwgrid:w-1/3" />
         </div>
       )}
 
       <div
         ref={tableContainerRef}
-        className={cn("overflow-auto", tableContainerClassName)}
+        className={cn("fwgrid:overflow-auto", tableContainerClassName)}
       >
         <table
-          className="w-full border-collapse"
+          className="fwgrid:w-full fwgrid:border-collapse"
           style={{ width: tableWidth, tableLayout: columnResizingEnabled ? "fixed" : undefined }}
           role="grid"
           aria-rowcount={ariaRowCount}
         >
-          <thead className="sticky top-0 z-20 bg-gray-50">
+          <thead className="fwgrid:sticky fwgrid:top-0 fwgrid:z-20 fwgrid:bg-gray-50">
             {table.getHeaderGroups().map((headerGroup) => (
-              <tr key={headerGroup.id} className="border-b-2 border-gray-200" aria-rowindex={1}>
+              <tr key={headerGroup.id} className="fwgrid:border-b-2 fwgrid:border-gray-200" aria-rowindex={1}>
                 {headerGroup.headers.map((header) => (
                   <HeaderCell
                     key={header.id}

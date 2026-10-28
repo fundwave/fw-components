@@ -19,7 +19,7 @@ export const ExpandToggle: React.FC<ExpandToggleProps> = ({ isExpanded, onClick,
 
   return (
     <button
-      className="inline-flex items-center justify-center p-1 rounded hover:bg-gray-100 mr-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+      className="fwgrid:inline-flex fwgrid:items-center fwgrid:justify-center fwgrid:p-1 fwgrid:rounded fwgrid:hover:bg-gray-100 fwgrid:mr-2 fwgrid:focus-visible:outline-none fwgrid:focus-visible:ring-2 fwgrid:focus-visible:ring-blue-500"
       onClick={onClick}
       onKeyDown={handleKeyDown}
       type="button"
@@ -28,9 +28,9 @@ export const ExpandToggle: React.FC<ExpandToggleProps> = ({ isExpanded, onClick,
       aria-expanded={isExpanded}
     >
       {isExpanded ? (
-        <ChevronDown className="h-4 w-4 text-gray-500" />
+        <ChevronDown className="fwgrid:h-4 fwgrid:w-4 fwgrid:text-gray-500" />
       ) : (
-        <ChevronRight className="h-4 w-4 text-gray-500" />
+        <ChevronRight className="fwgrid:h-4 fwgrid:w-4 fwgrid:text-gray-500" />
       )}
     </button>
   );

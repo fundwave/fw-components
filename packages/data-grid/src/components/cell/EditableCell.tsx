@@ -81,7 +81,7 @@ export const EditableCell = <TData,>({
 
   return (
     <div
-      className="cursor-pointer hover:bg-blue-50/60 rounded px-1 -mx-1 min-h-[1.5rem] flex items-center w-full group"
+      className="fwgrid:cursor-pointer fwgrid:hover:bg-blue-50/60 fwgrid:rounded fwgrid:px-1 -fwgrid:mx-1 fwgrid:min-h-[1.5rem] fwgrid:flex fwgrid:items-center fwgrid:w-full fwgrid:group"
       onClick={(e) => {
         e.stopPropagation();
         onStartEdit(rowId, columnId, rawValue);
@@ -97,8 +97,8 @@ export const EditableCell = <TData,>({
       role="button"
       aria-label={`Edit ${columnId}`}
     >
-      <span className="flex-1 truncate">{displayValue || <span className="text-gray-400">—</span>}</span>
-      <Pencil className="w-3 h-3 text-gray-300 group-hover:text-blue-400 flex-shrink-0 ml-1 opacity-0 group-hover:opacity-100 transition-opacity" />
+      <span className="fwgrid:flex-1 fwgrid:truncate">{displayValue || <span className="fwgrid:text-gray-400">—</span>}</span>
+      <Pencil className="fwgrid:w-3 fwgrid:h-3 fwgrid:text-gray-300 fwgrid:group-hover:text-blue-400 fwgrid:flex-shrink-0 fwgrid:ml-1 fwgrid:opacity-0 fwgrid:group-hover:opacity-100 fwgrid:transition-opacity" />
     </div>
   );
 };

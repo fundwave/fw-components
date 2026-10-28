@@ -12,21 +12,21 @@ export const GridSkeleton: React.FC<GridSkeletonProps> = ({ columns, rowCount = 
   return (
     <>
       {Array.from({ length: rowCount }).map((_, rowIdx) => (
-        <tr key={`skeleton-${rowIdx}`} className="border-b border-gray-100">
+        <tr key={`skeleton-${rowIdx}`} className="fwgrid:border-b fwgrid:border-gray-100">
           {columns.map((col, colIdx) => {
             const columnMeta = col.meta || {};
             const { justifyContent } = getAlignmentClasses(columnMeta?.align || "left");
 
             return (
-              <td key={`skeleton-cell-${rowIdx}-${colIdx}`} className="px-3 py-3">
-                <div className={cn("flex items-center gap-2", justifyContent)}>
+              <td key={`skeleton-cell-${rowIdx}-${colIdx}`} className="fwgrid:px-3 fwgrid:py-3">
+                <div className={cn("fwgrid:flex fwgrid:items-center fwgrid:gap-2", justifyContent)}>
                   {colIdx === 0 && showExpand && (
-                    <div className="bg-gray-200 animate-pulse rounded h-3.5 w-3.5" />
+                    <div className="fwgrid:bg-gray-200 fwgrid:animate-pulse fwgrid:rounded fwgrid:h-3.5 fwgrid:w-3.5" />
                   )}
                   <div
                     className={cn(
-                      "bg-gray-200 animate-pulse rounded h-4",
-                      colIdx === 0 ? "w-7/12" : "w-3/5"
+                      "fwgrid:bg-gray-200 fwgrid:animate-pulse fwgrid:rounded fwgrid:h-4",
+                      colIdx === 0 ? "fwgrid:w-7/12" : "fwgrid:w-3/5"
                     )}
                   />
                 </div>

@@ -7,11 +7,11 @@ export interface GridErrorStateProps {
 
 export const GridErrorState: React.FC<GridErrorStateProps> = ({ error, columnCount }) => (
   <tr>
-    <td colSpan={columnCount} className="h-32 text-center">
+    <td colSpan={columnCount} className="fwgrid:h-32 fwgrid:text-center">
       {typeof error === "string" ? (
-        <div className="flex flex-col items-center gap-3 py-8">
-          <div className="text-4xl">⚠️</div>
-          <div className="text-red-600 font-medium text-sm">{error}</div>
+        <div className="fwgrid:flex fwgrid:flex-col fwgrid:items-center fwgrid:gap-3 fwgrid:py-8">
+          <div className="fwgrid:text-4xl">⚠️</div>
+          <div className="fwgrid:text-red-600 fwgrid:font-medium fwgrid:text-sm">{error}</div>
         </div>
       ) : (
         error

@@ -72,7 +72,7 @@ export const HeaderCell = <TData,>({
     return (
       <th
         className={cn(
-          "bg-gray-50 border-b-2 border-gray-200",
+          "fwgrid:bg-gray-50 fwgrid:border-b-2 fwgrid:border-gray-200",
           meta?.headerClassName
         )}
         style={{
@@ -91,7 +91,7 @@ export const HeaderCell = <TData,>({
     <th
       className={cn(
         textAlign,
-        "bg-gray-50 relative select-none px-3 py-2 text-left text-sm font-medium text-gray-700 border-b-2 border-gray-200",
+        "fwgrid:bg-gray-50 fwgrid:relative fwgrid:select-none fwgrid:px-3 fwgrid:py-2 fwgrid:text-left fwgrid:text-sm fwgrid:font-medium fwgrid:text-gray-700 fwgrid:border-b-2 fwgrid:border-gray-200",
         meta?.headerClassName
       )}
       style={{
@@ -103,12 +103,12 @@ export const HeaderCell = <TData,>({
       colSpan={header.colSpan}
       aria-sort={ariaSort}
     >
-      <div className="flex flex-col">
+      <div className="fwgrid:flex fwgrid:flex-col">
         <div
           className={cn(
-            "flex items-center gap-2 px-1 py-0.5 rounded transition-colors duration-200",
+            "fwgrid:flex fwgrid:items-center fwgrid:gap-2 fwgrid:px-1 fwgrid:py-0.5 fwgrid:rounded fwgrid:transition-colors fwgrid:duration-200",
             justifyContent,
-            canSort && "cursor-pointer hover:bg-gray-100"
+            canSort && "fwgrid:cursor-pointer fwgrid:hover:bg-gray-100"
           )}
           onClick={handleSortClick}
           onKeyDown={handleSortClick}
@@ -127,7 +127,7 @@ export const HeaderCell = <TData,>({
             <SortIndicator isSorted={isSorted} isHovered={isHovered} />
           )}
 
-          <div className="font-medium truncate min-w-0">{headerContent}</div>
+          <div className="fwgrid:font-medium fwgrid:truncate fwgrid:min-w-0">{headerContent}</div>
 
           {meta?.align !== "right" && canSort && (
             <SortIndicator isSorted={isSorted} isHovered={isHovered} />
@@ -140,10 +140,10 @@ export const HeaderCell = <TData,>({
           onMouseDown={handleResizeMouseDown}
           onTouchStart={handleResizeMouseDown}
           className={cn(
-            "absolute right-0 top-0 h-full w-1 cursor-col-resize border-r border-gray-200",
-            "hover:border-transparent hover:bg-blue-500/70",
-            "active:bg-blue-600",
-            header.column.getIsResizing() && "bg-blue-600"
+            "fwgrid:absolute fwgrid:right-0 fwgrid:top-0 fwgrid:h-full fwgrid:w-1 fwgrid:cursor-col-resize fwgrid:border-r fwgrid:border-gray-200",
+            "fwgrid:hover:border-transparent fwgrid:hover:bg-blue-500/70",
+            "fwgrid:active:bg-blue-600",
+            header.column.getIsResizing() && "fwgrid:bg-blue-600"
           )}
         />
       )}

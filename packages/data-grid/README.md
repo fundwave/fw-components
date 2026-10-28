@@ -34,18 +34,38 @@ npm install @fw-components/data-grid @tanstack/react-table @tanstack/react-virtu
 }
 ```
 
-### Tailwind CSS Setup
+### Styling
 
-This package uses Tailwind CSS utility classes. Add the package to your Tailwind `content` configuration:
+The package ships a pre-built, ready-to-use stylesheet, you don't need Tailwind in your own app to use it. All utility classes emitted by these components are namespaced with the `fwgrid:` prefix (e.g. `fwgrid:flex`, `fwgrid:bg-blue-600`), so they can't collide with your app's own Tailwind (or other) classes, and only the classes actually used by the grid are included in the build. There are two ways to bring the stylesheet into your app.
 
-```js
-// tailwind.config.js
-module.exports = {
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/@fw-components/data-grid/dist/**/*.js", // Add this line
-  ],
-};
+#### Option 1: CSS file import (regular DOM)
+
+For a normal (non-shadow-root) app, import the CSS file once in your app entry point and let your bundler emit it as a `<link>`/inlined `<style>` the usual way:
+
+```ts
+import "@fw-components/data-grid/styles.css";
+```
+
+#### Option 2: CSS-as-string import (Shadow DOM / dynamic injection)
+
+If your app (or the part of it rendering the grid) lives inside a shadow root, a plain `<link>`/global `<style>` tag won't reach it. For that case (or any other scenario where you need the CSS as a JS string rather than a file path, e.g. your own build pipeline can't process the pre-compiled CSS file as-is), the same compiled output is also published as a JS module:
+
+```ts
+import { styles } from "@fw-components/data-grid/styles";
+
+const sheet = new CSSStyleSheet();
+sheet.replaceSync(styles);
+shadowRoot.adoptedStyleSheets = [sheet];
+```
+
+Or, without constructable stylesheets support, inject it as an inline `<style>` tag:
+
+```ts
+import { styles } from "@fw-components/data-grid/styles";
+
+const styleTag = document.createElement("style");
+styleTag.textContent = styles;
+document.head.appendChild(styleTag);
 ```
 
 ## Quick Start

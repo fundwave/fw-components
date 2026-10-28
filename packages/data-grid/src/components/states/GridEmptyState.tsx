@@ -15,16 +15,16 @@ export const GridEmptyState: React.FC<GridEmptyStateProps> = ({
   columnCount,
 }) => (
   <tr>
-    <td colSpan={columnCount} className="h-32 px-6 text-center">
+    <td colSpan={columnCount} className="fwgrid:h-32 fwgrid:px-6 fwgrid:text-center">
       {typeof message === "string" ? (
-        <div className="flex flex-col items-center justify-center gap-3 py-8 text-gray-500">
-          <Inbox className="w-12 h-12 text-gray-300" strokeWidth={1} />
+        <div className="fwgrid:flex fwgrid:flex-col fwgrid:items-center fwgrid:justify-center fwgrid:gap-3 fwgrid:py-8 fwgrid:text-gray-500">
+          <Inbox className="fwgrid:w-12 fwgrid:h-12 fwgrid:text-gray-300" strokeWidth={1} />
 
-          <div className="text-sm font-medium text-gray-600">{message}</div>
+          <div className="fwgrid:text-sm fwgrid:font-medium fwgrid:text-gray-600">{message}</div>
 
           {ctaLabel && onCtaClick && (
             <button
-              className="px-4 py-2 text-xs font-medium text-white bg-blue-600 rounded hover:bg-blue-700 transition-colors"
+              className="fwgrid:px-4 fwgrid:py-2 fwgrid:text-xs fwgrid:font-medium fwgrid:text-white fwgrid:bg-blue-600 fwgrid:rounded fwgrid:hover:bg-blue-700 fwgrid:transition-colors"
               onClick={onCtaClick}
               type="button"
             >

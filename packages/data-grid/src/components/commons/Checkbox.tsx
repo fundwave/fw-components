@@ -25,14 +25,14 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   }, [indeterminate]);
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="fwgrid:flex fwgrid:items-center fwgrid:justify-center">
       <input
         ref={ref}
         type="checkbox"
         className={cn(
-          "w-4 h-4 rounded border-gray-300 text-blue-600",
-          "focus:ring-2 focus:ring-blue-500/20 focus:ring-offset-0",
-          disabled && "opacity-50 cursor-not-allowed"
+          "fwgrid:w-4 fwgrid:h-4 fwgrid:rounded fwgrid:border-gray-300 fwgrid:text-blue-600",
+          "fwgrid:focus:ring-2 fwgrid:focus:ring-blue-500/20 fwgrid:focus:ring-offset-0",
+          disabled && "fwgrid:opacity-50 fwgrid:cursor-not-allowed"
         )}
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}

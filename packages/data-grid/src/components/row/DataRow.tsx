@@ -48,10 +48,10 @@ export const DataRow = <TData,>({
   const customRowClasses = getRowClassName ? getRowClassName(originalRow, depth) : "";
 
   const rowClasses = cn(
-    "border-b border-gray-100 transition-colors",
-    canExpand && "font-semibold",
-    onRowClick && "cursor-pointer",
-    "bg-white hover:bg-gray-50",
+    "fwgrid:border-b fwgrid:border-gray-100 fwgrid:transition-colors",
+    canExpand && "fwgrid:font-semibold",
+    onRowClick && "fwgrid:cursor-pointer",
+    "fwgrid:bg-white fwgrid:hover:bg-gray-50",
     customRowClasses
   );
 
@@ -140,8 +140,8 @@ export const DataRow = <TData,>({
             <td
               key={cell.id}
               className={cn(
-                "px-3 py-2 text-sm overflow-hidden",
-                pinnedStyles ? "bg-white hover:bg-gray-50" : "",
+                "fwgrid:px-3 fwgrid:py-2 fwgrid:text-sm fwgrid:overflow-hidden",
+                pinnedStyles ? "fwgrid:bg-white fwgrid:hover:bg-gray-50" : "",
                 columnMeta?.cellClassName
               )}
               style={{
@@ -152,12 +152,12 @@ export const DataRow = <TData,>({
                 ...pinnedStyles,
               }}
             >
-              <div className={cn("flex items-start", justifyContent, textAlign)}>
+              <div className={cn("fwgrid:flex fwgrid:items-start", justifyContent, textAlign)}>
                 {isFirstColumn &&
                   (canExpand && shouldShowToggle ? (
                     <ExpandToggle isExpanded={isExpanded} onClick={handleExpandToggle} />
                   ) : depth > 0 ? (
-                    <div className="w-2 mr-2 flex-shrink-0" />
+                    <div className="fwgrid:w-2 fwgrid:mr-2 fwgrid:flex-shrink-0" />
                   ) : null)}
 
                 {isEditable ? (
@@ -188,8 +188,8 @@ export const DataRow = <TData,>({
 
       {isExpanded && renderSubContent && (
         <tr aria-rowindex={ariaRowIndex !== undefined ? ariaRowIndex + 1 : undefined}>
-          <td colSpan={row.getVisibleCells().length} className="p-0">
-            <div className="px-4 py-3 bg-gray-50">{renderSubContent(originalRow)}</div>
+          <td colSpan={row.getVisibleCells().length} className="fwgrid:p-0">
+            <div className="fwgrid:px-4 fwgrid:py-3 fwgrid:bg-gray-50">{renderSubContent(originalRow)}</div>
           </td>
         </tr>
       )}

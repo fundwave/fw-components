@@ -5,8 +5,11 @@ import { defineConfig } from "vite";
 export default defineConfig({
   plugins: [react()],
   resolve: {
-    alias: {
-      "@fw-components/data-grid": path.resolve(__dirname, "../../packages/data-grid/src/index.ts"),
-    },
+    alias: [
+      {
+        find: /^@fw-components\/data-grid$/,
+        replacement: path.resolve(__dirname, "../../packages/data-grid/src/index.ts"),
+      },
+    ],
   },
 });

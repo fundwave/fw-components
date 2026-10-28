@@ -23,12 +23,12 @@ export function getAlignmentClasses(align: "left" | "center" | "right" | undefin
 } {
   switch (align) {
     case "center":
-      return { textAlign: "text-center", justifyContent: "justify-center" };
+      return { textAlign: "fwgrid:text-center", justifyContent: "fwgrid:justify-center" };
     case "right":
-      return { textAlign: "text-right", justifyContent: "justify-end" };
+      return { textAlign: "fwgrid:text-right", justifyContent: "fwgrid:justify-end" };
     case "left":
     default:
-      return { textAlign: "text-left", justifyContent: "justify-start" };
+      return { textAlign: "fwgrid:text-left", justifyContent: "fwgrid:justify-start" };
   }
 }
 

@@ -60,18 +60,18 @@ export const CellEditor: React.FC<CellEditorProps> = ({
   };
 
   const baseInputClass = cn(
-    "w-full h-8 px-2 text-sm rounded-md outline-none transition-all",
-    "shadow-sm border",
-    "focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500",
+    "fwgrid:w-full fwgrid:h-8 fwgrid:px-2 fwgrid:text-sm fwgrid:rounded-md fwgrid:outline-none fwgrid:transition-all",
+    "fwgrid:shadow-sm fwgrid:border",
+    "fwgrid:focus:ring-2 fwgrid:focus:ring-blue-500/30 fwgrid:focus:border-blue-500",
     error
-      ? "border-red-400 bg-red-50 text-red-900"
-      : "border-blue-400 bg-white text-gray-900"
+      ? "fwgrid:border-red-400 fwgrid:bg-red-50 fwgrid:text-red-900"
+      : "fwgrid:border-blue-400 fwgrid:bg-white fwgrid:text-gray-900"
   );
 
   switch (type) {
     case "text":
       return (
-        <div className="relative w-full -my-1">
+        <div className="fwgrid:relative fwgrid:w-full -fwgrid:my-1">
           <input
             type="text"
             className={baseInputClass}
@@ -83,16 +83,16 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
+          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
         </div>
       );
 
     case "number":
       return (
-        <div className="relative w-full -my-1">
+        <div className="fwgrid:relative fwgrid:w-full -fwgrid:my-1">
           <input
             type="number"
-            className={cn(baseInputClass, "tabular-nums text-right")}
+            className={cn(baseInputClass, "fwgrid:tabular-nums fwgrid:text-right")}
             value={value === null || value === undefined ? "" : String(value)}
             onChange={(e) => {
               const v = e.target.value;
@@ -105,13 +105,13 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             step="any"
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
+          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
         </div>
       );
 
     case "date":
       return (
-        <div className="relative w-full -my-1">
+        <div className="fwgrid:relative fwgrid:w-full -fwgrid:my-1">
           <input
             type="date"
             className={baseInputClass}
@@ -123,15 +123,15 @@ export const CellEditor: React.FC<CellEditorProps> = ({
             aria-label={label}
             onClick={(e) => e.stopPropagation()}
           />
-          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
+          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
         </div>
       );
 
     case "select":
       return (
-        <div className="relative w-full -my-1">
+        <div className="fwgrid:relative fwgrid:w-full -fwgrid:my-1">
           <select
-            className={cn(baseInputClass, "appearance-none cursor-pointer pr-7")}
+            className={cn(baseInputClass, "fwgrid:appearance-none fwgrid:cursor-pointer fwgrid:pr-7")}
             value={String(value ?? "")}
             onChange={(e) => {
               // The DOM always reports a string — resolve back to the option's value so
@@ -154,20 +154,20 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               </option>
             ))}
           </select>
-          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-            <ChevronDown className="h-4 w-4 text-gray-400" />
+          <div className="fwgrid:pointer-events-none fwgrid:absolute fwgrid:inset-y-0 fwgrid:right-0 fwgrid:flex fwgrid:items-center fwgrid:pr-2">
+            <ChevronDown className="fwgrid:h-4 fwgrid:w-4 fwgrid:text-gray-400" />
           </div>
-          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
+          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
         </div>
       );
 
     case "boolean":
       return (
-        <div className="relative flex items-center justify-center -my-1 h-8">
-          <label className="relative inline-flex items-center cursor-pointer">
+        <div className="fwgrid:relative fwgrid:flex fwgrid:items-center fwgrid:justify-center -fwgrid:my-1 fwgrid:h-8">
+          <label className="fwgrid:relative fwgrid:inline-flex fwgrid:items-center fwgrid:cursor-pointer">
             <input
               type="checkbox"
-              className="sr-only peer"
+              className="fwgrid:sr-only fwgrid:peer"
               checked={Boolean(value)}
               onChange={(e) => {
                 onChange(e.target.checked);
@@ -179,15 +179,15 @@ export const CellEditor: React.FC<CellEditorProps> = ({
               onClick={(e) => e.stopPropagation()}
             />
             <div className={cn(
-              "w-9 h-5 rounded-full transition-colors",
-              "peer-focus:ring-2 peer-focus:ring-blue-500/30",
-              "peer-checked:bg-blue-600 bg-gray-300",
-              "after:content-[''] after:absolute after:top-[2px] after:left-[2px]",
-              "after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-transform",
-              "peer-checked:after:translate-x-full"
+              "fwgrid:w-9 fwgrid:h-5 fwgrid:rounded-full fwgrid:transition-colors",
+              "fwgrid:peer-focus:ring-2 fwgrid:peer-focus:ring-blue-500/30",
+              "fwgrid:peer-checked:bg-blue-600 fwgrid:bg-gray-300",
+              "fwgrid:after:content-[''] fwgrid:after:absolute fwgrid:after:top-[2px] fwgrid:after:left-[2px]",
+              "fwgrid:after:bg-white fwgrid:after:rounded-full fwgrid:after:h-4 fwgrid:after:w-4 fwgrid:after:transition-transform",
+              "fwgrid:peer-checked:after:translate-x-full"
             )} />
           </label>
-          {error && <div className="absolute top-full left-0 text-[10px] text-red-600 mt-0.5 whitespace-nowrap">{error}</div>}
+          {error && <div className="fwgrid:absolute fwgrid:top-full fwgrid:left-0 fwgrid:text-[10px] fwgrid:text-red-600 fwgrid:mt-0.5 fwgrid:whitespace-nowrap">{error}</div>}
         </div>
       );
 

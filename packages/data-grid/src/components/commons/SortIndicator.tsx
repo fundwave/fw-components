@@ -10,23 +10,23 @@ export interface SortIndicatorProps {
 export const SortIndicator: React.FC<SortIndicatorProps> = ({ isSorted, isHovered }) => {
   if (isSorted === "asc") {
     return (
-      <span className="text-blue-600 transition-colors duration-200">
-        <ArrowUp className="h-4 w-4" />
+      <span className="fwgrid:text-blue-600 fwgrid:transition-colors fwgrid:duration-200">
+        <ArrowUp className="fwgrid:h-4 fwgrid:w-4" />
       </span>
     );
   }
 
   if (isSorted === "desc") {
     return (
-      <span className="text-blue-600 transition-colors duration-200">
-        <ArrowDown className="h-4 w-4" />
+      <span className="fwgrid:text-blue-600 fwgrid:transition-colors fwgrid:duration-200">
+        <ArrowDown className="fwgrid:h-4 fwgrid:w-4" />
       </span>
     );
   }
 
   return (
-    <span className={cn("transition-opacity duration-200", isHovered ? "opacity-50" : "opacity-0")}>
-      <ArrowUp className="h-4 w-4" />
+    <span className={cn("fwgrid:transition-opacity fwgrid:duration-200", isHovered ? "fwgrid:opacity-50" : "fwgrid:opacity-0")}>
+      <ArrowUp className="fwgrid:h-4 fwgrid:w-4" />
     </span>
   );
 };
