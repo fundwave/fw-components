@@ -50,6 +50,7 @@ export const DataGrid = <TData extends object>({
 
   className,
   tableContainerClassName,
+  tableContainerStyle,
   getRowClassName,
 
   isLoading,
@@ -368,6 +369,7 @@ export const DataGrid = <TData extends object>({
       <div
         ref={tableContainerRef}
         className={cn("fwgrid:overflow-auto", tableContainerClassName)}
+        style={tableContainerStyle}
       >
         <table
           className="fwgrid:w-full fwgrid:border-collapse"

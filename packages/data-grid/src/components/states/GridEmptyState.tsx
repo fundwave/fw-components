@@ -17,7 +17,7 @@ export const GridEmptyState: React.FC<GridEmptyStateProps> = ({
   <tr>
     <td colSpan={columnCount} className="fwgrid:h-32 fwgrid:px-6 fwgrid:text-center">
       {typeof message === "string" ? (
-        <div className="fwgrid:flex fwgrid:flex-col fwgrid:items-center fwgrid:justify-center fwgrid:gap-3 fwgrid:py-8 fwgrid:text-gray-500">
+        <div className="fwgrid:sticky fwgrid:left-1/2 fwgrid:w-max fwgrid:-translate-x-1/2 fwgrid:flex fwgrid:flex-col fwgrid:items-center fwgrid:justify-center fwgrid:gap-3 fwgrid:py-8 fwgrid:text-gray-500">
           <Inbox className="fwgrid:w-12 fwgrid:h-12 fwgrid:text-gray-300" strokeWidth={1} />
 
           <div className="fwgrid:text-sm fwgrid:font-medium fwgrid:text-gray-600">{message}</div>

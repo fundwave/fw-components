@@ -12,14 +12,12 @@ import type {
   Table,
   TableState,
 } from "@tanstack/react-table";
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 declare module "@tanstack/react-table" {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface ColumnMeta<TData, TValue> {
     formatType?: ValueFormatType;
     formatOptions?: FormatOptions;
-    /** Takes precedence over formatType */
     formatFn?: (value: TValue, cell: CellContext<TData, TValue>) => string | number | ReactNode;
     getSearchValue?: (value: TValue, row: TData) => string | number | null | undefined;
     align?: "left" | "center" | "right";
@@ -194,6 +192,7 @@ export interface DataGridProps<TData = Record<string, unknown>> {
 
   className?: string;
   tableContainerClassName?: string;
+  tableContainerStyle?: CSSProperties;
   getRowClassName?: (row: TData, depth: number) => string;
 
   isLoading?: boolean;
