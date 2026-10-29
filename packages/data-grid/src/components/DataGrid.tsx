@@ -361,7 +361,7 @@ export const DataGrid = <TData extends object>({
     >
       {isLoading && (
         <div className="fwgrid:w-full fwgrid:h-1 fwgrid:bg-gray-100 fwgrid:overflow-hidden">
-          <div className="fwgrid:h-full fwgrid:bg-blue-500 fwgrid:animate-pulse fwgrid:w-1/3" />
+          <div className="fwgrid:h-full fwgrid:bg-blue-500 fwgrid:animate-pulse fwgrid:w-full" />
         </div>
       )}
 
