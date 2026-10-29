@@ -64,7 +64,7 @@ export type FormatOptions = {
   placeholder?: string;
 };
 
-export type CellEditType = "text" | "number" | "date" | "select" | "boolean" | "custom";
+export type CellEditType = "text" | "number" | "date" | "select" | "boolean" | "custom" | "longtext";
 
 export interface SelectOption {
   value: string | number;
