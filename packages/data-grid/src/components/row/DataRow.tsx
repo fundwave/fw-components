@@ -1,0 +1,205 @@
+import type { Row } from "@tanstack/react-table";
+import { flexRender } from "@tanstack/react-table";
+import React, { type ReactNode } from "react";
+import type { DataGridFeatures, EditingHandlers } from "../../types";
+import { formatAndTrimValue, formatValue } from "../../utils/formatting";
+import { cn, getAlignmentClasses, getColumnPinningStyles, getNestedRowPadding } from "../../utils/styling";
+import { EditableCell } from "../cell/EditableCell";
+import { ExpandToggle } from "../commons/ExpandToggle";
+
+export interface DataRowProps<TData> {
+  row: Row<TData>;
+  features?: DataGridFeatures;
+  getRowClassName?: (row: TData, depth: number) => string;
+  onRowClick?: (row: TData) => void;
+  renderSubContent?: (row: TData) => ReactNode;
+  showExpandToggle?: (row: TData) => boolean;
+  dataIndex?: number;
+  /** Absolute logical row position (accounting for the header and any detail rows before
+   * it), exposed via aria-rowindex since virtualization only mounts a window of rows */
+  ariaRowIndex?: number;
+  editingEnabled?: boolean;
+  isRowEditable?: (row: TData) => boolean;
+  editing?: EditingHandlers;
+  /** Reports this row's measured height to the virtualizer */
+  measureRef?: (el: HTMLTableRowElement | null) => void;
+}
+
+export const DataRow = <TData,>({
+  row,
+  features,
+  getRowClassName,
+  onRowClick,
+  renderSubContent,
+  showExpandToggle,
+  dataIndex,
+  ariaRowIndex,
+  editingEnabled,
+  isRowEditable,
+  editing,
+  measureRef,
+}: DataRowProps<TData>) => {
+  const originalRow = row.original;
+  const canExpand = row.getCanExpand();
+  const isExpanded = canExpand && row.getIsExpanded();
+  const depth = row.depth;
+  const shouldShowToggle = showExpandToggle ? showExpandToggle(originalRow) : true;
+
+  const customRowClasses = getRowClassName ? getRowClassName(originalRow, depth) : "";
+
+  const rowClasses = cn(
+    "fwgrid:border-b fwgrid:border-gray-100 fwgrid:transition-colors",
+    canExpand && "fwgrid:font-semibold",
+    onRowClick && "fwgrid:cursor-pointer",
+    "fwgrid:bg-white fwgrid:hover:bg-gray-50",
+    customRowClasses
+  );
+
+  const handleRowClick = (event: React.KeyboardEvent<HTMLTableRowElement> | React.MouseEvent<HTMLTableRowElement>) => {
+    if (!onRowClick) return;
+    const target = event.target as HTMLElement;
+    if (target.tagName === "INPUT" || target.tagName === "BUTTON" || target.closest("input, button, [role=\"button\"]")) {
+      return;
+    }
+    const isEnterOrSpace = "key" in event && (event.key === "Enter" || event.key === " ");
+    const isMouseClick = "button" in event;
+    if (isEnterOrSpace || isMouseClick) {
+      onRowClick(originalRow);
+    }
+  };
+
+  const handleExpandToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    row.toggleExpanded();
+  };
+
+  return (
+    <>
+      <tr
+        ref={measureRef}
+        className={rowClasses}
+        onClick={handleRowClick}
+        onKeyDown={handleRowClick}
+        // No role="button" override — a <tr>'s native "row" role is needed for the
+        // grid's row/cell semantics; the handlers above still make it actionable.
+        tabIndex={onRowClick ? 0 : undefined}
+        data-index={dataIndex}
+        data-row-id={row.id}
+        aria-rowindex={ariaRowIndex}
+      >
+        {row.getVisibleCells().map((cell, cellIndex) => {
+          const column = cell.column;
+          const columnDef = column.columnDef;
+          const columnMeta = columnDef.meta ?? {};
+          const { textAlign, justifyContent } = getAlignmentClasses(columnMeta?.align);
+          const isFirstColumn = cellIndex === 0;
+          const paddingLeft = isFirstColumn ? getNestedRowPadding(depth) : undefined;
+          const pinnedStyles = column.getIsPinned() ? getColumnPinningStyles(column) : undefined;
+
+          const value = cell.getValue();
+          const formattedValue = (
+            columnMeta?.formatFn
+              ? columnMeta.formatFn(value, cell.getContext())
+              : columnMeta?.formatType
+                ? formatAndTrimValue(value, columnMeta.formatType, columnMeta.formatOptions)
+                : columnMeta?.editType === "date"
+                  ? formatValue(value, "date", columnMeta.formatOptions)
+                  : undefined
+          ) as ReactNode;
+
+          // TanStack's default renderer (no `columnDef.cell`) reads `renderValue()`, bound
+          // to the real unformatted value, not the `getValue` override below — so it needs
+          // the formatted content supplied directly.
+          const defaultCellContent: ReactNode =
+            formattedValue !== undefined
+              ? formattedValue
+              : value === null || value === undefined
+                ? null
+                : typeof value === "object"
+                  ? JSON.stringify(value)
+                  : (value as ReactNode);
+
+          const cellContent = columnDef.cell
+            ? flexRender(columnDef.cell, {
+                ...cell.getContext(),
+                getValue: () => (formattedValue ?? value) as never,
+              })
+            : defaultCellContent;
+
+          // Matches DataGrid's `columnResizing !== false` default so sizes stay
+          // consistent with the table's layout mode.
+          const cellWidth = features?.columnResizing !== false ? column.getSize() : columnMeta?.width;
+
+          const columnId = column.id;
+          const columnLabel = typeof columnDef.header === "string" ? columnDef.header : undefined;
+          const rowId = row.id;
+          const isEditable = editingEnabled && columnMeta?.editable === true && (!isRowEditable || isRowEditable(row.original));
+          const isCellEditing = isEditable && editing?.isEditingCell(rowId, columnId);
+
+          return (
+            <td
+              key={cell.id}
+              className={cn(
+                "fwgrid:px-3 fwgrid:py-2 fwgrid:text-sm fwgrid:overflow-hidden",
+                pinnedStyles ? "fwgrid:bg-white fwgrid:hover:bg-gray-50" : "",
+                columnMeta?.cellClassName
+              )}
+              style={{
+                paddingLeft,
+                width: cellWidth,
+                minWidth: columnMeta?.minWidth,
+                maxWidth: columnMeta?.maxWidth,
+                ...pinnedStyles,
+              }}
+            >
+              <div className={cn("fwgrid:flex fwgrid:items-start", justifyContent, textAlign)}>
+                {isFirstColumn &&
+                  (canExpand && shouldShowToggle ? (
+                    <ExpandToggle isExpanded={isExpanded} onClick={handleExpandToggle} />
+                  ) : depth > 0 ? (
+                    <div className="fwgrid:w-2 fwgrid:mr-2 fwgrid:flex-shrink-0" />
+                  ) : null)}
+
+                {isEditable ? (
+                  <EditableCell
+                    isEditing={!!isCellEditing}
+                    displayValue={cellContent}
+                    rawValue={value}
+                    row={row}
+                    rowId={rowId}
+                    columnId={columnId}
+                    columnLabel={columnLabel}
+                    editable={true}
+                    editType={columnMeta?.editType}
+                    editOptions={columnMeta?.editOptions}
+                    customEditCell={columnMeta?.editCell as EditableCell<TData>["props"]["customEditCell"]}
+                    draftValue={editing?.getDraft(rowId, columnId)}
+                    error={editing?.getError(rowId, columnId)}
+                    editing={editing!}
+                  />
+                ) : (
+                  cellContent
+                )}
+              </div>
+            </td>
+          );
+        })}
+      </tr>
+
+      {isExpanded && renderSubContent && (
+        <tr aria-rowindex={ariaRowIndex !== undefined ? ariaRowIndex + 1 : undefined}>
+          <td colSpan={row.getVisibleCells().length} className="fwgrid:p-0">
+            <div className="fwgrid:px-4 fwgrid:py-3 fwgrid:bg-gray-50">{renderSubContent(originalRow)}</div>
+          </td>
+        </tr>
+      )}
+    </>
+  );
+};
+
+// Named the same as the imported component to extract its generic props type.
+type EditableCell<TData> = {
+  props: {
+    customEditCell?: (props: import("../../types").EditCellRenderProps<TData>) => ReactNode;
+  };
+};
