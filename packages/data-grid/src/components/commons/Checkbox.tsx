@@ -30,7 +30,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
         ref={ref}
         type="checkbox"
         className={cn(
-          "fwgrid:w-4 fwgrid:h-4 fwgrid:rounded fwgrid:border-gray-300 fwgrid:text-blue-600",
+          "fwgrid:w-4 fwgrid:h-4 fwgrid:rounded fwgrid:border-gray-400 fwgrid:text-blue-600",
           "fwgrid:focus:ring-2 fwgrid:focus:ring-blue-500/20 fwgrid:focus:ring-offset-0",
           disabled && "fwgrid:opacity-50 fwgrid:cursor-not-allowed"
         )}
