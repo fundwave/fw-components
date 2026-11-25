@@ -5,6 +5,7 @@ import "./fw-size-pick";
 import { defaultTheme, fontOptions } from "./models";
 
 import { msg } from "@fw-components/localize";
+import { themeLabel } from "./theme-label";
 import { css, html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 
@@ -163,7 +164,7 @@ export class FwThemeBuilder extends LitElement {
       case ThemeEnum.COLORS:
         content = html` <div part="content-container">
           ${(Object.keys(this.theme.colors) ?? []).map(
-            (color) => html` <button part="theme-button" @click=${() => this.sectionChangeHandler(`colors-${color}`)}>${msg(color)}</button>`
+            (color) => html` <button part="theme-button" @click=${() => this.sectionChangeHandler(`colors-${color}`)}>${themeLabel(color)}</button>`
           )}
         </div>`;
         break;
@@ -222,11 +223,11 @@ export class FwThemeBuilder extends LitElement {
                 // Colors
                 this.theme && this.theme[ThemeEnum.COLORS] && Object.keys(this.theme[ThemeEnum.COLORS]).length !== 0
                   ? html`<div part="colors-ungrouped-container">
-                      <h2 class="section-heading" part="colors-ungrouped-heading">${msg("Colors")}</h2>
+                      <h2 class="section-heading" part="colors-ungrouped-heading">${msg("Colours")}</h2>
                       ${Object.keys(this.theme[ThemeEnum.COLORS]).map(
                         (group) => html`
                           <div part="color-group-container">
-                            <h3 class="color-group-heading" part="color-group-heading">${msg(group)}</h3>
+                            <h3 class="color-group-heading" part="color-group-heading">${themeLabel(group)}</h3>
                             ${Object.keys(this.theme[ThemeEnum.COLORS][group]).map((type: string) => this.createColorPickComponent(group, type))}
                           </div>
                         `
